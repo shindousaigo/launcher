@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es5",
+    "baseUrl": ".",
+    "jsx": "react",
+    "lib": [
+      "es2015",
+      "es2017",
+      "dom"
+    ]
+  }
+}
