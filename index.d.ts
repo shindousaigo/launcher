@@ -124,6 +124,8 @@ declare namespace AppLauncher {
       plgVersion: string
       /** 补丁更新字段 */
       localAddr: string
+      /** 补丁版本 */
+      patchVersion: string
     }
     interface ServerRequest {
       /** 平台方分配给启动器的startId */
@@ -164,6 +166,10 @@ declare namespace AppLauncher {
       /** 提审状态下的背景图 */
       currentTrialPhoto: string
       publics: {
+        /** 补丁版本 */
+        patchVersion: string
+        /** 补丁下载地址 */
+        patchUrl: string
         /** 游戏包的包名 */
         currentPlugPackageName: string
         /** 游戏包的下载地址 */

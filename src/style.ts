@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 
-export var Style = function () {
+export const Style = function () {
   return {
     wrapper: {
       position: 'fixed',
@@ -38,4 +38,4 @@ export var Style = function () {
   }
 }
 
-export var S = withStyles(Style)
+export var S = withStyles(Style as any)

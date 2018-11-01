@@ -17,7 +17,7 @@ var {
 var action = argv.action
 
 /** 添加adapter代码 */
-var entry = path.join(__dirname, 'main.ts')
+var entry = path.join(__dirname, './src/main.ts')
 
 var output = {
 	path: path.join(__dirname, 'build'),
@@ -62,11 +62,7 @@ var webpackConfig = {
 	resolve: {
 		extensions: [".ts", ".tsx", ".js"],
 		alias: {
-			Base: path.join(__dirname, 'src/Base'),
-			SDK: path.join(__dirname, 'src/SDK'),
-			FBinstant: path.join(__dirname, 'src/FBinstant'),
-			DOM: path.join(__dirname, 'src/DOM'),
-			Src: path.join(__dirname, 'src'),
+			'@': path.join(__dirname, 'src'),
 		}
 	},
 	output,

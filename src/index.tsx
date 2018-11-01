@@ -1,18 +1,15 @@
-/// <reference path="./index.d.ts" />
-
 import { GridProps } from "@material-ui/core/Grid/Grid";
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import I18n from "./i18n";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
-import { S } from "./style.js";
+import { S } from "./style";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import "./style.scss";
-//
 
 type WithRef = { ref?: any };
 

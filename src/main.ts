@@ -1,30 +1,8 @@
-/// <reference path="./index.d.ts" />
-
-import { App as AppInstance } from "index";
+import { App as AppInstance } from "./index";
 import I18n from "./i18n";
+import { getParameterByName } from "./functions";
 
-var getParameterByNameMap = null;
 var App: AppInstance
-
-function getParameterByName(name) {
-  if (!getParameterByNameMap) {
-    getParameterByNameMap = {};
-    var interrogationIndex = location.href.indexOf("?") + 1;
-    var str =
-      interrogationIndex === 0 ? "" : location.href.slice(interrogationIndex);
-    if (str) {
-      var arr = str.split(/&|%26/);
-      arr.forEach(item => {
-        var arr = item.split(/=|%3D/);
-        var key = arr[0];
-        var val = arr[1];
-        getParameterByNameMap[key] = val;
-      });
-    }
-  }
-  var params: Object = getParameterByNameMap;
-  return params.hasOwnProperty(name) ? params[name] : null;
-}
 
 class Http {
   static _ins: Http;
@@ -54,7 +32,7 @@ class Http {
     xhr.send(data);
 
     return new Promise((resolve, reject) => {
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         //xhr.readyState  //浏览器和服务器，进行到哪一步了。
         //0->（未初始化）：还没有调用 open() 方法。
         //1->（载入）：已调用 send() 方法，正在发送请求。
@@ -108,7 +86,7 @@ class Polyfill {
   }
 }
 
-Date.prototype.format = function(fmt) {
+Date.prototype.format = function (fmt) {
   var o = {
     "M+": this.getMonth() + 1,
     "d+": this.getDate(),
@@ -132,7 +110,10 @@ Date.prototype.format = function(fmt) {
   return fmt;
 };
 
-window.Main = async function() {
+const defaultStartKey = '6630bba2bcf84a8eb62b602614cbb661'
+
+
+window.Main = async function () {
   var startKey = getParameterByName("startKey");
   var startId = getParameterByName("startId");
 
@@ -234,7 +215,7 @@ window.Main = async function() {
         }
       }
     }
-    
+
   }
 
 
