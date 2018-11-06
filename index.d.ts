@@ -41,42 +41,62 @@ declare interface Window {
     lachgm(param: {
       packageName: string
     })
+    /** 安装补丁 */
+    loadPatch(param: {
+      patchPath: string
+      patchVersion: string
+      localAddr: string
+    })
+
   }
 
-  // 插件包安装地址
+  /** 当前客户端插件包下载地址 */
   currentPlugDownloadUrl: string
+  /** 当前客户端插件包版本 */
   currentPlugVersion: string
+  /** 当前客户端插件包名 */
   currentPlugPackageName: string
-  localAddr: string
+  /** 调启本地安装的插件包地址 */
+  localPluginAddress: string
+  currentPlugDownloadResolve: Function
+
+  /** 当前客户端启动器下载地址 */
+  currentStartDownloadUrl: string
+  currentStartDownloadResolve: Function
+  /** 调启本地安装的启动器地址 */
+  localStartAddress: string
+  localPatchAddress: string
+
+  /** 当前客户端插件包补丁的下载地址 */
+  currentPatchDownloadUrl: string
 
   JsToNative: {
-    // 退出应用
+    /** 退出应用 */
     exitApp()
-    // 获取设备信息
+    /** 获取设备信息 */
     getDeviceMsg(): string
-    startLoad(param: string)
-    // queryLoadMsg(): string
+    /** 开始下载 */
+    startLoad(json: string)
     /**
      * 检查指定包名的插件包是否安装成功接口
      * 安装成功状态返回1  否则为0
      */
-    checkVaStatus(param: string): string
-    /**
-     * 插件包虚拟安装接口
-     */
-    plinst(param: string)
+    checkVaStatus(json: string): string
+    /**  插件包虚拟安装接口 */
+    plinst(json: string)
     /** 替换安装接口（包括替换包安装和启动器更新版本）*/
-    replinst(param: string)
+    replinst(json: string)
     /** 拉起插件游戏包接口 */
-    lachgm(param: string)
-    /** 检查补丁 */
-    checkPatch(param: string)
+    lachgm(json: string)
+    loadPatch(json: string)
   }
 
   NativeToJs: {
+    /** 原生客户端回调webview */
     catchException(code: string)
-    // 点击返回按钮回调
+    /** 点击返回按钮回调 */
     backPressed()
+    /** 下载进度回调 */
     downloadUpdate(msg: {
       soFarBytes: number,
       totalBytes: number,
@@ -84,10 +104,6 @@ declare interface Window {
       localFilePath: string
     })
   }
-}
-
-declare interface Date {
-  format: any
 }
 
 declare namespace AppLauncher {
@@ -118,8 +134,6 @@ declare namespace AppLauncher {
       version: string
       /** 当前手机系统语言 */
       language: string
-      /** cpu的类型 是否为x86 1 是 0 其他 */
-      isX86: number
       /** 插件包版本 */
       plgVersion: string
       /** 补丁更新字段 */
@@ -131,7 +145,7 @@ declare namespace AppLauncher {
       /** 平台方分配给启动器的startId */
       startId: number
       /** 客户端时间 */
-      clientTime: number
+      clientTime: string
       /** 启动器版本 */
       version: string
       /** 网络 0=wifi 1=3g 2=其他 */
@@ -169,7 +183,7 @@ declare namespace AppLauncher {
         /** 补丁版本 */
         patchVersion: string
         /** 补丁下载地址 */
-        patchUrl: string
+        patchURL: string
         /** 游戏包的包名 */
         currentPlugPackageName: string
         /** 游戏包的下载地址 */

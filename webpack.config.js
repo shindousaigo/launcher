@@ -147,17 +147,17 @@ if (argv.mode === 'production') {
 		])
 	)
 
-	webpackConfig.optimization = {
-		minimizer: [
-			new UglifyJsPlugin({
-				uglifyOptions: {
-					compress: {
-						drop_console: true
-					}
-				}
-			})
-		]
-	}
+	// webpackConfig.optimization = {
+	// 	minimizer: [
+	// 		new UglifyJsPlugin({
+	// 			uglifyOptions: {
+	// 				compress: {
+	// 					drop_console: true
+	// 				}
+	// 			}
+	// 		})
+	// 	]
+	// }
 
 }
 

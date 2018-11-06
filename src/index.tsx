@@ -1,47 +1,42 @@
-import { GridProps } from "@material-ui/core/Grid/Grid";
-import * as React from "react";
-import * as ReactDom from "react-dom";
-import I18n from "./i18n";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import { S } from "./style";
-import Button from "@material-ui/core/Button";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import "./style.scss";
+import { GridProps } from "@material-ui/core/Grid/Grid"
+import * as React from "react"
+import * as ReactDom from "react-dom"
+import I18n from "./modules/i18n"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import Grid from "@material-ui/core/Grid"
+import { S } from "./style"
+import Button from "@material-ui/core/Button"
+import LinearProgress from "@material-ui/core/LinearProgress"
+import Dialog from "@material-ui/core/Dialog"
+import DialogContent from "@material-ui/core/DialogContent"
+import "./style.scss"
+import { Delay, shouldPlugin, installPlugin, shouldPatch } from "./fns"
 
-type WithRef = { ref?: any };
+type WithRef = { ref?: any }
 
-var Grid_: React.ComponentType<GridProps & WithRef> = Grid;
+var Grid_: React.ComponentType<GridProps & WithRef> = Grid
 
 LinearProgress.prototype.componentDidUpdate = function () {
-  var linearProgress = document.querySelector(".linearProgress");
+  var linearProgress = document.querySelector(".linearProgress")
   if (linearProgress) {
     linearProgress.childNodes[0]["style"].webkitTransform =
-      linearProgress.childNodes[0]["style"].transform;
+      linearProgress.childNodes[0]["style"].transform
   }
-};
-
-function Delay(times?) {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve();
-    }, times ? times * 500 : 500);
-  });
 }
+
+
 
 class ExitApp extends React.Component<any, any, any> {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   state = {
     open: false
-  };
+  }
 
   render() {
-    var i18n = I18n[this.props.responses.nativeInitData.language];
+    var i18n = I18n[this.props.responses.nativeInitData.language]
     return (
       <Dialog
         disableBackdropClick
@@ -81,10 +76,10 @@ class ExitApp extends React.Component<any, any, any> {
               fontWeight: "bold"
             }}
             onClick={async () => {
-              await Delay();
+              await Delay()
               this.setState({
                 open: false
-              });
+              })
             }}
           >
             {i18n.mg_txt_cancel}
@@ -99,33 +94,33 @@ class ExitApp extends React.Component<any, any, any> {
               fontWeight: "bold"
             }}
             onClick={async () => {
-              await Delay();
+              await Delay()
               this.setState({
                 open: false
-              });
-              window.JsToNative.exitApp();
+              })
+              window.JsToNative.exitApp()
             }}
           >
             {i18n.mg_txt_confirm}
           </Button>
         </Grid>
       </Dialog>
-    );
+    )
   }
 }
 
 class CatchException extends React.Component<any, any, any> {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   state = {
     open: false,
     msg: ""
-  };
+  }
 
   render() {
-    var i18n = I18n[this.props.responses.nativeInitData.language];
+    var i18n = I18n[this.props.responses.nativeInitData.language]
     return (
       <Dialog
         disableBackdropClick
@@ -158,30 +153,29 @@ class CatchException extends React.Component<any, any, any> {
             color="primary"
             size="medium"
             onClick={async () => {
-              await Delay();
-              this.state.open = false;
-              this.setState(this.state);
+              await Delay()
+              this.state.open = false
+              this.setState(this.state)
             }}
           >
             {i18n.mg_txt_confirm}
           </Button>
         </Grid>
       </Dialog>
-    );
+    )
   }
 }
 
 class Progress extends React.Component<
   {
-    classes: any;
-    responses: AppLauncher.Init.Responses;
-    install: Function;
+    classes: any
+    responses: AppLauncher.Init.Responses
   },
   any,
   any
   > {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   state = {
@@ -192,17 +186,17 @@ class Progress extends React.Component<
     complete: this.props.responses.nativeInitData.localAddr ? true : false,
     udder: I18n[this.props.responses.nativeInitData.language].mg_txt_status_tip,
     is1001: false
-  };
+  }
 
   render() {
-    var i18n = I18n[this.props.responses.nativeInitData.language];
+    var i18n = I18n[this.props.responses.nativeInitData.language]
     var {
       progress,
       ing,
       linearProgress,
       downloaded,
       adapter
-    } = this.props.classes;
+    } = this.props.classes
     return (
       <Grid
         container
@@ -327,57 +321,58 @@ class Progress extends React.Component<
           {this.state.udder}
         </div>
       </Grid>
-    );
+    )
   }
 }
 
 class Facebook extends React.Component<
   {
-    link: string;
-    classes: any;
+    link: string
+    classes: any
   },
   any,
   any
   > {
   render() {
-    var { facebook } = this.props.classes;
+    var { facebook } = this.props.classes
     return (
       <Button
         variant="contained"
         color="primary"
         className={facebook}
         onClick={async () => {
-          await Delay();
-          window.open(this.props.link);
+          await Delay()
+          window.open(this.props.link)
         }}
       >
         <span>Facebook</span>
       </Button>
-    );
+    )
   }
 }
 
 export class App extends React.Component<
   {
-    responses: AppLauncher.Init.Responses;
-    classes: any;
+    responses: AppLauncher.Init.Responses
+    classes: any
   },
   any,
   any
   > {
-  public refs: {
-    exitApp: ExitApp;
-    catchException: CatchException;
-    catchExceptionContainer: Element;
-    progress: Progress;
-  };
 
-  static instance: App;
+  public refs: {
+    exitApp: ExitApp
+    catchException: CatchException
+    catchExceptionContainer: Element
+    progress: Progress
+  }
+
+  static instance: App
 
   constructor(props) {
-    super(props);
-    App.instance = this;
-    this.init();
+    super(props)
+    App.instance = this
+    this.init()
   }
 
   state = {
@@ -390,125 +385,117 @@ export class App extends React.Component<
         container: null
       }
     },
-    downloadComplete: null,
     startDownload: null
-  };
+  }
 
-  init = () => {
+  init = async () => {
     /**
      * 判断是否为提审状态
      */
     if (this.props.responses.serverInitData.data.isCheck) {
-      // 为提审状态 跳转至静态页面
-      console.info("为提审状态");
+      // 为提审状态 
+      console.info("为提审状态")
     } else {
       // 不为提审状态
-      console.info("不为提审状态");
+      console.info("不为提审状态")
       /**
        * 判断启动器是否需要更新
        */
       if (this.props.responses.serverInitData.data.updateWay) {
         // 启动器需要更新
-        console.info("启动器需要更新");
+        console.info("启动器需要更新")
         var type = this.props.responses.serverInitData.data.publics
-          .currentStartType;
+          .currentStartType
         switch (type) {
           case 0: // 原生的模块下载
-            this.startAuto();
-            break;
+            this.startAuto()
+            break
           case 1: // 跳转 google play 应用商店 ?
-            console.info("跳转 google play");
-            break;
+            console.info("跳转 google play")
+            break
           case 2: // 跳转web页面
-            console.info("跳转web页面");
+            console.info("跳转web页面")
             window.open(
               this.props.responses.serverInitData.data.publics
                 .currentStartDownloadUrl
-            );
-            break;
+            )
+            break
         }
       } else {
         // 启动器不需要更新
-        console.info("启动器不需要更新");
-        // var { isX86 } = this.props.responses.nativeInitData
+        console.info("启动器不需要更新")
+
+        /** condition 1 */
         if (
           !this.props.responses.nativeInitData.plgVersion ||
-          this.checkplgVersion() ||
+          shouldPlugin(this.props.responses.serverInitData.data, this.props.responses.nativeInitData) ||
           !window.overwrite.checkVaStatus({
             packageName: this.props.responses.serverInitData.data.publics
               .currentPlugPackageName
           })
         ) {
-          this.pluginAuto();
+          await this.pluginAuto()
+        }
+
+        /** condition 2 */
+        if (shouldPatch(this.props.responses.serverInitData.data, this.props.responses.nativeInitData)) {
+          await this.patchAuto()
+          window.overwrite.loadPatch({
+            patchPath: window.localPatchAddress,
+            patchVersion: this.props.responses.serverInitData.data.publics.patchVersion,
+            localAddr: window.localPluginAddress
+          })
         } else {
           window.overwrite.lachgm({
             packageName: this.props.responses.serverInitData.data.publics
               .currentPlugPackageName
-          });
+          })
         }
-      }
-    }
-  };
 
-  checkplgVersion() {
-    var n = this.props.responses.nativeInitData.plgVersion.split(".");
-    var s = this.props.responses.serverInitData.data.publics.currentPlugVersion.split(
-      "."
-    );
-    var r = false;
-    if (n.length === s.length) {
-      for (var i = 0; i < n.length; i++) {
-        if (n[i] > s[i]) {
-          break;
-        }
-        if (n[i] < s[i]) {
-          r = true;
-        }
+
+
+
+
+
       }
-    } else {
-      r = true;
     }
-    return r;
   }
 
+  /**
+   * 启动器更新
+   */
   startAuto() {
-    console.info("开始下载启动器");
-    this.state.components.progress = true;
-    var url = this.props.responses.serverInitData.data.downloadUrl;
+    console.info("开始下载启动器")
+    this.state.components.progress = true
+    window.currentStartDownloadUrl = this.props.responses.serverInitData.data.downloadUrl
     this.state.startDownload = function () {
       window.overwrite.startLoad({
-        url
-      });
-    };
-    this.state.downloadComplete = function () {
-      // 安装启动器
-      window.overwrite.replinst({
-        localAddr: url
-      });
-    };
-    this.state.startDownload();
+        url: window.currentStartDownloadUrl
+      })
+    }
+    this.state.startDownload()
   }
 
-  replaceAuto() {
-    console.info("开始下载替换包");
-    this.state.components.progress = true;
-    this.refs.progress && (this.refs.progress.state.complete = false);
-    var url = this.props.responses.serverInitData.data.publics
-      .currentPlugRplDownloadUrl;
+  /**
+   * 补丁包更新
+   */
+  patchAuto() {
+    window.currentPatchDownloadUrl = this.props.responses.serverInitData.data.publics.patchURL
     this.state.startDownload = function () {
       window.overwrite.startLoad({
-        url
-      });
-    };
-    this.state.downloadComplete = function (url) {
-      // 安装替换包
-      window.overwrite.replinst({
-        localAddr: url
-      });
-    };
-    this.state.startDownload();
+        url: window.currentPatchDownloadUrl
+      })
+    }
+    console.info('开始下载补丁包')
+    this.state.startDownload()
+    return new Promise(resolve => {
+      window.currentStartDownloadResolve = resolve
+    })
   }
 
+  /**
+   * 插件包更新
+   */
   pluginAuto() {
     window.currentPlugPackageName = this.props.responses.serverInitData.data.publics.currentPlugPackageName
     window.currentPlugVersion = this.props.responses.serverInitData.data.publics.currentPlugVersion
@@ -516,47 +503,30 @@ export class App extends React.Component<
 
     this.state.components.progress = true
     if (this.props.responses.nativeInitData.localAddr) { // 不需要补丁
-      window.currentPlugDownloadUrl = this.props.responses.nativeInitData.localAddr
-      console.info('开始安装插件包')
-      window.overwrite.plinst({
-        localAddr: window.currentPlugDownloadUrl,
-        packageName: window.currentPlugPackageName,
-        plgVersion: window.currentPlugVersion
-      })
+      window.localPluginAddress = this.props.responses.nativeInitData.localAddr
+      installPlugin()
     } else { // 先下载插件包
       this.state.startDownload = function () {
         window.overwrite.startLoad({
           url: window.currentPlugDownloadUrl
         })
       }
-      this.state.downloadComplete = function (url) { // 插件包下载完成
-        window.currentPlugDownloadUrl = url
-        window.JsToNative.checkPatch(
-          JSON.stringify({
-            localAddr: url
-          })
-        )
-      }
       console.info('开始下载插件包')
       this.state.startDownload()
     }
+    return new Promise(resolve => {
+      window.currentPlugDownloadResolve = resolve
+    })
   }
 
   render() {
-    var { wrapper } = this.props.classes;
+    var { wrapper } = this.props.classes
     return (
       <React.Fragment>
         <CssBaseline />
         <Grid
           container
           className={wrapper}
-          style={{
-            background: `url("${
-              this.props.responses.serverInitData.data.isCheck
-                ? this.props.responses.serverInitData.data.currentTrialPhoto
-                : this.props.responses.serverInitData.data.publics.currentPhoto
-              }") 0% 0% / contain`
-          }}
         >
           <Grid_
             className="catch-exception-container"
@@ -574,7 +544,6 @@ export class App extends React.Component<
             <Progress
               ref="progress"
               responses={this.props.responses}
-              install={this.state.downloadComplete}
               classes={this.props.classes}
             />
           )}
@@ -599,19 +568,19 @@ export class App extends React.Component<
           />
         </Grid>
       </React.Fragment>
-    );
+    )
   }
 
   componentDidMount() {
-    this.state.components.catchException.container = this.refs.catchExceptionContainer;
-    this.state.components.exitApp.container = this.refs.catchExceptionContainer;
-    this.setState(this.state);
+    this.state.components.catchException.container = this.refs.catchExceptionContainer
+    this.state.components.exitApp.container = this.refs.catchExceptionContainer
+    this.setState(this.state)
   }
 }
 
-var appLauncher = document.getElementById("app-launcher");
-var Main = S(App);
+var appLauncher = document.getElementById("app-launcher")
+var Main = S(App)
 export default function setup(responses: AppLauncher.Init.Responses) {
-  ReactDom.render(<Main responses={responses} />, appLauncher);
-  return App.instance;
+  ReactDom.render(<Main responses={responses} />, appLauncher)
+  return App.instance
 }

@@ -28,6 +28,7 @@
   "include": [
     "./src/**/*.tsx",
     "./src/**/*.ts",
+    "./src/functions.ts",
     "./index.d.ts"
   ],
 }

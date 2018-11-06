@@ -19,8 +19,10 @@ function test1() {
       };
       window.NativeToJs.downloadUpdate(tmp);
     } else {
-      tmp.soFarBytes += Math.floor(Math.random() * 55686100)
-      tmp.speed = Math.floor(Math.random() * 5686)
+      let bytes = Math.floor(Math.random() * 50000000)
+      let speed = Math.floor(bytes / 1024)
+      tmp.soFarBytes += bytes
+      tmp.speed = speed
       if (tmp.soFarBytes >= tmp.totalBytes) {
         tmp.soFarBytes = tmp.totalBytes;
         window.clearInterval(interval_ as any);
@@ -29,7 +31,7 @@ function test1() {
         window.NativeToJs.downloadUpdate(tmp);
       }
     }
-  }, 1000);
+  }, 750);
 }
 
 window.JsToNative = {
@@ -45,11 +47,12 @@ window.JsToNative = {
       operatorOs: "string",
       source: 0,
       network: "0",
-      packageName: "asdsfsdf",
+      packageName: "string",
       version: "0.5",
       language: "zh",
       currentCPU: 0,
-      localAddr: '111'
+      localAddr: '',
+      patchVersion: ''
     });
   },
   startLoad: function (param: string) {
@@ -72,9 +75,8 @@ window.JsToNative = {
     console.info('拉起插件游戏包接口')
   },
 
-  checkPatch: function (param: string) {
-    console.log('checkPatch', param)
-    window.NativeToJs.catchException('1004')
+  loadPatch: function (param: string) {
+    console.log('loadPatch', param)
   }
 } as any
 
