@@ -1,5 +1,3 @@
-/// <reference path="./index.d.ts" />
-
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import Button from "@material-ui/core/Button";
@@ -48,10 +46,10 @@ window.JsToNative = {
       source: 0,
       network: "0",
       packageName: "asdsfsdf",
-      version: "0.5",
+      version: "10.5",
       language: "zh",
       currentCPU: 0,
-      localAddr: '111'
+      localAddr: ''
     });
   },
   startLoad: function(param: string) {

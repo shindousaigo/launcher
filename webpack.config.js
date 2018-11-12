@@ -17,7 +17,7 @@ var {
 var action = argv.action
 
 /** 添加adapter代码 */
-var entry = path.join(__dirname, 'main.ts')
+var entry = path.join(__dirname, 'src/main.ts')
 
 var output = {
 	path: path.join(__dirname, 'build'),

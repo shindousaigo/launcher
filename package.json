@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "dev": "webpack-dev-server --mode development",
-    "build-test": "webpack --mode production --action build-test",
+    "build-test": "webpack --mode development --action build-test",
     "build-sg": "webpack --mode production --action build-sg",
     "build-sg2": "webpack --mode production --action build-sg2",
     "build-de": "webpack --mode production --action build-de",

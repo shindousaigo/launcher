@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
@@ -10,6 +9,12 @@
       "es2015",
       "es2017",
       "dom"
-    ]
-  }
+    ],
+  },
+  "include": [
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "./src/functions.ts",
+    "./index.d.ts"
+  ],
 }

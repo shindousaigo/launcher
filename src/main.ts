@@ -1,6 +1,6 @@
 /// <reference path="./index.d.ts" />
 
-import { App as AppInstance } from "index";
+import { App as AppInstance } from "src/index";
 import I18n from "./i18n";
 
 var getParameterByNameMap = null;
@@ -54,7 +54,7 @@ class Http {
     xhr.send(data);
 
     return new Promise((resolve, reject) => {
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         //xhr.readyState  //浏览器和服务器，进行到哪一步了。
         //0->（未初始化）：还没有调用 open() 方法。
         //1->（载入）：已调用 send() 方法，正在发送请求。
@@ -108,7 +108,7 @@ class Polyfill {
   }
 }
 
-Date.prototype.format = function(fmt) {
+Date.prototype.format = function (fmt) {
   var o = {
     "M+": this.getMonth() + 1,
     "d+": this.getDate(),
@@ -132,7 +132,7 @@ Date.prototype.format = function(fmt) {
   return fmt;
 };
 
-window.Main = async function() {
+window.Main = async function () {
   var startKey = getParameterByName("startKey");
   var startId = getParameterByName("startId");
 
@@ -223,6 +223,9 @@ window.Main = async function() {
                 localAddr: msg.localFilePath
               })
             )
+            App.state.components.tip = true
+            App.setState(App.state)
+            
             App.refs.progress.state.complete = true
             App.refs.progress.state.speed = 0
             App.refs.progress.state.downloaded = 0
@@ -234,7 +237,7 @@ window.Main = async function() {
         }
       }
     }
-    
+
   }
 
 
@@ -253,9 +256,7 @@ window.Main = async function() {
       operatorOs: nativeInitData.operatorOs,
       deviceNo: nativeInitData.deviceNo,
       device: nativeInitData.device,
-      sign: md5(
-        startId + nativeInitData.model + nativeInitData.network + startKey
-      )
+      sign: md5(startId + nativeInitData.model + nativeInitData.network + startKey)
     };
     Http.instance
       .post({
