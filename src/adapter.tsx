@@ -33,10 +33,10 @@ function test1() {
 }
 
 window.JsToNative = {
-  exitApp: function() {
+  exitApp: function () {
     window.NativeToJs.catchException("窗口关闭被调用");
   },
-  getDeviceMsg: function(): string {
+  getDeviceMsg: function (): string {
     return JSON.stringify({
       gaid: "string",
       device: "string",
@@ -52,18 +52,18 @@ window.JsToNative = {
       localAddr: ''
     });
   },
-  startLoad: function(param: string) {
+  startLoad: function (param: string) {
     tmp = null;
     test1();
   },
-  checkVaStatus: function(): string {
+  checkVaStatus: function (): string {
     return JSON.stringify(1);
   },
-  plinst: function(param: string) {
+  plinst: function (param: string) {
     console.info(param);
     console.log("开始安装插件包");
   },
-  replinst: function(param: string) {
+  replinst: function (param: string) {
     console.info(param);
     console.info("开始安装替换包");
   },
@@ -75,6 +75,9 @@ window.JsToNative = {
   checkPatch: function (param: string) {
     console.log('checkPatch', param)
     window.NativeToJs.catchException('1004')
+  },
+  pthInst: function () {
+    console.log('pthInst')
   }
 } as any
 
@@ -82,7 +85,9 @@ const options = [
   "退出 APP 接口调用",
   "模拟用户点击返回按钮",
   "错误处理 code 1001",
-  "错误处理 code 1002"
+  "错误处理 code 1002",
+  "错误处理 code 1011",
+  "错误处理 code 1010"
 ];
 
 class UtilBtn extends React.Component<any, any, any> {
@@ -107,6 +112,12 @@ class UtilBtn extends React.Component<any, any, any> {
         break;
       case 3:
         window.NativeToJs.catchException("1002");
+        break;
+      case 4:
+        window.NativeToJs.catchException("1011");
+        break;
+      case 5:
+        window.NativeToJs.catchException("1010");
         break;
     }
     this.state.show = !this.state.show;
@@ -157,7 +168,7 @@ var UtilBtn_ = withStyles({
   }
 })(UtilBtn);
 
-window.onload = function() {
+window.onload = function () {
   var div = document.createElement("div");
   document.body.appendChild(div);
   ReactDom.render(<UtilBtn_ />, div);

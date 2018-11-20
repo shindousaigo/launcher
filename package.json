@@ -4,27 +4,22 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "dev": "webpack-dev-server --mode development",
-    "build-test": "webpack --mode development --action build-test",
-    "build-sg": "webpack --mode production --action build-sg",
-    "build-sg2": "webpack --mode production --action build-sg2",
-    "build-de": "webpack --mode production --action build-de",
-    "build-vn": "webpack --mode production --action build-vn"
+    "dev": "webpack-dev-server --mode development --action dev",
+    "build": "webpack --mode production --action",
+    "test": "webpack --mode development  --action"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@material-ui/codemod": "^1.1.0",
-    "@material-ui/core": "^1.4.3",
-    "@material-ui/icons": "^2.0.1",
-    "@material-ui/lab": "^1.0.0-alpha.9",
+  "devDependencies": {
     "md5": "^2.2.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.2.2",
-    "reset.css": "^2.0.2"
-  },
-  "devDependencies": {
+    "reset.css": "^2.0.2",
+    "@material-ui/codemod": "^1.1.0",
+    "@material-ui/core": "^1.4.3",
+    "@material-ui/icons": "^2.0.1",
+    "@material-ui/lab": "^1.0.0-alpha.9",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "@types/react-router": "^4.0.25",

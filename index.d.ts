@@ -1,9 +1,10 @@
 declare var SERVER: string
 declare var md5: Function
-declare var isTest: boolean
-declare var version: string
+declare var TEST: boolean
+declare var VERSION: string
 
 declare interface Window {
+  Version: string
   Main: Function
   adapter: {
     utilBtn: React.ReactInstance
@@ -50,7 +51,9 @@ declare interface Window {
   localAddr: string
 
   JsToNative: {
+    pthInst()
     // 退出应用
+
     exitApp()
     // 获取设备信息
     getDeviceMsg(): string
@@ -179,7 +182,7 @@ declare namespace AppLauncher {
         /** 背景图 */
         currentPhoto: string
         /** 启动器更新方式 */
-        currentStartType: number
+        currentStartType: string
         currentPlugAppId: string
         currentPlugPackageId: string
         currentPlugRplDownloadUrl: string

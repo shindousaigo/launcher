@@ -8,9 +8,12 @@ import { S, Px } from "./style"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
-import Progress from "./Progress"
+import Sophix from "src/components/Progress/SophixProgress"
+import ObbProgress from "src/components/Progress/ObbProgress"
 import "./style.scss"
 import Tip from "./Tip"
+import { getParameterByName } from "./Utils";
+import { Version, Refs } from "./const";
 
 type WithRef = { ref?: any }
 
@@ -23,7 +26,6 @@ function Delay(times?) {
     }, times ? times * 500 : 500)
   })
 }
-
 
 class ExitApp extends React.Component<any, any, any> {
 
@@ -94,7 +96,8 @@ class CatchException extends React.Component<any, any, any> {
 
   state = {
     open: false,
-    msg: ""
+    msg: "",
+    clickFn: null
   }
 
   render() {
@@ -127,6 +130,7 @@ class CatchException extends React.Component<any, any, any> {
             onClick={async () => {
               await Delay()
               this.state.open = false
+              if (this.state.clickFn) this.state.clickFn()
               this.setState(this.state)
             }}
           >
@@ -171,7 +175,7 @@ type AppRefs = {
   exitApp: ExitApp
   catchException: CatchException
   catchExceptionContainer: Element
-  progress: Progress
+  [Refs.Progress]: Sophix & ObbProgress
 }
 export class App extends React.Component<AppProps, any, any> {
   public refs: AppRefs
@@ -183,6 +187,9 @@ export class App extends React.Component<AppProps, any, any> {
   }
 
   state = {
+    asyncComponents: {
+      progress: null
+    },
     components: {
       progress: false,
       catchException: {
@@ -201,90 +208,106 @@ export class App extends React.Component<AppProps, any, any> {
     /**
      * 判断是否为提审状态
      */
-    if (this.props.responses.serverInitData.data.isCheck) {
-      // 为提审状态 跳转至静态页面
-      console.info("为提审状态")
-    } else {
-      // 不为提审状态
+    if (!this.props.responses.serverInitData.data.isCheck) { // 不为提审状态
       console.info("不为提审状态")
-      /**
-       * 判断启动器是否需要更新
-       */
-      if (this.props.responses.serverInitData.data.updateWay) {
-        // 启动器需要更新
-        console.info("启动器需要更新")
-        var type = this.props.responses.serverInitData.data.publics
-          .currentStartType
-        switch (type) {
-          case 0: // 原生的模块下载
-            this.startAuto()
-            break
-          case 1: // 跳转 google play 应用商店 ?
-            console.info("跳转 google play")
-            break
-          case 2: // 跳转web页面
-            console.info("跳转web页面")
-            window.open(
-              this.props.responses.serverInitData.data.publics
-                .currentStartDownloadUrl
-            )
-            break
-        }
-      } else {
-        // 启动器不需要更新
-        console.info("启动器不需要更新")
-        if (
-          !this.props.responses.nativeInitData.plgVersion ||
-          this.checkplgVersion() ||
-          !window.overwrite.checkVaStatus({
-            packageName: this.props.responses.serverInitData.data.publics
-              .currentPlugPackageName
+      window.Version = getParameterByName('version') || VERSION
+      switch (window.Version) {
+        case Version.Sophix:
+          import('src/components/Progress/SophixProgress').then(component => {
+            this.state.asyncComponents.progress = component.default
+            this.setState(this.state)
           })
-        ) {
-          this.pluginAuto()
-        } else {
-          this.state.components.progress = true
-          this.setState(this.state)
-          const exe = () => {
-            if (this.refs.progress) {
-
-              this.refs.progress.state.complete = true
-              this.refs.progress.state.speed = 0
-              this.refs.progress.state.downloaded = 0
-              this.refs.progress.state.total = 0
-              this.refs.progress.state.rate = 0
-              var dot = ' '
-              this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch
-              this.refs.progress.setState(this.refs.progress.state)
-
-              setInterval(() => {
-                dot += '.'
-                if (dot === ' .....') dot = ' '
-                this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch + dot
-                this.refs.progress.setState(this.refs.progress.state)
-              }, 500)
-            } else {
-              requestAnimationFrame(() => {
+          /**
+           * 判断启动器是否需要更新
+           */
+          if (this.props.responses.serverInitData.data.updateWay) { // 启动器需要更新
+            console.info("启动器需要更新")
+            var type = this.props.responses.serverInitData.data.publics
+              .currentStartType
+            switch (type) {
+              case '0': // 原生的模块下载
+                this.startAuto()
+                break
+              case '1': // 跳转google play应用商店
+                const exe = () => {
+                  if (this.refs.catchException) {
+                    window.NativeToJs.catchException('google_play')
+                  } else {
+                    requestAnimationFrame(() => {
+                      exe()
+                    })
+                  }
+                }
                 exe()
+                break
+              case '2': // 跳转web页面
+                window.open(
+                  this.props.responses.serverInitData.data.publics
+                    .currentStartDownloadUrl
+                )
+                break
+            }
+          } else {
+            // 启动器不需要更新
+            console.info("启动器不需要更新")
+            if (
+              !this.props.responses.nativeInitData.plgVersion ||
+              this.checkplgVersion() ||
+              !window.overwrite.checkVaStatus({
+                packageName: this.props.responses.serverInitData.data.publics
+                  .currentPlugPackageName
+              })
+            ) {
+              this.pluginAuto()
+            } else {
+              this.state.components.progress = true
+              this.setState(this.state)
+              const exe = () => {
+                if (this.refs.progress) {
+                  this.refs.progress.state.complete = true
+                  this.refs.progress.state.speed = 0
+                  this.refs.progress.state.downloaded = 0
+                  this.refs.progress.state.total = 0
+                  this.refs.progress.state.rate = 0
+                  var dot = ' '
+                  this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch
+                  this.refs.progress.setState(this.refs.progress.state)
+                  setInterval(() => {
+                    dot += '.'
+                    if (dot === ' .....') dot = ' '
+                    this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch + dot
+                    this.refs.progress.setState(this.refs.progress.state)
+                  }, 500)
+                } else {
+                  requestAnimationFrame(() => {
+                    exe()
+                  })
+                }
+              }
+              exe()
+              window.overwrite.lachgm({
+                packageName: this.props.responses.serverInitData.data.publics
+                  .currentPlugPackageName
               })
             }
-
           }
-          exe()
-          window.overwrite.lachgm({
-            packageName: this.props.responses.serverInitData.data.publics
-              .currentPlugPackageName
+          break
+        case Version.Obb:
+          import('src/components/Progress/ObbProgress').then(component => {
+            this.state.asyncComponents.progress = component.default
+            this.setState(this.state)
           })
-        }
+          window.JsToNative.pthInst()
+          this.state.components.progress = true
+          break
       }
+
     }
   }
 
   checkplgVersion() {
     var n = this.props.responses.nativeInitData.plgVersion.split(".")
-    var s = this.props.responses.serverInitData.data.publics.currentPlugVersion.split(
-      "."
-    )
+    var s = this.props.responses.serverInitData.data.publics.currentPlugVersion.split(".")
     var r = false
     if (n.length === s.length) {
       for (var i = 0; i < n.length; i++) {
@@ -346,8 +369,6 @@ export class App extends React.Component<AppProps, any, any> {
 
     this.state.components.progress = true
     if (this.props.responses.nativeInitData.localAddr) { // 不需要补丁
-
-
       const exe = () => {
         if (this.refs.progress) {
           this.refs.progress.state.complete = true
@@ -371,9 +392,6 @@ export class App extends React.Component<AppProps, any, any> {
         }
       }
       exe()
-
-
-
 
       window.currentPlugDownloadUrl = this.props.responses.nativeInitData.localAddr
       console.info('开始安装插件包')
@@ -401,21 +419,16 @@ export class App extends React.Component<AppProps, any, any> {
     }
   }
 
+
   render() {
     var { wrapper } = this.props.classes
+    var Progress = this.state.asyncComponents.progress
     return (
       <React.Fragment>
         <CssBaseline />
         <Grid
           container
           className={wrapper}
-          style={{
-            background: `url("${
-              this.props.responses.serverInitData.data.isCheck
-                ? this.props.responses.serverInitData.data.currentTrialPhoto
-                : this.props.responses.serverInitData.data.publics.currentPhoto
-              }") 0% 0% / contain`
-          }}
         >
           <Grid_
             className="catch-exception-container"
@@ -430,14 +443,14 @@ export class App extends React.Component<AppProps, any, any> {
             }}
           />
 
-          {this.state.components.progress && (
-            <Progress
-              ref="progress"
-              responses={this.props.responses}
-              install={this.state.downloadComplete}
-              classes={this.props.classes}
-            />
-          )}
+          {this.state.components.progress && this.state.asyncComponents.progress && <Progress
+            ref={Refs.Progress}
+            responses={this.props.responses}
+            install={this.state.downloadComplete}
+            classes={this.props.classes}
+          />}
+
+
           {!this.props.responses.serverInitData.data.isCheck && (
             <Facebook
               link={this.props.responses.serverInitData.data.publics.currentStartFbPage}

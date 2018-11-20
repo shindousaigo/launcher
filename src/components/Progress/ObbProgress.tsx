@@ -1,31 +1,53 @@
-import I18n from "./i18n";
+import I18n from "../../i18n";
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-LinearProgress.prototype.componentDidUpdate = function () {
-  var linearProgress = document.querySelector(".linearProgress");
-  if (linearProgress) {
-    linearProgress.childNodes[0]["style"].webkitTransform =
-      linearProgress.childNodes[0]["style"].transform;
-  }
-};
+// LinearProgress.prototype.componentDidUpdate = function () {
+//   var linearProgress = document.querySelector(".linearProgress");
+//   if (linearProgress) {
+//     linearProgress.childNodes[0]["style"].webkitTransform =
+//       linearProgress.childNodes[0]["style"].transform;
+//   }
+// };
 
 type ProgressProps = {
   classes: any
   responses: AppLauncher.Init.Responses
   install: Function
 }
-export default class Progress extends React.Component<ProgressProps, any, any> {
+export default class ObbProgress extends React.Component<ProgressProps, any, any> {
+
   state = {
-    speed: 0,
-    downloaded: 0,
-    total: 0,
     rate: 0,
     complete: this.props.responses.nativeInitData.localAddr ? true : false,
     udder: I18n[this.props.responses.nativeInitData.language].mg_txt_status_tip,
     is1001: false
-  };
+  }
+
+  interval
+
+  constructor(props) {
+    super(props)
+  }
+
+  componentDidMount() {
+    this.progressing()
+    this.interval = setInterval(() => {
+      this.progressing()
+    }, 1000)
+  }
+
+  progressing() {
+    this.state.rate = this.state.rate + Math.random() * 1.2
+    if (this.state.rate >= 99) {
+      this.state.rate = 99
+      clearInterval(this.interval)
+    } else {
+      this.state.rate = Number(this.state.rate.toFixed(1))
+    }
+    this.setState(this.state)
+  }
 
   render() {
     var i18n = I18n[this.props.responses.nativeInitData.language];
@@ -91,7 +113,7 @@ export default class Progress extends React.Component<ProgressProps, any, any> {
                   position: 'relative',
                 }}
                 variant="determinate"
-                value={this.state.rate}
+                value={this.state.rate * 1}
               />
               <Grid
                 container
@@ -99,19 +121,7 @@ export default class Progress extends React.Component<ProgressProps, any, any> {
                 alignItems="center"
                 className={this.props.classes.progress_downloading}
               >
-                <div className="part-txt speed">
-                  {this.state.speed}
-                </div>
-                <div
-                  className={"part-txt " + this.props.classes.progress_downloading_split}
-                />
-                <div>
-                  {this.state.downloaded}
-                </div>
-                <div>/</div>
-                <div className="total">
-                  {this.state.total}
-                </div>
+                {this.state.rate}%
               </Grid>
             </Grid>
           )}

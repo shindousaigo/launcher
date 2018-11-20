@@ -12,7 +12,8 @@ export default {
     mg_txt_cancel: 'Abbrechen',
     mg_tip_quit: 'Bist du sicher, das Spiel zu beenden',
     msg_tip_wait: 'Das Spiel wird automatisch neu starten\nWenn das Spiel zu lange neu startet, bitte schloss es und startet neu',
-    msg_tip_launch: 'Spieldata wird heruntergeladen'
+    msg_tip_launch: 'Spieldata wird heruntergeladen',
+    msg_tip_googleplay: 'Bitte neeste Version aktualisieren'
   },
   en: {
     mg_tip_question: 'If you have any problem in downloading,',
@@ -27,7 +28,8 @@ export default {
     mg_txt_cancel: 'Cancel',
     mg_tip_quit: 'Are you sure to quit the game',
     msg_tip_wait: 'Automatically restarting…\nIf the game does not automatically restart for a long time, please quit the game and reopen it.',
-    msg_tip_launch: 'Loading game data'
+    msg_tip_launch: 'Loading game data',
+    msg_tip_googleplay: 'Please update latest version'
   },
   fr: {
     mg_tip_question: 'Si vous avez des problèmes lors du téléchargement de votre jeu,',
@@ -42,7 +44,8 @@ export default {
     mg_txt_cancel: 'Annuler',
     mg_tip_quit: 'Êtes-vous sûr de quitter le jeu',
     msg_tip_wait: 'Lancement automatique en cours…\nSi le jeu ne se lance pas automatiquement, quittez le jeu et rouvrez-le!',
-    msg_tip_launch: 'Chargement en cours!'
+    msg_tip_launch: 'Chargement en cours!',
+    msg_tip_googleplay: 'Mettez à jour la dernière version'
   },
   id: {
     mg_tip_question: 'Jika ada masalah ketika mengunduh game,',
@@ -57,7 +60,8 @@ export default {
     mg_txt_cancel: 'Batal',
     mg_tip_quit: 'Apakah Anda yakin untuk keluar dari permainan',
     msg_tip_wait: 'Sedang memuat permainan secara otomatis\nJika tidak memuat permainan secara otomatis, silahkan keluar permainan dan buka kembali.',
-    msg_tip_launch: 'Sedang unduh data game'
+    msg_tip_launch: 'Sedang unduh data game',
+    msg_tip_googleplay: 'Silahkan update versi terbaru'
   },
   ko: {
     mg_tip_question: '게임 다운로드에 문제가 있는 경우,',
@@ -72,7 +76,8 @@ export default {
     mg_txt_cancel: '취소',
     mg_tip_quit: '게임을 종료 하시겠습니까',
     msg_tip_wait: '게임 다시 자동 시작 중\n게임을 다시 자동시작하지 않은 경우 게임을 종료 한 후 다시 접속하십시오.',
-    msg_tip_launch: '게임 데이터 로딩'
+    msg_tip_launch: '게임 데이터 로딩',
+    msg_tip_googleplay: '최신 버전으로 업데이트하세요'
   },
   th: {
     mg_tip_question: 'ถ้าพบปัญหาเวลาโหลดเกม,',
@@ -87,7 +92,8 @@ export default {
     mg_txt_cancel: 'ยกเลิก',
     mg_tip_quit: 'คุณแน่ใจหรือไม่ว่าจะเลิกเล่นเกม',
     msg_tip_wait: 'กำลังเปิดเกมโดยอัตโนมัติ\nหากรอนานแล้วแต่ยังไม่เปิดเกม กรุณาออกเกมเข้าใหม่',
-    msg_tip_launch: 'กำลังโหลดดาตาเกม'
+    msg_tip_launch: 'กำลังโหลดดาตาเกม',
+    msg_tip_googleplay: 'โปรดอัพเดทแพทช์ใหม่'
   },
   vi: {
     mg_tip_question: 'Nếu gặp vấn đề khi tải game,',
@@ -102,7 +108,8 @@ export default {
     mg_txt_cancel: 'Hủy',
     mg_tip_quit: 'Bạn có chắc chắn thoát khỏi trò chơi không',
     msg_tip_wait: 'Đang tự động khởi động game.\nNếu quá lâu vẫn chưa tự động khởi động game, vui lòng thoát game sau đó mở lại.',
-    msg_tip_launch: 'Đang tải số liệu game'
+    msg_tip_launch: 'Đang tải số liệu game',
+    msg_tip_googleplay: 'Cập nhật phiên bản mới nhất'
   },
   zh: {
     mg_tip_question: '如果加载遇到问题，',
@@ -117,7 +124,8 @@ export default {
     mg_txt_cancel: '取消',
     mg_tip_quit: '确定退出游戏吗',
     msg_tip_wait: '游戏正在自动重启。\n如果长时间未自动重启游戏，请退出游戏，再重新打开。',
-    msg_tip_launch: '正在读取游戏数据'
+    msg_tip_launch: '正在读取游戏数据',
+    msg_tip_googleplay: '请更新到最新版本'
   },
 
 }
