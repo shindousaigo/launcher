@@ -7,7 +7,7 @@ const Yargs = require('yargs')
 const md5 = require('md5')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-var SERVER = 'http://sdk-test.changic.net.cn:1612'
+var SERVER = ''
 var https = false
 var isTest = true
 var version = '0.930'
@@ -26,28 +26,13 @@ var output = {
 }
 
 switch (action) {
-	case 'build-test':
+	case 'build':
+		isTest = false
+		output.publicPath = './'
+		break;
+	case 'test':
 		isTest = true
 		output.publicPath = './'
-		break;
-	case 'build-sg':
-		isTest = false
-		SERVER = 'http://start-sg-sdk.pocketgamesol.com'
-		output.publicPath = './'
-		break;
-	case 'build-de':
-		isTest = false
-		SERVER = 'http://start-de-sdk.pocketgamesol.com'
-		output.publicPath = './'
-		break;
-	case 'build-vn':
-		isTest = false
-		SERVER = 'http://start-vn-sdk.pocketgamesol.com'
-		output.publicPath = './'
-		break;
-	case 'devs':
-		isTest = true
-		https = true
 		break;
 }
 
@@ -147,17 +132,17 @@ if (argv.mode === 'production') {
 		])
 	)
 
-	// webpackConfig.optimization = {
-	// 	minimizer: [
-	// 		new UglifyJsPlugin({
-	// 			uglifyOptions: {
-	// 				compress: {
-	// 					drop_console: true
-	// 				}
-	// 			}
-	// 		})
-	// 	]
-	// }
+	webpackConfig.optimization = {
+		minimizer: [
+			new UglifyJsPlugin({
+				uglifyOptions: {
+					compress: {
+						drop_console: true
+					}
+				}
+			})
+		]
+	}
 
 }
 
