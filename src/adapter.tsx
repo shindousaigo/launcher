@@ -46,7 +46,7 @@ window.JsToNative = {
       source: 0,
       network: "0",
       packageName: "asdsfsdf",
-      version: "10.5",
+      version: "21.0.0",
       language: "zh",
       currentCPU: 0,
       localAddr: ''
@@ -71,7 +71,6 @@ window.JsToNative = {
     console.info(param)
     console.info('拉起插件游戏包接口')
   },
-
   checkPatch: function (param: string) {
     console.log('checkPatch', param)
     window.NativeToJs.catchException('1004')

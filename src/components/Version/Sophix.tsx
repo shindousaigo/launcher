@@ -1,40 +1,55 @@
 import { GridProps } from "@material-ui/core/Grid/Grid"
 import * as React from "react"
 import * as ReactDom from "react-dom"
-import I18n from "./i18n"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import Grid from "@material-ui/core/Grid"
-import { S, Px } from "./style"
-import Button from "@material-ui/core/Button"
+import { S, Px } from "../../style"
+import Button from "src/components/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import Sophix from "src/components/Progress/SophixProgress"
 import ObbProgress from "src/components/Progress/ObbProgress"
-import "./style.scss"
-import Tip from "./Tip"
-import { getParameterByName } from "./Utils";
-import { Version, Refs } from "./const";
+import "src/style.scss"
+import Tip from "../../Tip"
+import { getParameterByName } from "../../Utils";
+import { Version, Refs } from "../../const";
+import { Delay } from "src/factory/functions";
+import Index from ".";
+import Progress from 'src/components/Progress/SophixProgress'
 
 type WithRef = { ref?: any }
 
 var Grid_: React.ComponentType<GridProps & WithRef> = Grid
 
-function Delay(times?) {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve()
-    }, times ? times * 500 : 500)
-  })
+type ExitAppProps = {
+  classes: any
+  container: any
+  /**
+  * 语言包
+  */
+  language: string
 }
 
-class ExitApp extends React.Component<any, any, any> {
+class ExitApp extends React.Component<ExitAppProps, any, any> {
 
-  state = {
+  public state = {
     open: false
   }
 
+  private languagePack = {
+    mg_tip_quit: {
+      de: 'Bist du sicher, das Spiel zu beenden',
+      en: 'Are you sure to quit the game',
+      fr: 'Êtes-vous sûr de quitter le jeu',
+      id: 'Apakah Anda yakin untuk keluar dari permainan',
+      ko: '게임을 종료 하시겠습니까',
+      th: 'คุณแน่ใจหรือไม่ว่าจะเลิกเล่นเกม',
+      vi: 'Bạn có chắc chắn thoát khỏi trò chơi không',
+      zh: '确定退出游戏吗',
+    }
+  }
+
   render() {
-    var i18n = I18n[this.props.responses.nativeInitData.language]
     return (
       <Dialog
         disableBackdropClick
@@ -46,7 +61,7 @@ class ExitApp extends React.Component<any, any, any> {
         container={this.props.container}
       >
         <DialogContent className={this.props.classes.exit_app_dialog_content}>
-          {i18n.mg_tip_quit}
+          {this.languagePack.mg_tip_quit[this.props.language]}
         </DialogContent>
         <Grid
           container
@@ -56,52 +71,80 @@ class ExitApp extends React.Component<any, any, any> {
           }}
           className="index_button_wrapper"
         >
+
           <Button
-            variant="contained"
-            size="medium"
+            language={this.props.language}
             className={this.props.classes.exit_app_button}
-            onClick={async () => {
+            click={async () => {
               await Delay()
               this.setState({
                 open: false
               })
             }}
-          >
-            {i18n.mg_txt_cancel}
-          </Button>
+            mode="cancel"
+          />
+
           <Button
-            variant="contained"
-            size="medium"
+            language={this.props.language}
             className={this.props.classes.exit_app_button}
-            onClick={async () => {
+            click={async () => {
               await Delay()
               this.setState({
                 open: false
               })
               window.JsToNative.exitApp()
             }}
-          >
-            {i18n.mg_txt_confirm}
-          </Button>
+            mode="confirm"
+          />
+
         </Grid>
       </Dialog>
     )
   }
 }
 
-class CatchException extends React.Component<any, any, any> {
+type CatchExceptionProps = {
+  classes: any
+  container: any
+  language: string
+}
+
+class CatchException extends React.Component<CatchExceptionProps, any, any> {
+
   constructor(props) {
     super(props)
   }
 
   state = {
     open: false,
-    msg: "",
+    type: null,
     clickFn: null
   }
 
+  languagePack = {
+    mg_net_wrong: {
+      de: 'Netzwerkverbindungs Fehler',
+      en: 'Network connection error',
+      fr: 'Erreur de connexion',
+      id: 'Kesalahan koneksi jaringan',
+      ko: '인터넷 연결 오류',
+      th: 'ข้อผิดพลาดในการเชื่อมต่ออินเทอร์เน็ต',
+      vi: 'Lỗi kết nối mạng',
+      zh: '网络连接异常',
+    },
+    msg_tip_googleplay: {
+      de: 'Bitte neeste Version aktualisieren',
+      en: 'Please update latest version',
+      fr: 'Mettez à jour la dernière version',
+      id: 'Silahkan update versi terbaru',
+      ko: '최신 버전으로 업데이트하세요',
+      th: 'โปรดอัพเดทแพทช์ใหม่',
+      vi: 'Cập nhật phiên bản mới nhất',
+      zh: '请更新到最新版本',
+    },
+  }
+
   render() {
-    var i18n = I18n[this.props.responses.nativeInitData.language]
     return (
       <Dialog
         disableBackdropClick
@@ -113,7 +156,7 @@ class CatchException extends React.Component<any, any, any> {
         container={this.props.container}
       >
         <DialogContent className={this.props.classes.exit_app_dialog_content}>
-          {this.state.msg}
+          {(this.state.type === '1002' && this.languagePack.mg_net_wrong[this.props.language]) || (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])}
         </DialogContent>
         <Grid
           container
@@ -123,19 +166,19 @@ class CatchException extends React.Component<any, any, any> {
           }}
           className="index_button_wrapper"
         >
+
           <Button
-            variant="contained"
-            size="medium"
+            language={this.props.language}
             className={this.props.classes.exit_app_button}
-            onClick={async () => {
+            click={async () => {
               await Delay()
               this.state.open = false
               if (this.state.clickFn) this.state.clickFn()
               this.setState(this.state)
             }}
-          >
-            {i18n.mg_txt_confirm}
-          </Button>
+            mode="confirm"
+          />
+
         </Grid>
       </Dialog>
     )
@@ -145,25 +188,24 @@ class CatchException extends React.Component<any, any, any> {
 type FacebookProps = {
   link: string
   classes: any
+  language: string
 }
+
 class Facebook extends React.Component<FacebookProps, any, any> {
   render() {
-    return (
-      <Button
-        variant="contained"
-        color="primary"
-        className={this.props.classes.facebook}
-        onClick={async () => {
-          await Delay()
-          window.open(this.props.link)
-        }}
-      >
-        <img
-          className={this.props.classes.button_img}
-          src={require('../assets/facebook.png')}
-        />
-      </Button>
-    )
+    return <Button
+      language={this.props.language}
+      className={this.props.classes.facebook}
+      click={async () => {
+        await Delay()
+        window.open(this.props.link)
+      }}
+    >
+      <img
+        className={this.props.classes.button_img}
+        src={require('assets/facebook.png')}
+      />
+    </Button>
   }
 }
 
@@ -177,19 +219,53 @@ type AppRefs = {
   catchExceptionContainer: Element
   [Refs.Progress]: Sophix & ObbProgress
 }
-export class App extends React.Component<AppProps, any, any> {
+export class App extends React.Component<AppProps, any, any> implements Index {
   public refs: AppRefs
   static instance: App
+
   constructor(props) {
     super(props)
     App.instance = this
+    window.NativeToJs.downloadUpdate = (msg) => {
+      var Progress = this.refs[Refs.Progress]
+      if (msg && Progress) {
+        switch (window.Version) {
+          case Version.Sophix:
+            var state = {
+              downloaded: Math.floor(msg.soFarBytes / 1024 / 1024) + 'M',
+              total: Math.floor(msg.totalBytes / 1024 / 1024) + 'M',
+              speed: !msg.speed ? 0 : msg.speed < 1024 ? msg.speed + 'Kb/s' : (msg.speed / 1024).toFixed(1) + 'M/s',
+              rate: (!msg.soFarBytes || !msg.totalBytes) ? 0 : Math.floor(msg.soFarBytes / msg.totalBytes * 100)
+            }
+            if (state.rate >= 100) {
+              window.currentPlugDownloadUrl = msg.localFilePath
+              window.JsToNative.checkPatch(
+                JSON.stringify({
+                  localAddr: msg.localFilePath
+                })
+              )
+              this.state.components.tip = true
+              this.setState(this.state)
+
+              Progress.state.complete = true
+              Progress.state.speed = 0
+              Progress.state.downloaded = 0
+              Progress.state.total = 0
+              Progress.state.rate = 0
+              Progress.state.isLoading = true
+            }
+            Progress.setState(state)
+            break
+          case Version.Obb:
+            break
+        }
+
+      }
+    }
     this.init()
   }
 
   state = {
-    asyncComponents: {
-      progress: null
-    },
     components: {
       progress: false,
       catchException: {
@@ -205,101 +281,69 @@ export class App extends React.Component<AppProps, any, any> {
   }
 
   init = () => {
-    /**
-     * 判断是否为提审状态
-     */
+    // 判断是否为提审状态
     if (!this.props.responses.serverInitData.data.isCheck) { // 不为提审状态
       console.info("不为提审状态")
-      window.Version = getParameterByName('version') || VERSION
-      switch (window.Version) {
-        case Version.Sophix:
-          import('src/components/Progress/SophixProgress').then(component => {
-            this.state.asyncComponents.progress = component.default
-            this.setState(this.state)
-          })
-          /**
-           * 判断启动器是否需要更新
-           */
-          if (this.props.responses.serverInitData.data.updateWay) { // 启动器需要更新
-            console.info("启动器需要更新")
-            var type = this.props.responses.serverInitData.data.publics
-              .currentStartType
-            switch (type) {
-              case '0': // 原生的模块下载
-                this.startAuto()
-                break
-              case '1': // 跳转google play应用商店
-                const exe = () => {
-                  if (this.refs.catchException) {
-                    window.NativeToJs.catchException('google_play')
-                  } else {
-                    requestAnimationFrame(() => {
-                      exe()
-                    })
-                  }
-                }
-                exe()
-                break
-              case '2': // 跳转web页面
-                window.open(
-                  this.props.responses.serverInitData.data.publics
-                    .currentStartDownloadUrl
-                )
-                break
-            }
-          } else {
-            // 启动器不需要更新
-            console.info("启动器不需要更新")
-            if (
-              !this.props.responses.nativeInitData.plgVersion ||
-              this.checkplgVersion() ||
-              !window.overwrite.checkVaStatus({
-                packageName: this.props.responses.serverInitData.data.publics
-                  .currentPlugPackageName
-              })
-            ) {
-              this.pluginAuto()
-            } else {
-              this.state.components.progress = true
-              this.setState(this.state)
-              const exe = () => {
-                if (this.refs.progress) {
-                  this.refs.progress.state.complete = true
-                  this.refs.progress.state.speed = 0
-                  this.refs.progress.state.downloaded = 0
-                  this.refs.progress.state.total = 0
-                  this.refs.progress.state.rate = 0
-                  var dot = ' '
-                  this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch
-                  this.refs.progress.setState(this.refs.progress.state)
-                  setInterval(() => {
-                    dot += '.'
-                    if (dot === ' .....') dot = ' '
-                    this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch + dot
-                    this.refs.progress.setState(this.refs.progress.state)
-                  }, 500)
-                } else {
-                  requestAnimationFrame(() => {
-                    exe()
-                  })
-                }
+      // 判断启动器是否需要更新
+      if (this.props.responses.serverInitData.data.updateWay) { // 启动器需要更新
+        console.info("启动器需要更新")
+        var type = this.props.responses.serverInitData.data.publics
+          .currentStartType
+        switch (type) {
+          case '0': // 原生的模块下载
+            this.startAuto()
+            break
+          case '1': // 跳转google play应用商店
+            const exe = () => {
+              if (this.refs.catchException) {
+                window.NativeToJs.catchException('google_play')
+              } else {
+                requestAnimationFrame(() => {
+                  exe()
+                })
               }
-              exe()
-              window.overwrite.lachgm({
-                packageName: this.props.responses.serverInitData.data.publics
-                  .currentPlugPackageName
+            }
+            exe()
+            break
+          case '2': // 跳转web页面
+            window.open(this.props.responses.serverInitData.data.publics.currentStartDownloadUrl)
+            break
+        }
+      } else { // 启动器不需要更新
+        console.info("启动器不需要更新")
+        if (
+          !this.props.responses.nativeInitData.plgVersion ||
+          this.checkplgVersion() ||
+          !window.overwrite.checkVaStatus({
+            packageName: this.props.responses.serverInitData.data.publics
+              .currentPlugPackageName
+          })
+        ) {
+          this.pluginAuto()
+        } else {
+          this.state.components.progress = true
+          this.setState(this.state)
+          const exe = () => {
+            if (this.refs.progress) {
+              this.refs.progress.state.complete = true
+              this.refs.progress.state.speed = 0
+              this.refs.progress.state.downloaded = 0
+              this.refs.progress.state.total = 0
+              this.refs.progress.state.rate = 0
+              this.refs.progress.state.isLoading = true
+              this.refs.progress.setState(this.refs.progress.state)
+            } else {
+              requestAnimationFrame(() => {
+                exe()
               })
             }
           }
-          break
-        case Version.Obb:
-          import('src/components/Progress/ObbProgress').then(component => {
-            this.state.asyncComponents.progress = component.default
-            this.setState(this.state)
+          exe()
+          window.overwrite.lachgm({
+            packageName: this.props.responses.serverInitData.data.publics
+              .currentPlugPackageName
           })
-          window.JsToNative.pthInst()
-          this.state.components.progress = true
-          break
+        }
       }
 
     }
@@ -376,15 +420,8 @@ export class App extends React.Component<AppProps, any, any> {
           this.refs.progress.state.downloaded = 0
           this.refs.progress.state.total = 0
           this.refs.progress.state.rate = 0
-          var dot = ' '
-          this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch
+          this.refs.progress.state.isLoading = true
           this.refs.progress.setState(this.refs.progress.state)
-          setInterval(() => {
-            dot += '.'
-            if (dot === ' .....') dot = ' '
-            this.refs.progress.state.udder = I18n[this.props.responses.nativeInitData.language].msg_tip_launch + dot
-            this.refs.progress.setState(this.refs.progress.state)
-          }, 500)
         } else {
           requestAnimationFrame(() => {
             exe()
@@ -422,7 +459,6 @@ export class App extends React.Component<AppProps, any, any> {
 
   render() {
     var { wrapper } = this.props.classes
-    var Progress = this.state.asyncComponents.progress
     return (
       <React.Fragment>
         <CssBaseline />
@@ -443,34 +479,36 @@ export class App extends React.Component<AppProps, any, any> {
             }}
           />
 
-          {this.state.components.progress && this.state.asyncComponents.progress && <Progress
+          {this.state.components.progress && <Progress
             ref={Refs.Progress}
             responses={this.props.responses}
             install={this.state.downloadComplete}
             classes={this.props.classes}
+            language={this.props.responses.nativeInitData.language}
           />}
 
 
           {!this.props.responses.serverInitData.data.isCheck && (
             <Facebook
+              language={this.props.responses.nativeInitData.language}
               link={this.props.responses.serverInitData.data.publics.currentStartFbPage}
               classes={this.props.classes}
             />
           )}
           {this.state.components.tip && <Tip
             classes={this.props.classes}
-            responses={this.props.responses}
+            language={this.props.responses.nativeInitData.language}
             App={this}
           />}
           <ExitApp
+            language={this.props.responses.nativeInitData.language}
             ref="exitApp"
-            responses={this.props.responses}
             container={this.state.components.exitApp.container}
             classes={this.props.classes}
           />
           <CatchException
+            language={this.props.responses.nativeInitData.language}
             ref="catchException"
-            responses={this.props.responses}
             container={this.state.components.exitApp.container}
             classes={this.props.classes}
           />

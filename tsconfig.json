@@ -16,4 +16,11 @@
     "./src/**/*.ts",
     "./index.d.ts", "const.ts"
   ],
+  "exclude": [
+    "./js/**/*",
+    "./res/**/*",
+    "./libs/**/*",
+    "./package.json",
+    "./build/**/*",
+  ]
 }

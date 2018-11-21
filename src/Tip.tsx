@@ -1,14 +1,11 @@
-import I18n from "./i18n";
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
-import { App } from "src";
-import Button from "@material-ui/core/Button";
-
+import Index from "src/components/Version";
 const Grid_: any = Grid
 type TipProps = {
   classes: any
-  responses: AppLauncher.Init.Responses
-  App: App
+  language: string
+  App: Index
 }
 export default class Tip extends React.Component<TipProps, any, any> {
 
@@ -18,10 +15,17 @@ export default class Tip extends React.Component<TipProps, any, any> {
 
   rotation = 0
 
-  state = {
-    text: {
-      wait: I18n[this.props.responses.nativeInitData.language].msg_tip_wait,
-    }
+  languagePack = {
+    msg_tip_wait: {
+      de: 'Das Spiel wird automatisch neu starten\nWenn das Spiel zu lange neu startet, bitte schloss es und startet neu',
+      en: 'Automatically restarting…\nIf the game does not automatically restart for a long time, please quit the game and reopen it',
+      fr: 'Lancement automatique en cours…\nSi le jeu ne se lance pas automatiquement, quittez le jeu et rouvrez-le!',
+      id: 'Sedang memuat permainan secara otomatis\nJika tidak memuat permainan secara otomatis, silahkan keluar permainan dan buka kembali',
+      ko: '게임 다시 자동 시작 중\n게임을 다시 자동시작하지 않은 경우 게임을 종료 한 후 다시 접속하십시오',
+      th: 'กำลังเปิดเกมโดยอัตโนมัติ\nหากรอนานแล้วแต่ยังไม่เปิดเกม กรุณาออกเกมเข้าใหม่',
+      vi: 'Đang tự động khởi động game.\nNếu quá lâu vẫn chưa tự động khởi động game, vui lòng thoát game sau đó mở lại',
+      zh: '游戏正在自动重启\n如果长时间未自动重启游戏，请退出游戏，再重新打开',
+    },
   }
 
   componentDidMount() {
@@ -55,12 +59,12 @@ export default class Tip extends React.Component<TipProps, any, any> {
         container
         alignItems="center"
       >
-        <img className={this.props.classes.button_img} src={require('../assets/oval.png')} />
+        <img className={this.props.classes.button_img} src={require('assets/oval.png')} />
         <Grid_
           className={this.props.classes.tip_line_wrapper}
           container
         >
-          <img className={this.props.classes.tip_line} src={require('../assets/line.png')} />
+          <img className={this.props.classes.tip_line} src={require('assets/line.png')} />
         </Grid_>
       </Grid>
 
@@ -73,7 +77,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
         justify="center"
       >
         {(() => {
-          return this.state.text.wait.split('\n').map(function (item, index) {
+          return this.languagePack.msg_tip_wait[this.props.language].split('\n').map(function (item, index) {
             return <div key={index} style={{
               textAlign: "center",
               width: '100%',
@@ -84,9 +88,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
         })()}
       </Grid>
 
-      <img className={this.props.classes.tip_ok} src={require('../assets/ok.png')} onClick={this.close} />
-
-
+      <img className={this.props.classes.tip_ok} src={require('assets/ok.png')} onClick={this.close} />
 
     </Grid>
   }

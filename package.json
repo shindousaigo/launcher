@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development --action dev",
     "build": "webpack --mode production --action",
-    "test": "webpack --mode development  --action"
+    "test": "webpack --mode development --action"
   },
   "author": "",
   "license": "ISC",
@@ -44,6 +44,7 @@
     "webpack": "^4.8.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.4",
-    "yargs": "^11.0.0"
+    "yargs": "^11.0.0",
+    "compare-versions": "^3.4.0"
   }
 }

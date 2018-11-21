@@ -13,7 +13,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
  * SERVER: 'http://start-de-sdk.pocketgamesol.com'
  */
 var SERVER = ''
-var VERSION = ''
+var VERSION = 'dev'
 var {
 	argv: {
 		action,
@@ -42,28 +42,59 @@ var entry = {
 	main: './src/main.ts'
 }
 var output = {
-	path: Path.join(__dirname, 'build'),
+	path: Path.join(__dirname, './build'),
 	filename: '[name].js',
 	chunkFilename: '[name].js',
-	publicPath: './'
 }
 var definePlugin = {
 	SERVER: JSON.stringify(SERVER),
 	VERSION: JSON.stringify(VERSION),
 }
+var htmlWebpackPluginOption = {
+	filename: "index.html",
+	chunks: ['main'],
+	template: "./index.test.html"
+}
+var devServer = {
+	contentBase: output.path,
+	inline: true,
+	port: 3000
+}
 var plugins = [
-	new HtmlWebpackPlugin({
-		filename: "index.html",
-		chunks: ['main'],
-		template: mode === 'production' ? "./index.html" : "./index.test.html"
-	}),
 	new Webpack.ProvidePlugin({
 		md5: 'md5'
 	}),
 	new Webpack.DefinePlugin(definePlugin),
 ]
+var optimization = {}
+if (mode === 'production') {
+	htmlWebpackPluginOption.template = './index.html'
+	output.publicPath = './'
+	plugins.push(
+		new CleanWebpackPlugin([
+			Path.join(__dirname, 'build', '**/*.js'),
+			Path.join(__dirname, 'build', '**/*.zip')
+		])
+	)
+	optimization.minimizer = [
+		new UglifyJsPlugin({
+			uglifyOptions: {
+				compress: {
+					drop_console: true
+				}
+			}
+		})
+	]
+}
+plugins.push(
+	new HtmlWebpackPlugin(htmlWebpackPluginOption)
+)
 var webpackConfig = {
 	entry,
+	output,
+	plugins,
+	devServer,
+	optimization,
 	resolve: {
 		extensions: [".ts", ".tsx", ".js"],
 		alias: {
@@ -73,9 +104,10 @@ var webpackConfig = {
 			DOM: Path.join(__dirname, 'src/DOM'),
 			Src: Path.join(__dirname, 'src'),
 			src: Path.join(__dirname, 'src'),
+			assets: Path.join(__dirname, 'assets'),
+			root: Path.join(__dirname, './'),
 		}
 	},
-	output,
 	module: {
 		rules: [{
 			test: /\.js$/,
@@ -120,34 +152,9 @@ var webpackConfig = {
 				}
 			}]
 		}]
-	},
-	plugins,
-	devServer: {
-		contentBase: Path.join(__dirname, 'build'),
-		inline: true,
-		port: 3000
 	}
 }
 
-if (mode === 'production') {
-	webpackConfig.plugins.push(
-		new CleanWebpackPlugin([
-			Path.join(__dirname, 'build', '**/*.js'),
-			Path.join(__dirname, 'build', '**/*.zip')
-		])
-	)
-	webpackConfig.optimization = {
-		minimizer: [
-			new UglifyJsPlugin({
-				uglifyOptions: {
-					compress: {
-						drop_console: true
-					}
-				}
-			})
-		]
-	}
-}
 
 console.log(
 	`> mode: ${Chalk.yellow(mode)}\n> action: ${Chalk.yellow(action)}\n> server: ${Chalk.yellow(SERVER || './')}\n`

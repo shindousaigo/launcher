@@ -2,8 +2,33 @@ declare var SERVER: string
 declare var md5: Function
 declare var TEST: boolean
 declare var VERSION: string
+declare var _myInitGame: Function;
 
 declare interface Window {
+
+  localAddr: string
+
+  /** 当前客户端插件包下载地址 */
+  currentPlugDownloadUrl: string
+  /** 当前客户端插件包版本 */
+  currentPlugVersion: string
+  /** 当前客户端插件包名 */
+  currentPlugPackageName: string
+  /** 调启本地安装的插件包地址 */
+  localPluginAddress: string
+  currentPlugDownloadResolve: Function
+
+  /** 当前客户端启动器下载地址 */
+  currentStartDownloadUrl: string
+  currentStartDownloadResolve: Function
+  /** 调启本地安装的启动器地址 */
+  localStartAddress: string
+  localPatchAddress: string
+
+  /** 当前客户端插件包补丁的下载地址 */
+  currentPatchDownloadUrl: string
+
+
   Version: string
   Main: Function
   adapter: {
@@ -42,13 +67,13 @@ declare interface Window {
     lachgm(param: {
       packageName: string
     })
+    /** 安装补丁 */
+    loadPatch(param: {
+      patchPath: string
+      patchVersion: string
+      localAddr: string
+    })
   }
-
-  // 插件包安装地址
-  currentPlugDownloadUrl: string
-  currentPlugVersion: string
-  currentPlugPackageName: string
-  localAddr: string
 
   JsToNative: {
     pthInst()
@@ -127,6 +152,8 @@ declare namespace AppLauncher {
       plgVersion: string
       /** 补丁更新字段 */
       localAddr: string
+      /** 补丁版本 */
+      patchVersion: string
     }
     interface ServerRequest {
       /** 平台方分配给启动器的startId */
@@ -167,6 +194,10 @@ declare namespace AppLauncher {
       /** 提审状态下的背景图 */
       currentTrialPhoto: string
       publics: {
+        /** 补丁版本 */
+        patchVersion: string
+        /** 补丁下载地址 */
+        patchURL: string
         /** 游戏包的包名 */
         currentPlugPackageName: string
         /** 游戏包的下载地址 */

@@ -1,4 +1,3 @@
-import I18n from "../../i18n";
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -9,26 +8,85 @@ LinearProgress.prototype.componentDidUpdate = function () {
     linearProgress.childNodes[0]["style"].webkitTransform =
       linearProgress.childNodes[0]["style"].transform;
   }
-};
+}
 
 type ProgressProps = {
   classes: any
   responses: AppLauncher.Init.Responses
   install: Function
+
+  /**
+   * 语言包
+   */
+  language: string
 }
+
 export default class SophixProgress extends React.Component<ProgressProps, any, any> {
-  state = {
+
+  public state = {
     speed: 0,
     downloaded: 0,
     total: 0,
     rate: 0,
     complete: this.props.responses.nativeInitData.localAddr ? true : false,
-    udder: I18n[this.props.responses.nativeInitData.language].mg_txt_status_tip,
-    is1001: false
-  };
+    is1001: false,
+    isLoading: false
+  }
+
+  private languagePack = {
+    mg_txt_status_tip: {
+      de: 'Sollte wifi zum Herunterladen verbinden',
+      en: 'Download with Wifi network is recommended',
+      fr: 'Il faut se connecter à un réseau WiFi pour télécharger',
+      id: 'Silahkan sambungkan wifi untuk mengunduh',
+      ko: '다운로드하려면',
+      th: 'แนะนำใช้ไวไฟในการดาวน์โหลด',
+      vi: 'Nên kết nối wifi để tải',
+      zh: '推荐在wifi网络加载',
+    },
+    mg_tip_question: {
+      de: 'Wenn Sie Probleme beim Herunterladen von Spielen haben,',
+      en: 'If you have any problem in downloading,',
+      fr: 'Si vous avez des problèmes lors du téléchargement de votre jeu,',
+      id: 'Jika ada masalah ketika mengunduh game,',
+      ko: '게임 다운로드에 문제가 있는 경우,',
+      th: 'ถ้าพบปัญหาเวลาโหลดเกม,',
+      vi: 'Nếu gặp vấn đề khi tải game,',
+      zh: '如果加载遇到问题，',
+    },
+    mg_tip_question2: {
+      de: 'Fehler bei der Herunterladung der Quelle,',
+      en: 'Have problems when loading resource,',
+      fr: 'Problèmes de téléchargement de ressources,',
+      id: 'Bermasalah ketika mengunduh sumber daya,',
+      ko: '자원 다운로드 문제 발생,',
+      th: 'พบปัญหาเมื่อโหลดข้อมูล,',
+      vi: 'Gặp vấn đề khi tải tài nguyên,',
+      zh: '资源加载遇到问题，',
+    },
+    mg_tip_press: {
+      de: 'Klicken Sie hier',
+      en: 'Please tap here',
+      fr: 'Cliquez ici',
+      id: 'Silakan klik di sini',
+      ko: '여기를 클릭하세요',
+      th: 'กดที่นี่',
+      vi: 'Hãy nhấp đây',
+      zh: '请点击这里',
+    },
+    msg_tip_launch: {
+      de: 'Spieldata wird heruntergeladen',
+      en: 'Loading game data',
+      fr: 'Chargement en cours!',
+      id: 'Sedang unduh data game',
+      ko: '게임 데이터 로딩',
+      th: 'กำลังโหลดดาตาเกม',
+      vi: 'Đang tải số liệu game',
+      zh: '正在读取游戏数据',
+    },
+  }
 
   render() {
-    var i18n = I18n[this.props.responses.nativeInitData.language];
     var {
       progress,
       ing,
@@ -50,14 +108,14 @@ export default class SophixProgress extends React.Component<ProgressProps, any, 
           className={_05}
         >
           <div className={up + ' ' + yellow}>
-            {this.state.is1001 ? i18n.mg_tip_question2 : i18n.mg_tip_question}
+            {this.state.is1001 ? this.languagePack.mg_tip_question2[this.props.language] : this.languagePack.mg_tip_question[this.props.language]}
           </div>
           <a
             className={up + ' ' + bbb + (this.state.is1001 ? " shake active" : " shake")}
             href={this.props.responses.serverInitData.data.publics.currentStartDownPage}
             target="_blank"
           >
-            {i18n.mg_tip_press}
+            {this.languagePack.mg_tip_press[this.props.language]}
           </a>
         </Grid>
 
@@ -125,7 +183,7 @@ export default class SophixProgress extends React.Component<ProgressProps, any, 
           <div className={up} style={{
             marginTop: '-.2rem',
           }}>
-            {this.state.udder}
+            {this.state.isLoading ? this.languagePack.msg_tip_launch[this.props.language] : this.languagePack.mg_txt_status_tip[this.props.language]}
           </div>
         </Grid>
 
