@@ -4,6 +4,7 @@ import { Refs, Version } from "./const";
 import ObbProgress from "Src/components/Progress/ObbProgress";
 
 var App: AppInstance
+const version = getParameterByName('version') || VERSION
 
 class Http {
   static _ins: Http
@@ -136,6 +137,13 @@ window.Main = async function () {
       console.log('lachgm', param)
       window.JsToNative.lachgm(JSON.stringify(param))
     }
+    window.overwrite.addPkgVisible = function (param) {
+      if (window.JsToNative.addPkgVisible) {
+        console.log('addPkgVisible', param)
+        window.JsToNative.addPkgVisible(JSON.stringify(param))
+      }
+    }
+
     window.NativeToJs = {
       catchException: function (code) {
         if (code == '1001') {
@@ -256,8 +264,11 @@ window.Main = async function () {
         // 初始化完成
         if (res.code === 200) {
           serverInitData = res;
+          version === Version.Sophix && window.overwrite.addPkgVisible({
+            plgPkgName: serverInitData.data.publics.plgPkgName
+          })
           // serverInitData.data.updateWay = 0
-          serverInitData.data.isCheck = 1
+          // serverInitData.data.isCheck = 1
           if (serverInitData.data.isCheck) {
             document.body.style.backgroundColor = "#000000";
             import("assets/games/dafeiji.js")
@@ -295,12 +306,11 @@ window.Main = async function () {
       });
   });
   var promise2: Promise<Function> = new Promise(resolve => {
-    var version = getParameterByName('version') || VERSION
     var imports = {
       [Version.Sophix]: import("src/components/Version/Sophix"),
       [Version.Tinker]: import("src/components/Version/Tinker"),
       [Version.Obb]: import("src/components/Version/Obb"),
-      dev: import("src/components/Version/Tinker"),
+      // dev: import("src/components/Version/Tinker"),
     }
     imports[version].then(module => {
       var setup = module.default;

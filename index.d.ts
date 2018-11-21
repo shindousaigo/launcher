@@ -73,6 +73,9 @@ declare interface Window {
       patchVersion: string
       localAddr: string
     })
+    addPkgVisible(param: {
+      plgPkgName: string
+    })
   }
 
   JsToNative: {
@@ -99,6 +102,8 @@ declare interface Window {
     lachgm(param: string)
     /** 检查补丁 */
     checkPatch(param: string)
+    /** addPkgVisible */
+    addPkgVisible(param: String)
   }
 
   NativeToJs: {
@@ -218,6 +223,8 @@ declare namespace AppLauncher {
         currentPlugPackageId: string
         currentPlugRplDownloadUrl: string
         currentStartDownloadUrl: string
+        /** 外部可见包名 */
+        plgPkgName: string
       }
     }
   }
