@@ -112,34 +112,37 @@ window.Main = async function () {
   {
     window.overwrite = {} as any
     window.overwrite.getDeviceMsg = function () {
-      var msg = window.JsToNative.getDeviceMsg()
-      console.log('getDeviceMsg', msg)
+      let msg = window.JsToNative.getDeviceMsg()
+      console.info('Js_To_Native::getDeviceMsg', msg)
       return JSON.parse(msg)
     }
     window.overwrite.startLoad = function (param) {
-      console.log('startLoad', param)
+      console.info('Js_To_Native::startLoad', param)
       window.JsToNative.startLoad(JSON.stringify(param))
     }
     window.overwrite.checkVaStatus = function (param) {
-      console.log('checkVaStatus', param)
+      console.info('Js_To_Native::checkVaStatus', param)
       return JSON.parse(window.JsToNative.checkVaStatus(JSON.stringify(param)))
     }
     window.overwrite.plinst = function (param) {
-      console.log('plinst', param)
-      console.log('....', window.JsToNative.replinst, window.JsToNative)
+      console.info('Js_To_Native::plinst', param)
       window.JsToNative.plinst(JSON.stringify(param))
     }
     window.overwrite.replinst = function (param) {
-      console.log('replinst', param)
+      console.info('Js_To_Native::replinst', param)
       window.JsToNative.replinst(JSON.stringify(param))
     }
     window.overwrite.lachgm = function (param) {
-      console.log('lachgm', param)
+      console.info('Js_To_Native::lachgm', param)
       window.JsToNative.lachgm(JSON.stringify(param))
+    }
+    window.overwrite.loadPatch = function (param) {
+      console.info('Js_To_Native::loadPatch', param)
+      window.JsToNative.loadPatch(JSON.stringify(param))
     }
     window.overwrite.addPkgVisible = function (param) {
       if (window.JsToNative.addPkgVisible) {
-        console.log('addPkgVisible', param)
+        console.info('Js_To_Native::addPkgVisible', param)
         window.JsToNative.addPkgVisible(JSON.stringify(param))
       }
     }
@@ -264,9 +267,6 @@ window.Main = async function () {
         // 初始化完成
         if (res.code === 200) {
           serverInitData = res;
-          version === Version.Sophix && window.overwrite.addPkgVisible({
-            plgPkgName: serverInitData.data.publics.plgPkgName
-          })
           // serverInitData.data.updateWay = 0
           // serverInitData.data.isCheck = 1
           if (serverInitData.data.isCheck) {
@@ -293,6 +293,9 @@ window.Main = async function () {
             //   });
             // });
           } else {
+            version === Version.Sophix && window.overwrite.addPkgVisible({
+              plgPkgName: serverInitData.data.publics.plgPkgName
+            })
             let img = document.getElementById('app-background') as HTMLImageElement
             img.src = serverInitData.data.publics.currentPhoto
           }

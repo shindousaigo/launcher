@@ -71,6 +71,9 @@ window.JsToNative = {
     console.info(param)
     console.info('拉起插件游戏包接口')
   },
+  loadPatch: function (param: string) {
+    console.log('loadPatch', param)
+  },
   checkPatch: function (param: string) {
     console.log('checkPatch', param)
     window.NativeToJs.catchException('1004')

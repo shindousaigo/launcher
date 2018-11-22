@@ -100,6 +100,7 @@ declare interface Window {
     replinst(param: string)
     /** 拉起插件游戏包接口 */
     lachgm(param: string)
+    loadPatch(json: string)
     /** 检查补丁 */
     checkPatch(param: string)
     /** addPkgVisible */

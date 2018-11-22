@@ -255,13 +255,14 @@ export class App extends React.Component<AppProps, any, any> implements Index {
     super(props)
     App.instance = this
     window.NativeToJs.downloadUpdate = (msg) => {
-      if (msg) {
+      var Progress = this.refs[Refs.Progress]
+      if (msg && Progress) {
         let state = {
           downloaded: Math.floor(msg.soFarBytes / 1024 / 1024) + 'M',
           total: Math.floor(msg.totalBytes / 1024 / 1024) + 'M',
           speed: !msg.speed ? 0 : msg.speed < 1024 ? msg.speed + 'Kb/s' : (msg.speed / 1024).toFixed(1) + 'M/s',
           rate: (!msg.soFarBytes || !msg.totalBytes) ? 0 : Math.floor(msg.soFarBytes / msg.totalBytes * 100)
-        }
+        } as any
         if (state.rate >= 100) {
           { // download completed
             if (window.currentPlugDownloadUrl) { // 插件包下载完成
@@ -283,18 +284,18 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
           setTimeout(() => {
             if (!window.currentPatchDownloadUrl) {
-              this.refs.progress.state.complete = true
-              this.refs.progress.state.speed = 0
-              this.refs.progress.state.downloaded = 0
-              this.refs.progress.state.total = 0
-              this.refs.progress.state.rate = 0
-              this.refs.progress.state.isLoading = true
-              this.refs.progress.setState(state)
+              state.complete = true
+              state.speed = 0
+              state.downloaded = 0
+              state.total = 0
+              state.rate = 0
+              state.isLoading = true
+              Progress.setState(state)
             }
           })
 
         }
-        this.refs.progress.setState(state)
+        Progress.setState(state)
       }
     }
     this.init()

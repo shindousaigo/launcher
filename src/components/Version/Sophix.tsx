@@ -229,37 +229,29 @@ export class App extends React.Component<AppProps, any, any> implements Index {
     window.NativeToJs.downloadUpdate = (msg) => {
       var Progress = this.refs[Refs.Progress]
       if (msg && Progress) {
-        switch (window.Version) {
-          case Version.Sophix:
-            var state = {
-              downloaded: Math.floor(msg.soFarBytes / 1024 / 1024) + 'M',
-              total: Math.floor(msg.totalBytes / 1024 / 1024) + 'M',
-              speed: !msg.speed ? 0 : msg.speed < 1024 ? msg.speed + 'Kb/s' : (msg.speed / 1024).toFixed(1) + 'M/s',
-              rate: (!msg.soFarBytes || !msg.totalBytes) ? 0 : Math.floor(msg.soFarBytes / msg.totalBytes * 100)
-            }
-            if (state.rate >= 100) {
-              window.currentPlugDownloadUrl = msg.localFilePath
-              window.JsToNative.checkPatch(
-                JSON.stringify({
-                  localAddr: msg.localFilePath
-                })
-              )
-              this.state.components.tip = true
-              this.setState(this.state)
-
-              Progress.state.complete = true
-              Progress.state.speed = 0
-              Progress.state.downloaded = 0
-              Progress.state.total = 0
-              Progress.state.rate = 0
-              Progress.state.isLoading = true
-            }
-            Progress.setState(state)
-            break
-          case Version.Obb:
-            break
+        var state = {
+          downloaded: Math.floor(msg.soFarBytes / 1024 / 1024) + 'M',
+          total: Math.floor(msg.totalBytes / 1024 / 1024) + 'M',
+          speed: !msg.speed ? 0 : msg.speed < 1024 ? msg.speed + 'Kb/s' : (msg.speed / 1024).toFixed(1) + 'M/s',
+          rate: (!msg.soFarBytes || !msg.totalBytes) ? 0 : Math.floor(msg.soFarBytes / msg.totalBytes * 100)
+        } as any
+        if (state.rate >= 100) {
+          window.currentPlugDownloadUrl = msg.localFilePath
+          window.JsToNative.checkPatch(
+            JSON.stringify({
+              localAddr: msg.localFilePath
+            })
+          )
+          this.state.components.tip = true
+          this.setState(this.state)
+          state.complete = true
+          state.speed = 0
+          state.downloaded = 0
+          state.total = 0
+          state.rate = 0
+          state.isLoading = true
         }
-
+        Progress.setState(state)
       }
     }
     this.init()
