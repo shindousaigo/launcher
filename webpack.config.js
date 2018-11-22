@@ -22,17 +22,17 @@ var {
 } = Yargs
 
 { // version set
-	if (action === 'sophix') {
-		VERSION = 'sophix'
-	} else if (action === 'tinker') {
-		VERSION = 'tinker'
-	} else if (action === 'obb') {
-		VERSION = 'obb'
+	if (action === 'sp0') {
+		VERSION = 'sp0'
+	} else if (action === 'tk0') {
+		VERSION = 'tk0'
+	} else if (action === 'ob0') {
+		VERSION = 'ob0'
 	} else if (action === 'dev') {
 		SERVER = 'http://sdk-test.changic.net.cn:1612'
 	} else {
 		console.log(
-			Chalk.red.bold('miss action sophix/tinker/obb')
+			Chalk.red.bold('miss action sp0/tk0/ob0')
 		)
 		process.exit()
 	}

@@ -156,7 +156,7 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
         container={this.props.container}
       >
         <DialogContent className={this.props.classes.exit_app_dialog_content}>
-          {(this.state.type === '1002' && this.languagePack.mg_net_wrong[this.props.language]) || (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])}
+          {(this.state.type == '1002' && this.languagePack.mg_net_wrong[this.props.language]) || (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])}
         </DialogContent>
         <Grid
           container

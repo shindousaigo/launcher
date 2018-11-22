@@ -2,13 +2,13 @@ import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-LinearProgress.prototype.componentDidUpdate = function () {
-  var linearProgress = document.querySelector(".linearProgress");
-  if (linearProgress) {
-    linearProgress.childNodes[0]["style"].webkitTransform =
-      linearProgress.childNodes[0]["style"].transform;
-  }
-}
+// LinearProgress.prototype.componentDidUpdate = function () {
+//   var linearProgress = document.querySelector(".linearProgress");
+//   if (linearProgress) {
+//     linearProgress.childNodes[0]["style"].webkitTransform =
+//       linearProgress.childNodes[0]["style"].transform;
+//   }
+// }
 
 type ProgressProps = {
   classes: any

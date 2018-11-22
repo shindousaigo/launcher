@@ -52,32 +52,32 @@ class Http {
   }
 }
 
-// class Polyfill {
-//   constructor() {
-//     this.setup();
-//   }
-//   polyfills = ["Promise", "Set", "Map"]; // "Object.assign"
-//   polyfillUrl = "https://polyfill.io/v2/polyfill.min.js";
-//   features = [];
-//   setup() {
-//     this.polyfills.forEach(feature => {
-//       if (!(feature in window)) {
-//         this.features.push(feature);
-//       }
-//     });
-//     console.info("features: ", this.features);
-//     if (this.features.length) {
-//       var s = document.createElement("script");
-//       s.src = `${this.polyfillUrl}?features=${this.features.join(
-//         ","
-//       )}&flags=gated,always&rum=0&callback=Main`;
-//       s.async = true;
-//       document.head.appendChild(s);
-//     } else {
-//       window.Main();
-//     }
-//   }
-// }
+class Polyfill {
+  constructor() {
+    this.setup();
+  }
+  polyfills = ["Promise", "Set", "Map", "Object.assign"];
+  polyfillUrl = "https://polyfill.io/v2/polyfill.min.js";
+  features = [];
+  setup() {
+    this.polyfills.forEach(feature => {
+      if (!(feature in window)) {
+        this.features.push(feature);
+      }
+    });
+    console.info("features: ", this.features);
+    if (this.features.length) {
+      var s = document.createElement("script");
+      s.src = `${this.polyfillUrl}?features=${this.features.join(
+        ","
+      )}&flags=gated,always&rum=0&callback=Main`;
+      s.async = true;
+      document.head.appendChild(s);
+    } else {
+      window.Main();
+    }
+  }
+}
 
 Date.prototype.format = function (fmt) {
   var o = {
@@ -271,7 +271,7 @@ window.Main = async function () {
           // serverInitData.data.isCheck = 1
           if (serverInitData.data.isCheck) {
             document.body.style.backgroundColor = "#000000";
-            import("assets/games/dafeiji.js")
+            import("assets/games/dafeiji")
             // let promiseGame1 = import("../libs/laya.core.js").then(() => {
             //   let promiseGame2 = import("../libs/laya.webgl.js");
             //   let promiseGame3 = import("../libs/laya.ui.js");
@@ -293,7 +293,7 @@ window.Main = async function () {
             //   });
             // });
           } else {
-            version === Version.Sophix && window.overwrite.addPkgVisible({
+            version === Version.Sp0 && window.overwrite.addPkgVisible({
               plgPkgName: serverInitData.data.publics.plgPkgName
             })
             let img = document.getElementById('app-background') as HTMLImageElement
@@ -310,9 +310,9 @@ window.Main = async function () {
   });
   var promise2: Promise<Function> = new Promise(resolve => {
     var imports = {
-      [Version.Sophix]: import("src/components/Version/Sophix"),
-      [Version.Tinker]: import("src/components/Version/Tinker"),
-      [Version.Obb]: import("src/components/Version/Obb"),
+      [Version.Sp0]: import("src/components/Version/Sp0"),
+      [Version.Tk0]: import("src/components/Version/Tk0"),
+      [Version.Ob0]: import("src/components/Version/Ob0"),
       // dev: import("src/components/Version/Tinker"),
     }
     imports[version].then(module => {
@@ -340,4 +340,4 @@ window.Main = async function () {
     });
 };
 
-window.Main();
+new Polyfill
