@@ -142,6 +142,16 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
       vi: 'Cập nhật phiên bản mới nhất',
       zh: '请更新到最新版本',
     },
+    msg_tip_isX86: {
+      de: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      en: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      fr: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      id: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      ko: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      th: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      vi: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      zh: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+    }
   }
 
   render() {
@@ -156,7 +166,13 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
         container={this.props.container}
       >
         <DialogContent className={this.props.classes.exit_app_dialog_content}>
-          {(this.state.type == '1002' && this.languagePack.mg_net_wrong[this.props.language]) || (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])}
+          {
+            (this.state.type == '1002' && this.languagePack.mg_net_wrong[this.props.language])
+            ||
+            (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])
+            ||
+            (this.state.type === 'isX86' && this.languagePack.msg_tip_isX86[this.props.language])
+          }
         </DialogContent>
         <Grid
           container
@@ -273,6 +289,31 @@ export class App extends React.Component<AppProps, any, any> implements Index {
   }
 
   init = () => {
+    if (this.props.responses.nativeInitData.isX86) {
+      const exe = () => {
+        var catchException = this.refs.catchException
+        if (catchException) {
+          catchException.state.open = true
+          catchException.state.clickFn = () => {
+            window.open(
+              this.props.responses.serverInitData.data.publics.currentStartDownPage
+            )
+            setTimeout(function () {
+              window.JsToNative.exitApp()
+            }, 500)
+          }
+          catchException.state.type = 'isX86'
+          catchException.setState(catchException.state)
+        } else {
+          requestAnimationFrame(function () {
+            exe()
+          })
+        }
+
+      }
+      exe()
+      return
+    }
     // 判断是否为提审状态
     if (!this.props.responses.serverInitData.data.isCheck) { // 不为提审状态
       console.info("不为提审状态")
