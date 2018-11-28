@@ -5,6 +5,7 @@ const Webpack = require("webpack");
 const Chalk = require('chalk')
 const Yargs = require('yargs')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 /**
  * SERVER: 'http://sdk-test.changic.net.cn:1612'
@@ -75,6 +76,12 @@ if (mode === 'production') {
 			Path.join(__dirname, 'build', '**/*.js'),
 			Path.join(__dirname, 'build', '**/*.zip')
 		])
+	)
+	plugins.push(
+		new CopyWebpackPlugin([{
+			from: Path.resolve(__dirname, './assets/games/dafeiji/res'),
+			to: 'res'
+		}])
 	)
 	optimization.minimizer = [
 		new UglifyJsPlugin({

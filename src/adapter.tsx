@@ -49,7 +49,8 @@ window.JsToNative = {
       version: "21.0.0",
       language: "zh",
       currentCPU: 0,
-      localAddr: ''
+      localAddr: '',
+      isX86: true
     });
   },
   startLoad: function (param: string) {
