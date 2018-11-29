@@ -7,7 +7,7 @@ import { S, Px } from "../../style"
 import Button from "src/components/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
-import Sophix from "src/components/Progress/SophixProgress"
+import SophixProgress from "src/components/Progress/SophixProgress"
 import ObbProgress from "src/components/Progress/ObbProgress"
 import "src/style.scss"
 import Tip from "../../Tip"
@@ -143,14 +143,14 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
       zh: '请更新到最新版本',
     },
     msg_tip_isX86: {
-      de: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      en: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      fr: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      id: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      de: 'Oops! In deinem Gerät kann dieses Paket nicht installiert werden. Bitte lade das passendes Paket herunter! ',
+      en: "Oops! Your device can't install this pack, please click to re-download the compatible pack!",
+      fr: 'Nous sommes désolés! Votre appareil ne peut pas installer ce pack, veuillez re-télécharger le pack compatible!',
+      id: 'Maaf! Perangkat kamu tidak dapat menginstal paket ini, silahkan muat ulang paket yang kompatibel! ',
       ko: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      th: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      vi: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      zh: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      th: 'ขอโทษ! เครื่องของท่านติดตั้งแพคเกจนี้ไม่ได้ โปรดเลือกดาวน์โหลดแพคที่เหมาะสม! ',
+      vi: 'Rất tiếc! Thiết bị của bạn không thể cài đặt pack này, vui lòng nhấp tải lại pack tương thích! ',
+      zh: '抱歉！您的设备无法安装此游戏包，请点击重新下载可兼容的游戏包!',
     }
   }
 
@@ -233,7 +233,7 @@ type AppRefs = {
   exitApp: ExitApp
   catchException: CatchException
   catchExceptionContainer: Element
-  [Refs.Progress]: Sophix & ObbProgress
+  [Refs.Progress]: SophixProgress & ObbProgress
 }
 export class App extends React.Component<AppProps, any, any> implements Index {
   public refs: AppRefs
@@ -534,14 +534,14 @@ export class App extends React.Component<AppProps, any, any> implements Index {
             App={this}
           />}
           <ExitApp
-            language={this.props.responses.nativeInitData.language}
             ref="exitApp"
+            language={this.props.responses.nativeInitData.language}
             container={this.state.components.exitApp.container}
             classes={this.props.classes}
           />
           <CatchException
-            language={this.props.responses.nativeInitData.language}
             ref="catchException"
+            language={this.props.responses.nativeInitData.language}
             container={this.state.components.exitApp.container}
             classes={this.props.classes}
           />
