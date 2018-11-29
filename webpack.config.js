@@ -68,23 +68,19 @@ var plugins = [
 		md5: 'md5'
 	}),
 	new Webpack.DefinePlugin(definePlugin),
+	new CopyWebpackPlugin([{
+		from: Path.resolve(__dirname, './assets/games/dafeiji/res'),
+		to: 'res'
+	}]),
+	new CleanWebpackPlugin([
+		Path.join(__dirname, 'build', '**/*.js'),
+		Path.join(__dirname, 'build', '**/*.zip')
+	])
 ]
 var optimization = {}
 if (mode === 'production') {
 	htmlWebpackPluginOption.template = './index.html'
 	output.publicPath = './'
-	plugins.push(
-		new CleanWebpackPlugin([
-			Path.join(__dirname, 'build', '**/*.js'),
-			Path.join(__dirname, 'build', '**/*.zip')
-		])
-	)
-	plugins.push(
-		new CopyWebpackPlugin([{
-			from: Path.resolve(__dirname, './assets/games/dafeiji/res'),
-			to: 'res'
-		}])
-	)
 	optimization.minimizer = [
 		new UglifyJsPlugin({
 			uglifyOptions: {
