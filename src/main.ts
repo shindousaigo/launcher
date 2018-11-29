@@ -313,7 +313,7 @@ window.Main = async function () {
       [Version.Sp0]: import("src/components/Version/Sp0"),
       [Version.Tk0]: import("src/components/Version/Tk0"),
       [Version.Ob0]: import("src/components/Version/Ob0"),
-      // dev: import("src/components/Version/Tinker"),
+      [Version.Va0]: import("src/components/Version/Va0"),
     }
     imports[version].then(module => {
       var setup = module.default;

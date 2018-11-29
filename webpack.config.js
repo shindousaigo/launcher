@@ -29,11 +29,13 @@ var {
 		VERSION = 'tk0'
 	} else if (action === 'ob0') {
 		VERSION = 'ob0'
+	} else if (action === 'va0') {
+		VERSION = 'va0'
 	} else if (action === 'dev') {
 		SERVER = 'http://sdk-test.changic.net.cn:1612'
 	} else {
 		console.log(
-			Chalk.red.bold('miss action sp0/tk0/ob0')
+			Chalk.red.bold('miss action sp0/tk0/ob0/va0')
 		)
 		process.exit()
 	}
