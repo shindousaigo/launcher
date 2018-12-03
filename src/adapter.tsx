@@ -6,7 +6,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { withStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { ServerResponse } from "http";
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   res.data.isCheck = 0
