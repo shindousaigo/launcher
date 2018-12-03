@@ -104,7 +104,7 @@ if (!isModernBrowser()) {
 const TipClasses = {
   tip_wrapper: {
     color: '#fff',
-    position: 'absolute',
+    position: 'fixed',
     width: Px(450),
     height: Px(450),
     top: '50%',

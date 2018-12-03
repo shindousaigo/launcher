@@ -3,6 +3,7 @@ declare var md5: Function
 declare var TEST: boolean
 declare var VERSION: string
 declare var _myInitGame: Function;
+declare var Swiper: Function;
 
 declare interface Window {
 

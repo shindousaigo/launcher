@@ -7,15 +7,15 @@ import { S, Px } from "../../style"
 import Button from "src/components/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
-import Sophix from "src/components/Progress/SophixProgress"
-import ObbProgress from "src/components/Progress/ObbProgress"
+import Sophix from "src/components/Progress/Sp0"
+import ObbProgress from "src/components/Progress/Ob0"
 import "src/style.scss"
 import Tip from "../../Tip"
 import { getParameterByName } from "../../Utils";
 import { Version, Refs } from "../../const";
 import { Delay } from "src/factory/functions";
 import Index from ".";
-import Progress from 'src/components/Progress/ObbProgress'
+import Progress from 'src/components/Progress/Ob0'
 
 type WithRef = { ref?: any }
 

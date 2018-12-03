@@ -17,6 +17,7 @@
     "./index.d.ts", "const.ts"
   ],
   "exclude": [
+    "./src/bower/**/*",
     "./js/**/*",
     "./res/**/*",
     "./libs/**/*",

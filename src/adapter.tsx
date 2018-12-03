@@ -6,6 +6,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { withStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { ServerResponse } from "http";
+
+export function serverInitData(res: AppLauncher.Init.ServerResponse) {
+  res.data.isCheck = 0
+  res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
+  // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
+  return res
+}
 
 var tmp
 function test1() {
@@ -50,7 +58,7 @@ window.JsToNative = {
       language: "zh",
       currentCPU: 0,
       localAddr: '',
-      isX86: true
+      isX86: 0
     });
   },
   startLoad: function (param: string) {
@@ -90,7 +98,8 @@ const options = [
   "错误处理 code 1001",
   "错误处理 code 1002",
   "错误处理 code 1011",
-  "错误处理 code 1010"
+  "错误处理 code 1010",
+  "错误处理 code 1005"
 ];
 
 class UtilBtn extends React.Component<any, any, any> {
@@ -122,6 +131,9 @@ class UtilBtn extends React.Component<any, any, any> {
       case 5:
         window.NativeToJs.catchException("1010");
         break;
+      case 6:
+        window.NativeToJs.catchException("1005");
+        break;
     }
     this.state.show = !this.state.show;
     this.setState(this.state);
@@ -130,7 +142,7 @@ class UtilBtn extends React.Component<any, any, any> {
   render() {
     return (
       <ClickAwayListener onClickAway={this.handleClickAway}>
-        <div>
+        <div className={this.props.classes.wrapper + ' adapter_shin'}>
           <Button
             variant="fab"
             color="primary"
@@ -165,9 +177,15 @@ class UtilBtn extends React.Component<any, any, any> {
 
 var UtilBtn_ = withStyles({
   lockMenu: {
-    position: "absolute",
-    left: "3rem",
-    top: "3rem"
+    position: "fixed",
+    left: "4.5rem",
+    top: "-2.5rem"
+  },
+  wrapper: {
+    position: "fixed",
+    zIndex: 99999,
+    left: "0",
+    top: "0"
   }
 })(UtilBtn);
 

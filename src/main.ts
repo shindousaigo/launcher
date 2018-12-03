@@ -1,7 +1,9 @@
 import AppInstance from "src/components/Version/index";
 import { getParameterByName } from "./Utils";
 import { Refs, Version } from "./const";
-import ObbProgress from "Src/components/Progress/ObbProgress";
+import Progess from "Src/components/Progress";
+import Progress from "Src/components/Progress";
+import VersionSp1 from "Src/components/Version/Sp1";
 
 var App: AppInstance
 const version = getParameterByName('version') || VERSION
@@ -106,8 +108,8 @@ Date.prototype.format = function (fmt) {
 window.Main = async function () {
   var startKey = getParameterByName("startKey") || '6630bba2bcf84a8eb62b602614cbb661';
   var startId = getParameterByName("startId") || 9000;
-
-  if (!window.JsToNative) await import('./adapter');
+  var adapter
+  if (!window.JsToNative) adapter = await import('./adapter');
 
   {
     window.overwrite = {} as any
@@ -147,6 +149,14 @@ window.Main = async function () {
       }
     }
 
+    let pluginInstall = function () {      // 插件包安装
+      window.overwrite.plinst({
+        localAddr: window.currentPlugDownloadUrl,
+        packageName: window.currentPlugPackageName,
+        plgVersion: window.currentPlugVersion
+      })
+    }
+
     window.NativeToJs = {
       catchException: function (code) {
         if (code == '1001') {
@@ -163,24 +173,16 @@ window.Main = async function () {
         }
 
         else if (code == '1011') { // 补丁安装成功
-          var Progress = App.refs[Refs.Progress] as ObbProgress
-          if (Progress && !Progress.state.complete) {
-            clearInterval(Progress.interval)
-            Progress.state.rate = 100
-            Progress.setState(Progress.state)
-            setTimeout(function () {
-              Progress.state.complete = true
-              Progress.setState(Progress.state)
-              App.state.components.tip = true
-              App.setState(App.state)
-            }, 500)
+          let Progress = App.refs[Refs.Progress] as Progess
+          if (Progress) {
+            Progress.makeProgressComplete()
           }
         }
 
         else if (code == '1010' || code == '1012' || code == '1013') {
           var exe = function () {
-            var Progress
-            if (App && (Progress = App.refs[Refs.Progress] as ObbProgress)) {
+            let Progress
+            if (App && (Progress = App.refs[Refs.Progress] as Progress)) {
               clearInterval(Progress.interval)
               Progress.state.rate = 0
               Progress.state.complete = false
@@ -218,15 +220,21 @@ window.Main = async function () {
         }
 
         else if (code == '1004') { // 无补丁需要更新（直接安装插件包）
-          // 开始安装插件包
-          window.overwrite.plinst({
-            localAddr: window.currentPlugDownloadUrl,
-            packageName: window.currentPlugPackageName,
-            plgVersion: window.currentPlugVersion
-          })
+          pluginInstall()
         }
 
-        console.info('msg: ' + code)
+        else if (code == '1005') { // sp1 安装插件包
+          let Progress = App.refs[Refs.Progress] as Progess
+          if (Progress) {
+            Progress.state.complete = true
+            Progress.makeProgressComplete()
+          }
+          App.state.components.tip = true
+          App.setState(App.state)
+          pluginInstall()
+        }
+
+        console.info('Msg: ' + code)
       },
       backPressed: function () {
         var isOpen = App.refs.exitApp.state.open
@@ -266,9 +274,7 @@ window.Main = async function () {
       .then((res: AppLauncher.Init.ServerResponse) => {
         // 初始化完成
         if (res.code === 200) {
-          serverInitData = res;
-          // serverInitData.data.updateWay = 0
-          // serverInitData.data.isCheck = 1
+          serverInitData = adapter ? adapter.serverInitData(res) : res;
           if (serverInitData.data.isCheck) {
             document.body.style.backgroundColor = "#000000";
             import("assets/games/dafeiji")
@@ -296,8 +302,23 @@ window.Main = async function () {
             version === Version.Sp0 && window.overwrite.addPkgVisible({
               plgPkgName: serverInitData.data.publics.plgPkgName
             })
-            let img = document.getElementById('app-background') as HTMLImageElement
-            img.src = serverInitData.data.publics.currentPhoto
+            let images = serverInitData.data.publics.currentPhoto.split(',')
+            if (images.length === 1) {
+              let div = document.getElementById('app-background') as HTMLDivElement
+              let img = document.createElement('img') as HTMLImageElement
+              img.style.top = '0';
+              img.style.left = '0';
+              img.style.width = '100%';
+              img.style.height = '100%';
+              img.style.position = 'fixed';
+              img.src = serverInitData.data.publics.currentPhoto
+              div.appendChild(img)
+            } else {
+              import('src/components/slides/slides').then(module => {
+                const Slides = module.default
+                new Slides({ images })
+              })
+            }
           }
           resolve({
             nativeInitData,
@@ -311,6 +332,7 @@ window.Main = async function () {
   var promise2: Promise<Function> = new Promise(resolve => {
     var imports = {
       [Version.Sp0]: import("src/components/Version/Sp0"),
+      [Version.Sp1]: import("src/components/Version/Sp1"),
       [Version.Tk0]: import("src/components/Version/Tk0"),
       [Version.Ob0]: import("src/components/Version/Ob0"),
       [Version.Va0]: import("src/components/Version/Va0"),
