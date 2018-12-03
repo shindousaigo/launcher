@@ -35,7 +35,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
 
   animation = () => {
     this.rotation += 4
-    this.elements.LineWrapper.style.webkitTransform = this.elements.LineWrapper.style.transform = `rotate(${this.rotation}deg)`
+    this.elements.LineWrapper.style['WebkitTransform'] = this.elements.LineWrapper.style.transform = `rotate(${this.rotation}deg)`
     requestAnimationFrame((time: number) => {
       this.animation()
     })
@@ -48,7 +48,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
 
   render() {
     return <Grid
-      className={this.props.classes.tip_wrapper}
+      className={this.props.classes.tip_wrapper + ' tip_shin'}
       container
       alignItems="center"
       wrap="nowrap"
@@ -67,7 +67,6 @@ export default class Tip extends React.Component<TipProps, any, any> {
           <img className={this.props.classes.tip_line} src={require('assets/line.png')} />
         </Grid_>
       </Grid>
-
       <Grid
         className={this.props.classes.tip_txt_wrapper}
         container
@@ -87,9 +86,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
           })
         })()}
       </Grid>
-
       <img className={this.props.classes.tip_ok} src={require('assets/ok.png')} onClick={this.close} />
-
     </Grid>
   }
 }

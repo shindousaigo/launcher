@@ -18,7 +18,7 @@ var Grid_: React.ComponentType<GridProps & WithRef> = Grid
 LinearProgress.prototype.componentDidUpdate = function () {
   var linearProgress = document.querySelector('.linearProgress')
   if (linearProgress) {
-    linearProgress.childNodes[0]['style'].webkitTransform = linearProgress.childNodes[0]['style'].transform
+    linearProgress.childNodes[0]['style'].WebkitTransform = linearProgress.childNodes[0]['style'].transform
   }
 }
 

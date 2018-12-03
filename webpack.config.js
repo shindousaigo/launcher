@@ -31,7 +31,10 @@ var {
 		VERSION = 'ob0'
 	} else if (action === 'va0') {
 		VERSION = 'va0'
+	} else if (action === 'sp1') {
+		VERSION = 'sp1'
 	} else if (action === 'dev') {
+		VERSION = 'dev'
 		SERVER = 'http://sdk-test.changic.net.cn:1612'
 	} else {
 		console.log(
