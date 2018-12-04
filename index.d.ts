@@ -181,7 +181,7 @@ declare namespace AppLauncher {
       device: string
       /** 额外参数（没有特殊需求可不传） */
       exInfo?: string
-      /** 参数签名结果 MD5(startId +model+network+startKey) */
+      /** 参数签名结果 MD5(startId+model+network+startKey) */
       sign: string
     }
     interface ServerResponse {

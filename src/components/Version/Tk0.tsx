@@ -84,49 +84,47 @@ class ExitApp extends React.Component<ExitAppProps, any, any> {
         disableBackdropClick
         disableEscapeKeyDown
         fullWidth
-        maxWidth="md"
-        className={this.props.classes.exit_app_wrapper + ' exit_app_wrapper'}
+        maxWidth="xs"
         open={this.state.open}
         container={this.props.container}
       >
         <DialogContent className={this.props.classes.exit_app_dialog_content}>
           {this.languagePack.mg_tip_quit[this.props.language]}
+
+          <Grid
+            container
+            justify="center"
+            className={this.props.classes.index_button_wrapper}
+          >
+
+            <Button
+              language={this.props.language}
+              className={this.props.classes.exit_app_button}
+              click={async () => {
+                await Delay()
+                this.setState({
+                  open: false
+                })
+              }}
+              mode="cancel"
+            />
+
+            <Button
+              language={this.props.language}
+              className={this.props.classes.exit_app_button}
+              click={async () => {
+                await Delay()
+                this.setState({
+                  open: false
+                })
+                window.JsToNative.exitApp()
+              }}
+              mode="confirm"
+            />
+
+          </Grid>
         </DialogContent>
-        <Grid
-          container
-          justify="center"
-          style={{
-            margin: '-.5rem 0 ' + Px(40) + ' 0',
-          }}
-          className="index_button_wrapper"
-        >
 
-          <Button
-            language={this.props.language}
-            className={this.props.classes.exit_app_button}
-            click={async () => {
-              await Delay()
-              this.setState({
-                open: false
-              })
-            }}
-            mode="cancel"
-          />
-
-          <Button
-            language={this.props.language}
-            className={this.props.classes.exit_app_button}
-            click={async () => {
-              await Delay()
-              this.setState({
-                open: false
-              })
-              window.JsToNative.exitApp()
-            }}
-            mode="confirm"
-          />
-
-        </Grid>
       </Dialog>
     )
   }
@@ -171,6 +169,16 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
       vi: 'Cập nhật phiên bản mới nhất',
       zh: '请更新到最新版本',
     },
+    msg_tip_isX86: {
+      de: 'Oops! In deinem Gerät kann dieses Paket nicht installiert werden. Bitte lade das passendes Paket herunter! ',
+      en: "Oops! Your device can't install this pack, please click to re-download the compatible pack!",
+      fr: 'Nous sommes désolés! Votre appareil ne peut pas installer ce pack, veuillez re-télécharger le pack compatible!',
+      id: 'Maaf! Perangkat kamu tidak dapat menginstal paket ini, silahkan muat ulang paket yang kompatibel! ',
+      ko: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
+      th: 'ขอโทษ! เครื่องของท่านติดตั้งแพคเกจนี้ไม่ได้ โปรดเลือกดาวน์โหลดแพคที่เหมาะสม! ',
+      vi: 'Rất tiếc! Thiết bị của bạn không thể cài đặt pack này, vui lòng nhấp tải lại pack tương thích! ',
+      zh: '抱歉！您的设备无法安装此游戏包，请点击重新下载可兼容的游戏包!',
+    }
   }
 
   render() {
@@ -179,36 +187,39 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
         disableBackdropClick
         disableEscapeKeyDown
         fullWidth
-        maxWidth="md"
-        className={this.props.classes.exit_app_wrapper + ' exit_app_wrapper'}
+        maxWidth="xs"
         open={this.state.open}
         container={this.props.container}
       >
-        <DialogContent className={this.props.classes.exit_app_dialog_content}>
-          {(this.state.type == '1002' && this.languagePack.mg_net_wrong[this.props.language]) || (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])}
+        <DialogContent className={this.props.classes.exit_app_dialog_content + ' DialogContent'}>
+          {
+            (this.state.type == '1002' && this.languagePack.mg_net_wrong[this.props.language])
+            ||
+            (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])
+            ||
+            (this.state.type === 'isX86' && this.languagePack.msg_tip_isX86[this.props.language])
+          }
+
+          <Grid
+            container
+            justify="center"
+            className={this.props.classes.index_button_wrapper}
+          >
+            <Button
+              language={this.props.language}
+              className={this.props.classes.exit_app_button}
+              click={async () => {
+                await Delay()
+                this.state.open = false
+                if (this.state.clickFn) this.state.clickFn()
+                this.setState(this.state)
+              }}
+              mode="confirm"
+            />
+          </Grid>
+
         </DialogContent>
-        <Grid
-          container
-          justify="center"
-          style={{
-            margin: '-.5rem 0 ' + Px(40) + ' 0',
-          }}
-          className="index_button_wrapper"
-        >
 
-          <Button
-            language={this.props.language}
-            className={this.props.classes.exit_app_button}
-            click={async () => {
-              await Delay()
-              this.state.open = false
-              if (this.state.clickFn) this.state.clickFn()
-              this.setState(this.state)
-            }}
-            mode="confirm"
-          />
-
-        </Grid>
       </Dialog>
     )
   }
