@@ -11,7 +11,7 @@ import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/Cl
 
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
-  res.data.isCheck = 1
+  // res.data.isCheck = 1
   res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
   // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
   return res
