@@ -14,7 +14,7 @@
   "include": [
     "./src/**/*.tsx",
     "./src/**/*.ts",
-    "./index.d.ts", "const.ts"
+    "./index.d.ts",
   ],
   "exclude": [
     "./src/bower/**/*",

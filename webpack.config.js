@@ -43,14 +43,6 @@ var {
 		process.exit()
 	}
 }
-
-const defaultAlias = {
-	'@material-ui/core': './packages/material-ui/src',
-	'@material-ui/icons': './packages/material-ui-icons/src',
-	'@material-ui/lab': './packages/material-ui-lab/src',
-	'@material-ui/styles': './packages/material-ui-styles/src',
-	'@material-ui/utils': './packages/material-ui-utils/src',
-};
 var entry = {
 	main: './src/main.ts'
 }
@@ -91,15 +83,16 @@ var optimization = {}
 if (mode === 'production') {
 	htmlWebpackPluginOption.template = './index.html'
 	output.publicPath = './'
-	optimization.minimizer = [
-		new UglifyJsPlugin({
-			uglifyOptions: {
-				compress: {
-					drop_console: true
-				}
-			}
-		})
-	]
+	// optimization.minimizer = [
+	// 	new UglifyJsPlugin({
+	// 		exclude: /\/material-ui/,
+	// 		uglifyOptions: {
+	// 			compress: {
+	// 				drop_console: true
+	// 			}
+	// 		}
+	// 	})
+	// ]
 }
 plugins.push(
 	new HtmlWebpackPlugin(htmlWebpackPluginOption)
@@ -135,6 +128,7 @@ var webpackConfig = {
 							'@babel/preset-react'
 						],
 						plugins: [
+							// 'transform-remove-console',
 							['@babel/plugin-proposal-class-properties', {
 								loose: true
 							}],
@@ -142,13 +136,7 @@ var webpackConfig = {
 								loose: true
 							}],
 							'@babel/plugin-transform-object-assign',
-							'@babel/plugin-transform-runtime',
-							[
-								'babel-plugin-module-resolver', {
-									// root: ['./src/bower/material-ui/'],
-									// alias: defaultAlias,
-								}
-							]
+							'@babel/plugin-transform-runtime'
 						]
 					}
 				}]
