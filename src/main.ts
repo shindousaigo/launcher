@@ -303,7 +303,7 @@ window.Main = async function () {
               plgPkgName: serverInitData.data.publics.plgPkgName
             })
             let images = serverInitData.data.publics.currentPhoto.split(',')
-            if (images.length === 1) {
+            if (nativeInitData.isX86 || images.length === 1) {
               let div = document.getElementById('app-background') as HTMLDivElement
               let img = document.createElement('img') as HTMLImageElement
               img.style.top = '0';
@@ -311,7 +311,7 @@ window.Main = async function () {
               img.style.width = '100%';
               img.style.height = '100%';
               img.style.position = 'fixed';
-              img.src = serverInitData.data.publics.currentPhoto
+              img.src = images[0]
               div.appendChild(img)
             } else {
               import('src/components/slides/slides').then(module => {
