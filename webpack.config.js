@@ -44,6 +44,13 @@ var {
 	}
 }
 
+const defaultAlias = {
+	'@material-ui/core': './packages/material-ui/src',
+	'@material-ui/icons': './packages/material-ui-icons/src',
+	'@material-ui/lab': './packages/material-ui-lab/src',
+	'@material-ui/styles': './packages/material-ui-styles/src',
+	'@material-ui/utils': './packages/material-ui-utils/src',
+};
 var entry = {
 	main: './src/main.ts'
 }
@@ -118,51 +125,77 @@ var webpackConfig = {
 	},
 	module: {
 		rules: [{
-			test: /\.js$/,
-			exclude: /node_modules/,
-			use: [{
-				loader: 'babel-loader',
-			}]
-		}, {
-			test: /\.css$/,
-			use: [
-				'style-loader',
-				'css-loader'
-			]
-		}, {
-			test: /\.scss$/,
-			use: [
-				'style-loader',
-				'css-loader',
-				{
-					loader: 'postcss-loader',
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: [{
+					loader: 'babel-loader',
 					options: {
-						ident: 'postcss',
-						plugins: () => [
-							require('autoprefixer')(),
+						presets: [
+							'@babel/preset-env',
+							'@babel/preset-react'
+						],
+						plugins: [
+							['@babel/plugin-proposal-class-properties', {
+								loose: true
+							}],
+							['@babel/plugin-proposal-object-rest-spread', {
+								loose: true
+							}],
+							'@babel/plugin-transform-object-assign',
+							'@babel/plugin-transform-runtime',
+							[
+								'babel-plugin-module-resolver', {
+									// root: ['./src/bower/material-ui/'],
+									// alias: defaultAlias,
+								}
+							]
 						]
 					}
-				},
-				'sass-loader'
-			]
-		}, {
-			test: /\.(ts|tsx)$/,
-			use: [
-				'ts-loader'
-			]
-		}, {
-			test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-			use: [{
-				loader: 'file-loader',
-				options: {
-					name: '[name]-[hash:4].[ext]',
-					outputPath: './img'
-				}
-			}]
-		}]
+				}]
+			},
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader'
+				]
+			},
+			{
+				test: /\.scss$/,
+				use: [
+					'style-loader',
+					'css-loader',
+					{
+						loader: 'postcss-loader',
+						options: {
+							ident: 'postcss',
+							plugins: () => [
+								require('autoprefixer')(),
+							]
+						}
+					},
+					'sass-loader'
+				]
+			},
+			{
+				test: /\.(ts|tsx)$/,
+				use: [
+					'ts-loader'
+				]
+			},
+			{
+				test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+				use: [{
+					loader: 'file-loader',
+					options: {
+						name: '[name]-[hash:4].[ext]',
+						outputPath: './img'
+					}
+				}]
+			}
+		]
 	}
 }
-
 
 console.log(
 	`> mode: ${Chalk.yellow(mode)}\n> action: ${Chalk.yellow(action)}\n> server: ${Chalk.yellow(SERVER || './')}\n`

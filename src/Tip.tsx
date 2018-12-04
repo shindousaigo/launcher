@@ -1,5 +1,5 @@
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "src/bower/material-ui/packages/material-ui/src/Grid";
 import Index from "src/components/Version";
 const Grid_: any = Grid
 type TipProps = {

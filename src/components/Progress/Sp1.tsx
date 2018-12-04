@@ -1,6 +1,6 @@
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import Grid from "src/bower/material-ui/packages/material-ui/src/Grid";
+import LinearProgress from "src/bower/material-ui/packages/material-ui/src/LinearProgress";
 
 // LinearProgress.prototype.componentDidUpdate = function () {
 //   var linearProgress = document.querySelector(".linearProgress");

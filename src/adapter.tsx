@@ -1,14 +1,17 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import { withStyles } from "@material-ui/core/styles";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Fab from "src/bower/material-ui/packages/material-ui/src/Fab";
+import AddIcon from "src/bower/material-ui/packages/material-ui-icons/src/Add";
+import MenuItem from "src/bower/material-ui/packages/material-ui/src/MenuItem";
+import Menu from "src/bower/material-ui/packages/material-ui/src/Menu";
+import { withStyles } from "src/bower/material-ui/packages/material-ui/src/styles";
+import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/ClickAwayListener";
+
+
+
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
-  res.data.isCheck = 0
+  res.data.isCheck = 1
   res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
   // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
   return res
@@ -142,8 +145,7 @@ class UtilBtn extends React.Component<any, any, any> {
     return (
       <ClickAwayListener onClickAway={this.handleClickAway}>
         <div className={this.props.classes.wrapper + ' adapter_shin'}>
-          <Button
-            variant="fab"
+          <Fab
             color="primary"
             aria-label="Add"
             style={{
@@ -157,7 +159,7 @@ class UtilBtn extends React.Component<any, any, any> {
             }}
           >
             <AddIcon />
-          </Button>
+          </Fab>
           <Menu className={this.props.classes.lockMenu} open={this.state.show}>
             {options.map((option, index) => (
               <MenuItem

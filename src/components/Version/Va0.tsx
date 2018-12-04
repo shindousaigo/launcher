@@ -1,13 +1,13 @@
-import { GridProps } from "@material-ui/core/Grid/Grid"
+import { GridProps } from "src/bower/material-ui/packages/material-ui/src/Grid/Grid"
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid'
+import CssBaseline from 'src/bower/material-ui/packages/material-ui/src/CssBaseline';
+import Grid from 'src/bower/material-ui/packages/material-ui/src/Grid'
 import { S, Px } from "../../style"
 import Button from "src/components/Button"
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
+import LinearProgress from 'src/bower/material-ui/packages/material-ui/src/LinearProgress';
+import Dialog from 'src/bower/material-ui/packages/material-ui/src/Dialog';
+import DialogContent from 'src/bower/material-ui/packages/material-ui/src/DialogContent';
 import { Refs } from "src/const";
 import Progress from 'src/components/Progress/Va0'
 

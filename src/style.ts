@@ -1,6 +1,6 @@
 import {
   withStyles
-} from '@material-ui/core/styles';
+} from 'src/bower/material-ui/packages/material-ui/src/styles';
 
 export function Px(x) {
   return x / 13.34 / 2 + 'rem'

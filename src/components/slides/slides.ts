@@ -1,6 +1,6 @@
 require('./style.css');
 require('src/bower/swiper/dist/css/swiper.min.css')
-const Swiper = require('src/bower/swiper/dist/js/swiper.min.js')
+import Swiper from "swiper"
 
 export default class Slides {
   constructor(options) {
