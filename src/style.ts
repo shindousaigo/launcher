@@ -84,7 +84,6 @@ const ProgressClasses = {
     fontSize: Px(45),
     transform: 'scale(.5)',
     transformOrigin: 'center center',
-    // background: 'rgba(0,0,0,.6)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -149,21 +148,28 @@ const TipClasses = {
 }
 
 const Exitapp = {
-  exit_app_wrapper: {
-    width: "22rem !important",
-    margin: "0 auto",
-  },
   exit_app_dialog_content: {
-    textAlign: "center",
-    margin: ".5rem 0",
-    fontSize: Px(28),
-    fontWeight: '500'
+    color: '#fff',
+    fontSize: '1.0494752623688155rem',
+    background: 'rgba(0,0,0,.6)',
+    textAlign: 'center',
+    fontWeight: '500',
+    margin: '0',
+    borderRadius: '0.4rem',
+    padding: '0 2rem',
+    lineHeight: '1.88rem',
+  },
+  index_button_wrapper: {
+    margin: '1.18rem 0 1.2rem 0'
   },
   exit_app_button: {
-    fontSize: Px(32),
     color: '#000',
+    fontSize: '1.04rem',
+    transform: 'scale(.9)',
     background: '#fff',
-    transform: 'scale(.8)',
+    padding: '.28rem 1.02rem',
+    minHeight: '0',
+    margin: '0 .5rem',
   }
 }
 
