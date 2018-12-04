@@ -1,0 +1,61 @@
+import { assert } from 'chai';
+import { getDependencies } from './helpers';
+
+const s1 = `import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from 'src/bower/material-ui/packages/material-ui/src/styles';
+import Input from 'src/bower/material-ui/packages/material-ui/src/Input';
+import InputLabel from 'src/bower/material-ui/packages/material-ui/src/InputLabel';
+import FormControl from 'src/bower/material-ui/packages/material-ui/src/FormControl';
+import FormHelperText from 'src/bower/material-ui/packages/material-ui/src/FormHelperText';
+import Select from 'src/bower/material-ui/packages/material-ui/src/Select';
+import FooBar, { Qux } from '@foo-bar/bip';
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formContro
+`;
+
+const s2 = `import React from 'react';
+import PropTypes from 'prop-types';
+import * as _ from '@unexisting/thing';
+import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import TextField from 'src/bower/material-ui/packages/material-ui/src/TextField';
+import Paper from 'src/bower/material-ui/packages/material-ui/src/Paper';
+import MenuItem from 'src/bower/material-ui/packages/material-ui/src/MenuItem';
+import { withStyles } from 'src/bower/material-ui/packages/material-ui/src/styles';
+
+const suggestions = [`;
+
+describe('docs getDependencies helpers', () => {
+  it('generates the right npm dependencies', () => {
+    assert.deepEqual(getDependencies(s1), {
+      '@foo-bar/bip': 'latest',
+      '@material-ui/core': 'latest',
+      'prop-types': 'latest',
+      'react-dom': 'latest',
+      react: 'latest',
+    });
+    assert.deepEqual(getDependencies(s2), {
+      '@material-ui/core': 'latest',
+      '@unexisting/thing': 'latest',
+      'autosuggest-highlight': 'latest',
+      'prop-types': 'latest',
+      'react-autosuggest': 'latest',
+      'react-dom': 'latest',
+      react: 'latest',
+    });
+    assert.deepEqual(getDependencies(s1, 'next'), {
+      '@foo-bar/bip': 'latest',
+      '@material-ui/core': 'latest',
+      'prop-types': 'latest',
+      'react-dom': 'next',
+      react: 'next',
+    });
+  });
+});

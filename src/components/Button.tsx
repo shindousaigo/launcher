@@ -1,5 +1,5 @@
 import * as React from "react"
-import MuButton from "@material-ui/core/Button"
+import MuButton from "src/bower/material-ui/packages/material-ui/src/Button"
 
 type ButtonProps = {
   language: string
