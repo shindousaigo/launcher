@@ -4,7 +4,12 @@
 
 .LinearProgress div[role="progressbar"] {
   background: linear-gradient(#3e3e3e, #666666) !important;
+
+  >div {
+    border-radius: 10rem 0 0 10rem;
+  }
 }
+
 
 .catch-exception-container {
   position: absolute;
