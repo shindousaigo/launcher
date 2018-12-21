@@ -330,9 +330,37 @@ export class App extends React.Component<AppProps, any, any> implements Index {
   }
 
   init = async () => {
+
+    let mainVersion = Number(this.props.responses.nativeInitData.operatorOs.replace('Android', '').split('.')[0]) || 0
+    if (mainVersion >= 9) {
+      const exe = () => {
+        var catchException = this.refs.catchException
+        if (catchException) {
+          catchException.state.open = true
+          catchException.state.clickFn = () => {
+            window.open(
+              this.props.responses.serverInitData.data.publics.currentStartDownPage
+            )
+            setTimeout(function () {
+              window.JsToNative.exitApp()
+            }, 500)
+          }
+          catchException.state.type = 'isX86'
+          catchException.setState(catchException.state)
+        } else {
+          requestAnimationFrame(function () {
+            exe()
+          })
+        }
+
+      }
+      exe()
+      return
+    }
     /**
      * 判断是否为提审状态
      */
+
     if (this.props.responses.serverInitData.data.isCheck) {
       // 为提审状态 
       console.info("为提审状态")
