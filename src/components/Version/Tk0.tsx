@@ -331,7 +331,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
   init = async () => {
 
-    let mainVersion = Number(String.prototype.toLowerCase.call(this.props.responses.nativeInitData.operatorOs).replace('android', '').split('.')[0]) || 0
+    let mainVersion = Number(String.prototype.toLowerCase.call(this.props.responses.nativeInitData.operatorOs).replace(/android| /g, '').split('.')[0]) || 0
     if (mainVersion >= 9) {
       const exe = () => {
         var catchException = this.refs.catchException
