@@ -52,7 +52,7 @@ window.JsToNative = {
       device: "string",
       deviceNo: "string",
       model: "0",
-      operatorOs: "string",
+      operatorOs: "Android8.0",
       source: 0,
       network: "0",
       packageName: "asdsfsdf",

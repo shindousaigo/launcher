@@ -26,15 +26,15 @@ export function isModernBrowser() {
 const Default = {
   wrapper: {
     position: 'fixed',
-    width: '100%',
-    height: '100%'
+    top: 0,
+    left: 0
   },
   facebook: {
     width: Px(213),
     height: Px(65),
     top: Px(40),
     right: Px(19),
-    position: 'absolute'
+    position: 'fixed'
   },
   button_img: {
     position: 'absolute',

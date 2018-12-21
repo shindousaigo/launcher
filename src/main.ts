@@ -298,6 +298,16 @@ window.Main = async function () {
             //     });
             //   });
             // });
+            let images = serverInitData.data.publics.currentPhoto.split(',')
+            let div = document.getElementById('app-background') as HTMLDivElement
+            let img = document.createElement('img') as HTMLImageElement
+            img.style.top = '0';
+            img.style.left = '0';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.position = 'fixed';
+            img.src = images[0]
+            div.appendChild(img)
           } else {
             version === Version.Sp0 && window.overwrite.addPkgVisible({
               plgPkgName: serverInitData.data.publics.plgPkgName

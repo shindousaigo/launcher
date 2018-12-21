@@ -23,8 +23,22 @@
   }
 }
 
+#small-game {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
 
-
+canvas {
+  // width: 100vh !important;
+  // height: 100vw !important;
+  // left: 50% !important;
+  // top: 50% !important;
+  // margin-left: -50vh !important;
+  // margin-top: -50vw !important;
+  // transform-origin: 50% 50% !important;
+  // transform: rotate(-90deg) !important;
+}
 
 
 .shake {
