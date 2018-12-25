@@ -309,6 +309,7 @@ window.Main = async function () {
             img.src = images[0]
             div.appendChild(img)
           } else {
+            console.log(version, Version.Sp0)
             version === Version.Sp0 && window.overwrite.addPkgVisible({
               plgPkgName: serverInitData.data.publics.plgPkgName
             })
