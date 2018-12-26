@@ -289,7 +289,7 @@ window.Main = async function () {
           }
 
           if (serverInitData.data.isCheck) {
-            if (version !== Version.Tk1) {
+            if (version !== Version.Dev) {
               document.body.style.backgroundColor = "#000000";
               import("assets/games/dafeiji")
               // let promiseGame1 = import("../libs/laya.core.js").then(() => {
@@ -313,8 +313,7 @@ window.Main = async function () {
               //   });
               // });
             }
-            let images = serverInitData.data.publics.currentPhoto.split(',')
-            addImage(images[0])
+            addImage(serverInitData.data.currentTrialPhoto)
           } else {
             if (version === Version.Sp0) {
               window.overwrite.addPkgVisible({
@@ -345,7 +344,7 @@ window.Main = async function () {
       [Version.Sp0]: import("src/components/Version/Sp0"),
       [Version.Sp1]: import("src/components/Version/Sp1"),
       [Version.Tk0]: import("src/components/Version/Tk0"),
-      [Version.Tk1]: import("src/components/Version/Tk0"),
+      [Version.Dev]: import("src/components/Version/Tk0"),
       [Version.Ob0]: import("src/components/Version/Ob0"),
       [Version.Va0]: import("src/components/Version/Va0"),
     }
