@@ -27,6 +27,8 @@ var {
 		VERSION = 'sp0'
 	} else if (action === 'tk0') {
 		VERSION = 'tk0'
+	} else if (action === 'tk1') {
+		VERSION = 'tk1'
 	} else if (action === 'ob0') {
 		VERSION = 'ob0'
 	} else if (action === 'va0') {

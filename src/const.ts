@@ -3,6 +3,7 @@ export enum Version {
   Sp1 = 'sp1',
   Ob0 = 'ob0',
   Tk0 = 'tk0',
+  Tk1 = 'tk1',
   Va0 = 'va0'
 }
 
