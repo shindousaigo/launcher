@@ -275,30 +275,8 @@ window.Main = async function () {
         // 初始化完成
         if (res.code === 200) {
           serverInitData = adapter ? adapter.serverInitData(res) : res;
-          if (serverInitData.data.isCheck) {
-            document.body.style.backgroundColor = "#000000";
-            import("assets/games/dafeiji")
-            // let promiseGame1 = import("../libs/laya.core.js").then(() => {
-            //   let promiseGame2 = import("../libs/laya.webgl.js");
-            //   let promiseGame3 = import("../libs/laya.ui.js");
-            //   Promise.all([promiseGame1, promiseGame2, promiseGame3]).then(() => {
-            //     let promiseGame4 = import("../js/BackGround.js");
-            //     let promiseGame5 = import("../js/Role.js");
-            //     let promiseGame6 = import("../js/ui/layaUI.max.all.js");
-            //     let promiseGame7 = import("../js/GameInfo.js");
-            //     let promiseGame8 = import("../js/Game.js");
-            //     Promise.all([
-            //       promiseGame4,
-            //       promiseGame5,
-            //       promiseGame6,
-            //       promiseGame7,
-            //       promiseGame8
-            //     ]).then(() => {
-            //       window['_myInitGame']();
-            //     });
-            //   });
-            // });
-            let images = serverInitData.data.publics.currentPhoto.split(',')
+
+          const addImage = function (src) {
             let div = document.getElementById('app-background') as HTMLDivElement
             let img = document.createElement('img') as HTMLImageElement
             img.style.top = '0';
@@ -306,23 +284,45 @@ window.Main = async function () {
             img.style.width = '100%';
             img.style.height = '100%';
             img.style.position = 'fixed';
-            img.src = images[0]
+            img.src = src
             div.appendChild(img)
+          }
+
+          if (serverInitData.data.isCheck) {
+            if (version !== Version.Dev) {
+              document.body.style.backgroundColor = "#000000";
+              import("assets/games/dafeiji")
+              // let promiseGame1 = import("../libs/laya.core.js").then(() => {
+              //   let promiseGame2 = import("../libs/laya.webgl.js");
+              //   let promiseGame3 = import("../libs/laya.ui.js");
+              //   Promise.all([promiseGame1, promiseGame2, promiseGame3]).then(() => {
+              //     let promiseGame4 = import("../js/BackGround.js");
+              //     let promiseGame5 = import("../js/Role.js");
+              //     let promiseGame6 = import("../js/ui/layaUI.max.all.js");
+              //     let promiseGame7 = import("../js/GameInfo.js");
+              //     let promiseGame8 = import("../js/Game.js");
+              //     Promise.all([
+              //       promiseGame4,
+              //       promiseGame5,
+              //       promiseGame6,
+              //       promiseGame7,
+              //       promiseGame8
+              //     ]).then(() => {
+              //       window['_myInitGame']();
+              //     });
+              //   });
+              // });
+            }
+            addImage(serverInitData.data.currentTrialPhoto)
           } else {
-            version === Version.Sp0 && window.overwrite.addPkgVisible({
-              plgPkgName: serverInitData.data.publics.plgPkgName
-            })
+            if (version === Version.Sp0) {
+              window.overwrite.addPkgVisible({
+                plgPkgName: serverInitData.data.publics.plgPkgName
+              })
+            }
             let images = serverInitData.data.publics.currentPhoto.split(',')
             if (nativeInitData.isX86 || images.length === 1) {
-              let div = document.getElementById('app-background') as HTMLDivElement
-              let img = document.createElement('img') as HTMLImageElement
-              img.style.top = '0';
-              img.style.left = '0';
-              img.style.width = '100%';
-              img.style.height = '100%';
-              img.style.position = 'fixed';
-              img.src = images[0]
-              div.appendChild(img)
+              addImage(images[0])
             } else {
               import('src/components/slides/slides').then(module => {
                 const Slides = module.default
@@ -344,6 +344,7 @@ window.Main = async function () {
       [Version.Sp0]: import("src/components/Version/Sp0"),
       [Version.Sp1]: import("src/components/Version/Sp1"),
       [Version.Tk0]: import("src/components/Version/Tk0"),
+      [Version.Dev]: import("src/components/Version/Tk0"),
       [Version.Ob0]: import("src/components/Version/Ob0"),
       [Version.Va0]: import("src/components/Version/Va0"),
     }
