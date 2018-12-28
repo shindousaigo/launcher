@@ -284,7 +284,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
   }
 
   init = () => {
-    if (this.props.responses.nativeInitData.isX86 && ['com.fantasyde.alliancelplm', 'com.petkoera.google'].indexOf(this.props.responses.nativeInitData.packageName) >= 0) {
+    if (this.props.responses.nativeInitData.isX86 && ['com.fantasyde.alliancelplm', 'com.petkoera.google', 'com.battleglp.kor'].includes(this.props.responses.nativeInitData.packageName)) {
       const exe = () => {
         var catchException = this.refs.catchException
         if (catchException) {
