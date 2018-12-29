@@ -341,10 +341,12 @@ window.Main = async function () {
   });
   var promise2: Promise<Function> = new Promise(resolve => {
     var imports = {
+      [Version.Dev]: import("src/components/Version/Dev"),
+      
       [Version.Sp0]: import("src/components/Version/Sp0"),
       [Version.Sp1]: import("src/components/Version/Sp1"),
       [Version.Tk0]: import("src/components/Version/Tk0"),
-      [Version.Dev]: import("src/components/Version/Tk0"),
+
       [Version.Ob0]: import("src/components/Version/Ob0"),
       [Version.Va0]: import("src/components/Version/Va0"),
     }

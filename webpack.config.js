@@ -14,7 +14,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
  * SERVER: 'http://start-de-sdk.pocketgamesol.com'
  */
 var SERVER = ''
-var VERSION = 'dev'
+var VERSION = ''
 var {
 	argv: {
 		action,
@@ -23,24 +23,11 @@ var {
 } = Yargs
 
 { // version set
-	if (action === 'sp0') {
-		VERSION = 'sp0'
-	} else if (action === 'tk0') {
-		VERSION = 'tk0'
-	} else if (action === 'dev') {
-		VERSION = 'dev'
-	} else if (action === 'ob0') {
-		VERSION = 'ob0'
-	} else if (action === 'va0') {
-		VERSION = 'va0'
-	} else if (action === 'sp1') {
-		VERSION = 'sp1'
-	} else if (action === 'dev') {
-		VERSION = 'dev'
-		SERVER = 'http://sdk-test.changic.net.cn:1612'
+	if (action) {
+		VERSION = action
 	} else {
 		console.log(
-			Chalk.red.bold('miss action sp0/tk0/ob0/va0')
+			Chalk.red.bold('miss action')
 		)
 		process.exit()
 	}
