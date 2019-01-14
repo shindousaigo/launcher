@@ -3,7 +3,6 @@ import { getParameterByName } from "./Utils";
 import { Refs, Version } from "./const";
 import Progess from "Src/components/Progress";
 import Progress from "Src/components/Progress";
-import VersionSp1 from "Src/components/Version/Sp1";
 
 var App: AppInstance
 const version = getParameterByName('version') || VERSION
@@ -59,7 +58,7 @@ class Polyfill {
     this.setup();
   }
   polyfills = ["Promise", "Set", "Map", "Object.assign"];
-  polyfillUrl = "https://polyfill.io/v2/polyfill.min.js";
+  polyfillUrl = "https://polyfill.io/v3/polyfill.min.js";
   features = [];
   setup() {
     this.polyfills.forEach(feature => {
@@ -72,9 +71,12 @@ class Polyfill {
       var s = document.createElement("script");
       s.src = `${this.polyfillUrl}?features=${this.features.join(
         ","
-      )}&flags=gated,always&rum=0&callback=Main`;
+      )}&flags=gated,always&rum=0`; // &callback=Main
       s.async = true;
       document.head.appendChild(s);
+      s.onload = function () {
+        window.Main();
+      }
     } else {
       window.Main();
     }
@@ -342,7 +344,7 @@ window.Main = async function () {
   var promise2: Promise<Function> = new Promise(resolve => {
     var imports = {
       [Version.Dev]: import("src/components/Version/Dev"),
-      
+
       [Version.Sp0]: import("src/components/Version/Sp0"),
       [Version.Sp1]: import("src/components/Version/Sp1"),
       [Version.Tk0]: import("src/components/Version/Tk0"),
