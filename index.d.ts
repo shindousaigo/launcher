@@ -227,6 +227,8 @@ declare namespace AppLauncher {
         currentStartDownloadUrl: string
         /** 外部可见包名 */
         plgPkgName: string
+        x86
+        androidPie
       }
     }
   }

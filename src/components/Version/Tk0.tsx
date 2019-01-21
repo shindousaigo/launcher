@@ -13,7 +13,7 @@ import "src/style.scss"
 import Tip from "../../Tip"
 import { getParameterByName } from "../../Utils";
 import { Version, Refs } from "../../const";
-import { Delay } from "src/factory/functions";
+import { Delay, x86 } from "src/factory/functions";
 import Index from ".";
 import Progress from 'src/components/Progress/Sp0'
 import * as compareVersions from "compare-versions"
@@ -314,119 +314,84 @@ export class App extends React.Component<AppProps, any, any> implements Index {
     this.init()
   }
 
-  state = {
-    components: {
-      progress: false,
-      catchException: {
-        container: null
-      },
-      exitApp: {
-        container: null
-      },
-      tip: false
-    },
-    downloadComplete: null,
-    startDownload: null
-  }
-
   init = async () => {
-    let mainVersion = Number(String.prototype.toLowerCase.call(this.props.responses.nativeInitData.operatorOs).replace(/android| /g, '').split('.')[0]) || 0
-		console.log("​App -> init -> mainVersion", mainVersion)
-    if (mainVersion >= 9) {
-      const exe = () => {
-        var catchException = this.refs.catchException
-        if (catchException) {
-          catchException.state.open = true
-          catchException.state.clickFn = () => {
-            window.open(
-              this.props.responses.serverInitData.data.publics.currentStartDownPage
-            )
-            setTimeout(function () {
-              window.JsToNative.exitApp()
-            }, 500)
-          }
-          catchException.state.type = 'isX86'
-          catchException.setState(catchException.state)
-        } else {
-          requestAnimationFrame(function () {
-            exe()
-          })
-        }
 
-      }
-      exe()
-      return
-    }
     /**
      * 判断是否为提审状态
      */
-
     if (this.props.responses.serverInitData.data.isCheck) {
       // 为提审状态 
       console.info("为提审状态")
     } else {
-      // 不为提审状态
-      console.info("不为提审状态")
-      /**
-       * 判断启动器是否需要更新
-       */
-      if (this.props.responses.serverInitData.data.updateWay) {
-        // 启动器需要更新
-        console.info("启动器需要更新")
-        var type = this.props.responses.serverInitData.data.publics
-          .currentStartType
-        switch (type) {
-          case '0': // 原生的模块下载
-            this.startAuto()
-            break
-          case '1': // 跳转google play应用商店
-            const exe = () => {
-              if (this.refs.catchException) {
-                window.NativeToJs.catchException('google_play')
-              } else {
-                requestAnimationFrame(() => {
-                  exe()
-                })
-              }
-            }
-            exe()
-            break
-          case '2': // 跳转web页面
-            window.open(this.props.responses.serverInitData.data.publics.currentStartDownloadUrl)
-            break
-        }
+   
+
+      if (x86(this.props.responses.nativeInitData, this.props.responses.serverInitData.data)) {
+        this.state.x86 = true
       } else {
-        // 启动器不需要更新
-        console.info("启动器不需要更新")
-
-        /** condition 1 */
-        if (
-          !this.props.responses.nativeInitData.plgVersion ||
-          shouldPlugin(this.props.responses.serverInitData.data, this.props.responses.nativeInitData) ||
-          !window.overwrite.checkVaStatus({
-            packageName: this.props.responses.serverInitData.data.publics
-              .currentPlugPackageName
-          })
-        ) {
-          await this.pluginAuto()
-        }
-
-        /** condition 2 */
-        if (shouldPatch(this.props.responses.serverInitData.data, this.props.responses.nativeInitData)) {
-          await this.patchAuto()
-          window.overwrite.loadPatch({
-            patchPath: window.localPatchAddress,
-            patchVersion: this.props.responses.serverInitData.data.publics.patchVersion,
-            localAddr: window.localPluginAddress
-          })
+        // 不为提审状态
+        console.info("不为提审状态")
+        /**
+         * 判断启动器是否需要更新
+         */
+        if (this.props.responses.serverInitData.data.updateWay) {
+          // 启动器需要更新
+          console.info("启动器需要更新")
+          var type = this.props.responses.serverInitData.data.publics
+            .currentStartType
+          switch (type) {
+            case '0': // 原生的模块下载
+              this.startAuto()
+              break
+            case '1': // 跳转google play应用商店
+              const exe = () => {
+                if (this.refs.catchException) {
+                  window.NativeToJs.catchException('google_play')
+                } else {
+                  requestAnimationFrame(() => {
+                    exe()
+                  })
+                }
+              }
+              exe()
+              break
+            case '2': // 跳转web页面
+              window.open(this.props.responses.serverInitData.data.publics.currentStartDownloadUrl)
+              break
+          }
         } else {
-          window.overwrite.lachgm({
-            packageName: this.props.responses.serverInitData.data.publics
-              .currentPlugPackageName
-          })
+          // 启动器不需要更新
+          console.info("启动器不需要更新")
+
+          /** condition 1 */
+          if (
+            !this.props.responses.nativeInitData.plgVersion ||
+            shouldPlugin(this.props.responses.serverInitData.data, this.props.responses.nativeInitData) ||
+            !window.overwrite.checkVaStatus({
+              packageName: this.props.responses.serverInitData.data.publics
+                .currentPlugPackageName
+            })
+          ) {
+            await this.pluginAuto()
+          }
+
+          /** condition 2 */
+          if (shouldPatch(this.props.responses.serverInitData.data, this.props.responses.nativeInitData)) {
+            await this.patchAuto()
+            window.overwrite.loadPatch({
+              patchPath: window.localPatchAddress,
+              patchVersion: this.props.responses.serverInitData.data.publics.patchVersion,
+              localAddr: window.localPluginAddress
+            })
+          } else {
+            window.overwrite.lachgm({
+              packageName: this.props.responses.serverInitData.data.publics
+                .currentPlugPackageName
+            })
+          }
         }
       }
     }
+
   }
 
   /**
@@ -593,7 +558,39 @@ export class App extends React.Component<AppProps, any, any> implements Index {
     )
   }
 
+  state = {
+    components: {
+      progress: false,
+      catchException: {
+        container: null
+      },
+      exitApp: {
+        container: null
+      },
+      tip: false
+    },
+    downloadComplete: null,
+    startDownload: null,
+    x86: false
+  }
+
   componentDidMount() {
+
+    if (this.state.x86) {
+      let catchException = this.refs.catchException
+      catchException.state.open = true
+      catchException.state.clickFn = () => {
+        window.open(
+          this.props.responses.serverInitData.data.publics.currentStartDownPage
+        )
+        setTimeout(function () {
+          window.JsToNative.exitApp()
+        }, 500)
+      }
+      catchException.state.type = 'isX86'
+      catchException.setState(catchException.state)
+    }
+
     this.state.components.exitApp.container = this.refs.catchExceptionContainer
     this.setState(this.state)
   }

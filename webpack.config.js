@@ -24,6 +24,7 @@ var {
 
 { // version set
 	if (action) {
+		if (action === 'dev') SERVER = 'http://sdk-test.changic.net.cn:1612'
 		VERSION = action
 	} else {
 		console.log(

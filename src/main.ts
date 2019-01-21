@@ -147,7 +147,7 @@ window.Main = async function () {
     window.overwrite.addPkgVisible = function (param) {
       if (window.JsToNative.addPkgVisible) {
         console.info('Js_To_Native::addPkgVisible', param)
-        window.JsToNative.addPkgVisible(JSON.stringify(param))
+        window.JsToNative.addPkgVisible && window.JsToNative.addPkgVisible(JSON.stringify(param))
       }
     }
 
@@ -317,11 +317,11 @@ window.Main = async function () {
             }
             addImage(serverInitData.data.currentTrialPhoto)
           } else {
-            if (version === Version.Sp0) {
-              window.overwrite.addPkgVisible({
-                plgPkgName: serverInitData.data.publics.plgPkgName
-              })
-            }
+            // if (version === Version.Sp0) {
+            window.overwrite.addPkgVisible({
+              plgPkgName: serverInitData.data.publics.plgPkgName
+            })
+            // }
             let images = serverInitData.data.publics.currentPhoto.split(',')
             if (nativeInitData.isX86 || images.length === 1) {
               addImage(images[0])

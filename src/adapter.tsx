@@ -12,6 +12,7 @@ import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/Cl
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if(!res.data.isCheck) {
+    // res.data.publics.x86
     res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
   }
   return res
@@ -52,15 +53,15 @@ window.JsToNative = {
       device: "string",
       deviceNo: "string",
       model: "0",
-      operatorOs: "Android8.0",
+      operatorOs: "Android6.0",
       source: 0,
       network: "0",
       packageName: "asdsfsdf",
-      version: "21.0.0",
+      version: "22.0.1",
       language: "zh",
       currentCPU: 0,
       localAddr: '',
-      isX86: 0
+      isX86: 1
     });
   },
   startLoad: function (param: string) {
