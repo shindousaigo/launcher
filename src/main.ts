@@ -15,7 +15,7 @@ class Http {
   constructor() {
     Http._ins = this
   }
-  private serverAddress = SERVER
+  private serverAddress = location.host === "sdk-de.pocketgamesol.com" ? "http://start-de-sdk.pocketgamesol.com" : SERVER
   private request(param: any): Promise<any> {
     var data
     if (param.data) {
