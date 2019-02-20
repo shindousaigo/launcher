@@ -10,6 +10,7 @@ import Dialog from 'src/bower/material-ui/packages/material-ui/src/Dialog';
 import DialogContent from 'src/bower/material-ui/packages/material-ui/src/DialogContent';
 import { Refs } from "src/const";
 import Progress from 'src/components/Progress/Va0'
+import { x86 } from "src/factory/functions";
 
 type WithRef = { ref?: any }
 
@@ -169,12 +170,12 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
         disableBackdropClick
         disableEscapeKeyDown
         fullWidth
-        maxWidth="md"
-        className={this.props.classes.exit_app_wrapper + ' exit_app_wrapper'}
+        maxWidth="xs"
+        // className={this.props.classes.exit_app_dialog_content + ' DialogContent'}
         open={this.state.open}
         container={this.props.container}
       >
-        <DialogContent className={this.props.classes.exit_app_dialog_content}>
+        <DialogContent className={this.props.classes.exit_app_dialog_content + ' DialogContent'}>
           {
             (this.state.type == '1002' && this.languagePack.mg_net_wrong[this.props.language])
             ||
@@ -182,30 +183,30 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
             ||
             (this.state.type === 'isX86' && this.languagePack.msg_tip_isX86[this.props.language])
           }
+          <Grid
+            container
+            justify="center"
+            // style={{
+            //   margin: '-.5rem 0 ' + Px(40) + ' 0',
+            // }}
+            className={this.props.classes.index_button_wrapper}
+          >
+
+            <Button
+              language={this.props.language}
+              className={this.props.classes.exit_app_button}
+              click={async () => {
+                await Delay()
+                this.state.open = false
+                if (this.state.clickFn) this.state.clickFn()
+                this.setState(this.state)
+              }}
+              mode="confirm"
+            />
+
+          </Grid>
         </DialogContent>
-        <Grid
-          container
-          justify="center"
-          style={{
-            margin: '-.5rem 0 ' + Px(40) + ' 0',
-          }}
-          className="index_button_wrapper"
-        >
-
-          <Button
-            language={this.props.language}
-            className={this.props.classes.exit_app_button}
-            click={async () => {
-              await Delay()
-              this.state.open = false
-              if (this.state.clickFn) this.state.clickFn()
-              this.setState(this.state)
-            }}
-            mode="confirm"
-          />
-
-        </Grid>
-      </Dialog>
+      </Dialog >
     )
   }
 }
@@ -452,10 +453,12 @@ export class App extends React.Component<{
       },
       exitApp: {
         container: null
-      }
+      },
+      tip: false
     },
     downloadComplete: null,
-    startDownload: null
+    startDownload: null,
+    x86: false
   }
 
   init = () => {
@@ -464,45 +467,47 @@ export class App extends React.Component<{
     if (this.props.responses.serverInitData.data.isCheck) { // 为提审状态 跳转至静态页面
       console.info('为提审状态')
     } else { // 不为提审状态
-      console.info('不为提审状态')
-      /**
-       * 判断启动器是否需要更新
-       */
-      if (this.props.responses.serverInitData.data.updateWay) { // 启动器需要更新
-        console.info("启动器需要更新")
-        var type = this.props.responses.serverInitData.data.publics
-          .currentStartType
-        switch (type) {
-          case '0': // 原生的模块下载
-            this.startAuto()
-            break
-          case '1': // 跳转google play应用商店
-            const exe = () => {
-              if (this.refs.catchException) {
-                window.NativeToJs.catchException('google_play')
-              } else {
-                requestAnimationFrame(() => {
-                  exe()
-                })
+      if (x86(this.props.responses.nativeInitData, this.props.responses.serverInitData.data)) {
+        this.state.x86 = true
+      } else {
+        console.info('不为提审状态')
+        // 判断启动器是否需要更新
+        if (this.props.responses.serverInitData.data.updateWay) { // 启动器需要更新
+          console.info("启动器需要更新")
+          var type = this.props.responses.serverInitData.data.publics
+            .currentStartType
+          switch (type) {
+            case '0': // 原生的模块下载
+              this.startAuto()
+              break
+            case '1': // 跳转google play应用商店
+              const exe = () => {
+                if (this.refs.catchException) {
+                  window.NativeToJs.catchException('google_play')
+                } else {
+                  requestAnimationFrame(() => {
+                    exe()
+                  })
+                }
               }
-            }
-            exe()
-            break
-          case '2': // 跳转web页面
-            window.open(this.props.responses.serverInitData.data.publics.currentStartDownloadUrl)
-            break
-        }
-      } else { // 启动器不需要更新
-        console.info('启动器不需要更新')
-        // var { isX86 } = this.props.responses.nativeInitData
-        if (!this.props.responses.nativeInitData.plgVersion || this.checkplgVersion() || !window.overwrite.checkVaStatus({
-          packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
-        })) {
-          this.pluginAuto()
-        } else {
-          window.overwrite.lachgm({
+              exe()
+              break
+            case '2': // 跳转web页面
+              window.open(this.props.responses.serverInitData.data.publics.currentStartDownloadUrl)
+              break
+          }
+        } else { // 启动器不需要更新
+          console.info('启动器不需要更新')
+          // var { isX86 } = this.props.responses.nativeInitData
+          if (!this.props.responses.nativeInitData.plgVersion || this.checkplgVersion() || !window.overwrite.checkVaStatus({
             packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
-          })
+          })) {
+            this.pluginAuto()
+          } else {
+            window.overwrite.lachgm({
+              packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
+            })
+          }
         }
       }
     }
@@ -630,7 +635,22 @@ export class App extends React.Component<{
   }
 
   componentDidMount() {
-    this.state.components.catchException.container = this.refs.catchExceptionContainer
+    if (this.state.x86) {
+      let catchException = this.refs.catchException
+      catchException.state.open = true
+      catchException.state.clickFn = () => {
+        window.open(
+          this.props.responses.serverInitData.data.publics.currentStartDownPage
+        )
+        setTimeout(function () {
+          window.JsToNative.exitApp()
+        }, 500)
+      }
+      catchException.state.type = 'isX86'
+      catchException.setState(catchException.state)
+    }
+
+    // this.state.components.catchException.container = this.refs.catchExceptionContainer
     this.state.components.exitApp.container = this.refs.catchExceptionContainer
     this.setState(this.state)
   }
