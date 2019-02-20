@@ -459,9 +459,8 @@ export class App extends React.Component<{
   }
 
   init = () => {
-    /**
-     * 判断是否为提审状态
-     */
+
+    // 判断是否为提审状态
     if (this.props.responses.serverInitData.data.isCheck) { // 为提审状态 跳转至静态页面
       console.info('为提审状态')
     } else { // 不为提审状态
