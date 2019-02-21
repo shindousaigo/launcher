@@ -7,18 +7,17 @@ import Menu from "src/bower/material-ui/packages/material-ui/src/Menu";
 import { withStyles } from "src/bower/material-ui/packages/material-ui/src/styles";
 import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/ClickAwayListener";
 
-
-
-
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
-  if(!res.data.isCheck) {
-    res.data.publics.x86 = "1"
-    res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"
+  if (!res.data.isCheck) {
+    res.data.publics.x86 = "1";
+    res.data.publics.currentPhoto =
+      "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
+    res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
   }
-  return res
+  return res;
 }
 
-var tmp
+var tmp;
 function test1() {
   var interval_ = setInterval(() => {
     if (!tmp) {
@@ -30,8 +29,8 @@ function test1() {
       };
       window.NativeToJs.downloadUpdate(tmp);
     } else {
-      tmp.soFarBytes += Math.floor(Math.random() * 55686100)
-      tmp.speed = Math.floor(Math.random() * 5686)
+      tmp.soFarBytes += Math.floor(Math.random() * 55686100);
+      tmp.speed = Math.floor(Math.random() * 5686);
       if (tmp.soFarBytes >= tmp.totalBytes) {
         tmp.soFarBytes = tmp.totalBytes;
         window.clearInterval(interval_ as any);
@@ -44,10 +43,10 @@ function test1() {
 }
 
 window.JsToNative = {
-  exitApp: function () {
+  exitApp: function() {
     window.NativeToJs.catchException("窗口关闭被调用");
   },
-  getDeviceMsg: function (): string {
+  getDeviceMsg: function(): string {
     return JSON.stringify({
       gaid: "string",
       device: "string",
@@ -57,53 +56,45 @@ window.JsToNative = {
       source: 0,
       network: "0",
       packageName: "asdsfsdf",
-      version: "22.0.1",
+      version: "0.0.1",
       language: "zh",
       currentCPU: 0,
-      localAddr: '',
+      localAddr: "",
       isX86: 1
     });
   },
-  startLoad: function (param: string) {
+  startLoad: function(param: string) {
     tmp = null;
     test1();
   },
-  checkVaStatus: function (): string {
+  checkVaStatus: function(): string {
     return JSON.stringify(1);
   },
-  plinst: function (param: string) {
+  plinst: function(param: string) {
     console.info(param);
     console.log("开始安装插件包");
   },
-  replinst: function (param: string) {
+  replinst: function(param: string) {
     console.info(param);
     console.info("开始安装替换包");
   },
-  lachgm: function (param: string) {
-    console.info(param)
-    console.info('拉起插件游戏包接口')
+  lachgm: function(param: string) {
+    console.info(param);
+    console.info("拉起插件游戏包接口");
   },
-  loadPatch: function (param: string) {
-    console.log('loadPatch', param)
+  loadPatch: function(param: string) {
+    console.log("loadPatch", param);
   },
-  checkPatch: function (param: string) {
-    console.log('checkPatch', param)
-    window.NativeToJs.catchException('1004')
+  checkPatch: function(param: string) {
+    console.log("checkPatch", param);
+    window.NativeToJs.catchException("1004");
   },
-  pthInst: function () {
-    console.log('pthInst')
+  pthInst: function() {
+    console.log("pthInst");
   }
-} as any
+} as any;
 
-const options = [
-  "退出 APP 接口调用",
-  "模拟用户点击返回按钮",
-  "错误处理 code 1001",
-  "错误处理 code 1002",
-  "错误处理 code 1011",
-  "错误处理 code 1010",
-  "错误处理 code 1005"
-];
+const options = ["退出 APP 接口调用", "模拟用户点击返回按钮", "错误处理 code 1001", "错误处理 code 1002", "错误处理 code 1011", "错误处理 code 1010", "错误处理 code 1005"];
 
 class UtilBtn extends React.Component<any, any, any> {
   state = {
@@ -145,7 +136,7 @@ class UtilBtn extends React.Component<any, any, any> {
   render() {
     return (
       <ClickAwayListener onClickAway={this.handleClickAway}>
-        <div className={this.props.classes.wrapper + ' adapter_shin'}>
+        <div className={this.props.classes.wrapper + " adapter_shin"}>
           <Fab
             color="primary"
             aria-label="Add"
@@ -163,10 +154,7 @@ class UtilBtn extends React.Component<any, any, any> {
           </Fab>
           <Menu className={this.props.classes.lockMenu} open={this.state.show}>
             {options.map((option, index) => (
-              <MenuItem
-                key={option}
-                onClick={this.handleClick.bind(this, index)}
-              >
+              <MenuItem key={option} onClick={this.handleClick.bind(this, index)}>
                 {option}
               </MenuItem>
             ))}
@@ -191,7 +179,7 @@ var UtilBtn_ = withStyles({
   }
 })(UtilBtn);
 
-window.onload = function () {
+window.onload = function() {
   var div = document.createElement("div");
   document.body.appendChild(div);
   ReactDom.render(<UtilBtn_ />, div);

@@ -229,6 +229,7 @@ declare namespace AppLauncher {
         plgPkgName: string
         x86
         androidPie
+        bgType: number
       }
     }
   }
