@@ -97,14 +97,10 @@ Date.prototype.format = function(fmt) {
 };
 
 window.Main = async function() {
-  var startKey = getParameterByName("startKey") || "6630bba2bcf84a8eb62b602614cbb661";
-  var startId = getParameterByName("startId") || 9000;
+  var startKey = getParameterByName("startKey") || "d402879e28054b46ba29bbd7c2a6bb17";
+  var startId = getParameterByName("startId") || 9997;
   var adapter;
-  if (!window.JsToNative) {
-    startKey = "d402879e28054b46ba29bbd7c2a6bb17";
-    startId = 9997;
-    adapter = await import("./adapter");
-  }
+  if (!window.JsToNative) adapter = await import("./adapter");
 
   {
     window.overwrite = {} as any;
@@ -271,37 +267,17 @@ window.Main = async function() {
           const planeGame = () => {
             document.body.style.backgroundColor = "#000000";
             import("assets/games/dafeiji");
-            // let promiseGame1 = import("../libs/laya.core.js").then(() => {
-            //   let promiseGame2 = import("../libs/laya.webgl.js");
-            //   let promiseGame3 = import("../libs/laya.ui.js");
-            //   Promise.all([promiseGame1, promiseGame2, promiseGame3]).then(() => {
-            //     let promiseGame4 = import("../js/BackGround.js");
-            //     let promiseGame5 = import("../js/Role.js");
-            //     let promiseGame6 = import("../js/ui/layaUI.max.all.js");
-            //     let promiseGame7 = import("../js/GameInfo.js");
-            //     let promiseGame8 = import("../js/Game.js");
-            //     Promise.all([
-            //       promiseGame4,
-            //       promiseGame5,
-            //       promiseGame6,
-            //       promiseGame7,
-            //       promiseGame8
-            //     ]).then(() => {
-            //       window['_myInitGame']();
-            //     });
-            //   });
-            // });
           };
 
           if (serverInitData.data.isCheck) {
             if (version !== Version.Dev) {
-              const type = serverInitData.data.publics.bgType || 0;
+              const type = +serverInitData.data.bgType || 0;
               switch (type) {
                 case 1:
-                  planeGame();
+                  addImage(serverInitData.data.currentTrialPhoto);
                   break;
                 default:
-                  addImage(serverInitData.data.currentTrialPhoto);
+                  planeGame();
               }
             }
             // addImage(serverInitData.data.currentTrialPhoto);
@@ -313,15 +289,7 @@ window.Main = async function() {
             // }
             let images = serverInitData.data.publics.currentPhoto.split(",");
             if (nativeInitData.isX86 || images.length === 1) {
-              const type = serverInitData.data.publics.bgType || 0;
-              switch (serverInitData.data.publics.bgType) {
-                case 1:
-                  planeGame();
-                  break;
-                default:
-                  console.log(images[0]);
-                  addImage(images[0]);
-              }
+              addImage(images[0]);
             } else {
               import("src/components/slides/slides").then(module => {
                 const Slides = module.default;
