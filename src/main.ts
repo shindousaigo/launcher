@@ -264,9 +264,22 @@ window.Main = async function() {
             div.appendChild(img);
           };
           // 打飞机的游戏
-          const planeGame = () => {
-            document.body.style.backgroundColor = "#000000";
-            import("assets/games/dafeiji");
+          const planeGame = (type: number) => {
+            // document.body.style.backgroundColor = "#000000";
+            //  f5d8782e1d2d51da0220da48875f4186
+            const script = document.createElement("script");
+            // script.setAttribute('async', '');
+            let url = "";
+            switch (type) {
+              case 1:
+                url = "//sdk-start-test.changic.net.cn/xyxf5d8782e1d2d51da0220da48875f4186/2048/main.min.js";
+                break;
+              default:
+                url = "//sdk-start-test.changic.net.cn/xyxf5d8782e1d2d51da0220da48875f4186/dafeiji/main.min.js";
+            }
+            script.src = url;
+            script.id = "_smallGame_js";
+            document.body.appendChild(script);
           };
 
           if (serverInitData.data.isCheck) {
@@ -277,8 +290,10 @@ window.Main = async function() {
                   addImage(serverInitData.data.currentTrialPhoto);
                   break;
                 default:
-                  planeGame();
+                  planeGame(+getParameterByName("xyx") || 0);
               }
+            } else {
+              planeGame(+getParameterByName("xyx") || 0);
             }
             // addImage(serverInitData.data.currentTrialPhoto);
           } else {
