@@ -271,7 +271,7 @@ window.Main = async function() {
             // script.setAttribute('async', '');
             let url = "";
             switch (type) {
-              case 1:
+              case 2:
                 url = "//sdk-start-test.changic.net.cn/xyxf5d8782e1d2d51da0220da48875f4186/2048/main.min.js";
                 break;
               default:
@@ -286,11 +286,14 @@ window.Main = async function() {
             if (version !== Version.Dev) {
               const type = +serverInitData.data.bgType || 0;
               switch (type) {
+                case 2:
+                  planeGame(2);
+                  break;
                 case 1:
                   addImage(serverInitData.data.currentTrialPhoto);
                   break;
                 default:
-                  planeGame(+getParameterByName("xyx") || 0);
+                  planeGame(0);
               }
             } else {
               planeGame(+getParameterByName("xyx") || 0);
