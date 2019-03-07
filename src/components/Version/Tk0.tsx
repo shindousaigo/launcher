@@ -362,14 +362,8 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
           /** condition 1 */
           console.log('condition 1')
-          if (
-            !this.props.responses.nativeInitData.plgVersion ||
-            shouldPlugin(this.props.responses.serverInitData.data, this.props.responses.nativeInitData) ||
-            !window.overwrite.checkVaStatus({
-              packageName: this.props.responses.serverInitData.data.publics
-                .currentPlugPackageName
-            })
-          ) {
+          let shouldPlugin_ = !this.props.responses.nativeInitData.plgVersion || shouldPlugin(this.props.responses.serverInitData.data, this.props.responses.nativeInitData) || !window.overwrite.checkVaStatus({ packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName })
+          if (shouldPlugin_) {
             await this.pluginAuto()
           }
 
@@ -384,9 +378,19 @@ export class App extends React.Component<AppProps, any, any> implements Index {
               localAddr: window.localPluginAddress
             })
           } else {
-            window.overwrite.lachgm({
-              packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
-            })
+            if (shouldPlugin_) {
+              let param = {
+                localAddr: window.currentPlugDownloadUrl,
+                packageName: window.currentPlugPackageName,
+                plgVersion: window.currentPlugVersion
+              }
+              console.info('开始安装启动器， param：' + param)
+              window.overwrite.plinst(param)
+            } else {
+              window.overwrite.lachgm({
+                packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
+              })
+            }
           }
         }
       }
