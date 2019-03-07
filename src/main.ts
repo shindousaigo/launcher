@@ -282,21 +282,37 @@ window.Main = async function () {
             div.appendChild(img);
           };
           // 打飞机的游戏
-          const planeGame = () => {
-            document.body.style.backgroundColor = "#000000";
-            import("assets/games/dafeiji");
+          const planeGame = (type: number) => {
+            // document.body.style.backgroundColor = "#000000";
+            let url = "";
+            switch (type) {
+              case 3:
+                import("assets/games/picture_match/main.min.js");
+                break;
+              case 2:
+                import("assets/games/2048/main.min.js");
+                break;
+              default:
+                import("assets/games/dafeiji/main.min.js");
+            }
           };
 
           if (serverInitData.data.isCheck) {
             if (version !== Version.Dev) {
               const type = +serverInitData.data.bgType || 0;
+              document.body.style.backgroundColor = "#000000";
               switch (type) {
+                case 2:
+                  planeGame(2);
+                  break;
                 case 1:
                   addImage(serverInitData.data.currentTrialPhoto);
                   break;
                 default:
-                  planeGame();
+                  planeGame(0);
               }
+            } else {
+              planeGame(+getParameterByName("xyx") || 0);
             }
             // addImage(serverInitData.data.currentTrialPhoto);
           } else {
