@@ -38,8 +38,8 @@ var entry = {
 }
 var output = {
 	path: Path.join(__dirname, './build'),
-	filename: '[name].js',
-	chunkFilename: '[name].js',
+	filename: '[name].js?[hash:4]',
+	chunkFilename: '[name].js?[hash:4]',
 }
 var definePlugin = {
 	SERVER: JSON.stringify(SERVER),
