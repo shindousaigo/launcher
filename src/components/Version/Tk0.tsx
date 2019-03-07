@@ -380,7 +380,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
           } else {
             if (shouldPlugin_) {
               let param = {
-                localAddr: this.props.responses.serverInitData.data.publics.currentPlugDownloadUrl,
+                localAddr: window.localPluginAddress,
                 packageName: window.currentPlugPackageName,
                 plgVersion: window.currentPlugVersion
               }
