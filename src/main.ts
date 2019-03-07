@@ -266,27 +266,20 @@ window.Main = async function() {
           // 打飞机的游戏
           const planeGame = (type: number) => {
             // document.body.style.backgroundColor = "#000000";
-            //  f5d8782e1d2d51da0220da48875f4186
-            const script = document.createElement("script");
-            // script.setAttribute('async', '');
             let url = "";
             switch (type) {
               case 2:
-                url = "//sdk-start-test.changic.net.cn/xyxf5d8782e1d2d51da0220da48875f4186/2048/main.min.js";
+                import("assets/games/2048/main.min.js");
                 break;
               default:
-                url = "//sdk-start-test.changic.net.cn/xyxf5d8782e1d2d51da0220da48875f4186/dafeiji/main.min.js";
+                import("assets/games/dafeiji/main.min.js");
             }
-            script.src = url;
-            script.id = "_smallGame_js";
-            document.body.appendChild(script);
           };
 
           if (serverInitData.data.isCheck) {
             if (version !== Version.Dev) {
               const type = +serverInitData.data.bgType || 0;
               document.body.style.backgroundColor = "#000000";
-              import("assets/games/dafeiji");
               switch (type) {
                 case 2:
                   planeGame(2);

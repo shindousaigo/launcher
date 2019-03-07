@@ -60,10 +60,14 @@ var plugins = [
         md5: 'md5'
     }),
     new Webpack.DefinePlugin(definePlugin),
-    /* new CopyWebpackPlugin([{
+    new CopyWebpackPlugin([{
     	from: Path.resolve(__dirname, './assets/games/dafeiji/res'),
     	to: 'res'
-    }]), */
+    }]),
+     new CopyWebpackPlugin([{
+       from: Path.resolve(__dirname, './assets/games/2048/css'),
+       to: '2048'
+     }]),
     new CleanWebpackPlugin([
         Path.join(__dirname, 'build', '**/*.js'),
         Path.join(__dirname, 'build', '**/*.zip')
