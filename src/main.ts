@@ -285,6 +285,8 @@ window.Main = async function() {
           if (serverInitData.data.isCheck) {
             if (version !== Version.Dev) {
               const type = +serverInitData.data.bgType || 0;
+              document.body.style.backgroundColor = "#000000";
+              import("assets/games/dafeiji");
               switch (type) {
                 case 2:
                   planeGame(2);
