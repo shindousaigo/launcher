@@ -316,9 +316,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
   init = async () => {
 
-    /**
-     * 判断是否为提审状态
-     */
+    // 判断是否为提审状态
     if (this.props.responses.serverInitData.data.isCheck) {
       // 为提审状态 
       console.info("为提审状态")
@@ -328,14 +326,11 @@ export class App extends React.Component<AppProps, any, any> implements Index {
       } else {
         // 不为提审状态
         console.info("不为提审状态")
-        /**
-         * 判断启动器是否需要更新
-         */
+        // 判断启动器是否需要更新
         if (this.props.responses.serverInitData.data.updateWay) {
           // 启动器需要更新
           console.info("启动器需要更新")
-          var type = this.props.responses.serverInitData.data.publics
-            .currentStartType
+          var type = this.props.responses.serverInitData.data.publics.currentStartType
           switch (type) {
             case '0': // 原生的模块下载
               this.startAuto()
@@ -359,18 +354,19 @@ export class App extends React.Component<AppProps, any, any> implements Index {
         } else {
           // 启动器不需要更新
           console.info("启动器不需要更新")
-
           /** condition 1 */
-          console.log('condition 1')
-          let shouldPlugin_ = !this.props.responses.nativeInitData.plgVersion || shouldPlugin(this.props.responses.serverInitData.data, this.props.responses.nativeInitData) || !window.overwrite.checkVaStatus({ packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName })
-          if (shouldPlugin_) {
+          if (
+            !this.props.responses.nativeInitData.plgVersion ||
+            shouldPlugin(this.props.responses.serverInitData.data, this.props.responses.nativeInitData) ||
+            !window.overwrite.checkVaStatus({
+              packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
+            })
+          ) {
             await this.pluginAuto()
           }
 
           /** condition 2 */
-          let shouldPatch_ = shouldPatch(this.props.responses.serverInitData.data, this.props.responses.nativeInitData)
-          console.log('condition 2', shouldPatch_)
-          if (shouldPatch_) {
+          if (shouldPatch(this.props.responses.serverInitData.data, this.props.responses.nativeInitData)) {
             await this.patchAuto()
             window.overwrite.loadPatch({
               patchPath: window.localPatchAddress,
@@ -378,19 +374,9 @@ export class App extends React.Component<AppProps, any, any> implements Index {
               localAddr: window.localPluginAddress
             })
           } else {
-            if (shouldPlugin_) {
-              let param = {
-                localAddr: window.localPluginAddress,
-                packageName: window.currentPlugPackageName,
-                plgVersion: window.currentPlugVersion
-              }
-              console.info('开始安装启动器， param：' + param)
-              window.overwrite.plinst(param)
-            } else {
-              window.overwrite.lachgm({
-                packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
-              })
-            }
+            window.overwrite.lachgm({
+              packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
+            })
           }
         }
       }

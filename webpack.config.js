@@ -37,9 +37,9 @@ var entry = {
     main: './src/main.ts'
 }
 var output = {
-    path: Path.join(__dirname, './build'),
-    filename: '[name].js',
-    chunkFilename: '[name].js',
+	path: Path.join(__dirname, './build'),
+	filename: '[name].js?[hash:4]',
+	chunkFilename: '[name].js?[hash:4]',
 }
 var definePlugin = {
     SERVER: JSON.stringify(SERVER),
