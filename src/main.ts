@@ -268,6 +268,9 @@ window.Main = async function() {
             // document.body.style.backgroundColor = "#000000";
             let url = "";
             switch (type) {
+              case 3:
+                import("assets/games/picture_match/main.min.js");
+                break;
               case 2:
                 import("assets/games/2048/main.min.js");
                 break;

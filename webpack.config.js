@@ -65,6 +65,10 @@ var plugins = [
     	to: 'res'
     }]),
      new CopyWebpackPlugin([{
+       from: Path.resolve(__dirname, './assets/games/picture_match/assets'),
+       to: 'picture_match'
+     }]),
+     new CopyWebpackPlugin([{
        from: Path.resolve(__dirname, './assets/games/2048/css'),
        to: '2048'
      }]),
