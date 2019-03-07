@@ -66,9 +66,9 @@ declare interface Window {
   };
 
   JsToNative: {
+    // obb补丁文件安装
     pthInst();
     // 退出应用
-
     exitApp();
     // 获取设备信息
     getDeviceMsg(): string;

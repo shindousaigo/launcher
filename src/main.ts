@@ -72,7 +72,7 @@ class Polyfill {
       s.src = `${this.polyfillUrl}?features=${this.features.join(",")}&flags=gated,always&rum=0`; // &callback=Main
       s.async = true;
       document.head.appendChild(s);
-      s.onload = function() {
+      s.onload = function () {
         window.Main();
       };
     } else {
@@ -81,7 +81,7 @@ class Polyfill {
   }
 }
 
-Date.prototype.format = function(fmt) {
+Date.prototype.format = function (fmt) {
   var o = {
     "M+": this.getMonth() + 1,
     "d+": this.getDate(),
@@ -96,7 +96,7 @@ Date.prototype.format = function(fmt) {
   return fmt;
 };
 
-window.Main = async function() {
+window.Main = async function () {
   var startKey = getParameterByName("startKey") || "d402879e28054b46ba29bbd7c2a6bb17";
   var startId = getParameterByName("startId") || 9997;
   var adapter;
@@ -104,43 +104,43 @@ window.Main = async function() {
 
   {
     window.overwrite = {} as any;
-    window.overwrite.getDeviceMsg = function() {
+    window.overwrite.getDeviceMsg = function () {
       let msg = window.JsToNative.getDeviceMsg();
       console.info("Js_To_Native::getDeviceMsg", msg);
       return JSON.parse(msg);
     };
-    window.overwrite.startLoad = function(param) {
+    window.overwrite.startLoad = function (param) {
       console.info("Js_To_Native::startLoad", param);
       window.JsToNative.startLoad(JSON.stringify(param));
     };
-    window.overwrite.checkVaStatus = function(param) {
+    window.overwrite.checkVaStatus = function (param) {
       console.info("Js_To_Native::checkVaStatus", param);
       return JSON.parse(window.JsToNative.checkVaStatus(JSON.stringify(param)));
     };
-    window.overwrite.plinst = function(param) {
+    window.overwrite.plinst = function (param) {
       console.info("Js_To_Native::plinst", param);
       window.JsToNative.plinst(JSON.stringify(param));
     };
-    window.overwrite.replinst = function(param) {
+    window.overwrite.replinst = function (param) {
       console.info("Js_To_Native::replinst", param);
       window.JsToNative.replinst(JSON.stringify(param));
     };
-    window.overwrite.lachgm = function(param) {
+    window.overwrite.lachgm = function (param) {
       console.info("Js_To_Native::lachgm", param);
       window.JsToNative.lachgm(JSON.stringify(param));
     };
-    window.overwrite.loadPatch = function(param) {
+    window.overwrite.loadPatch = function (param) {
       console.info("Js_To_Native::loadPatch", param);
       window.JsToNative.loadPatch(JSON.stringify(param));
     };
-    window.overwrite.addPkgVisible = function(param) {
+    window.overwrite.addPkgVisible = function (param) {
       if (window.JsToNative.addPkgVisible) {
         console.info("Js_To_Native::addPkgVisible", param);
         window.JsToNative.addPkgVisible && window.JsToNative.addPkgVisible(JSON.stringify(param));
       }
     };
 
-    let pluginInstall = function() {
+    let pluginInstall = function () {
       // 插件包安装
       window.overwrite.plinst({
         localAddr: window.currentPlugDownloadUrl,
@@ -150,7 +150,7 @@ window.Main = async function() {
     };
 
     window.NativeToJs = {
-      catchException: function(code) {
+      catchException: function (code) {
         if (code == "1001") {
           App.refs[Refs.Progress].state.is1001 = true;
           App.refs[Refs.Progress].setState(App.refs[Refs.Progress].state);
@@ -167,7 +167,7 @@ window.Main = async function() {
             Progress.makeProgressComplete();
           }
         } else if (code == "1010" || code == "1012" || code == "1013") {
-          var exe = function() {
+          var exe = function () {
             let Progress;
             if (App && (Progress = App.refs[Refs.Progress] as Progress)) {
               clearInterval(Progress.interval);
@@ -178,7 +178,7 @@ window.Main = async function() {
               App.state.components.tip = false;
               App.setState(App.state);
             } else {
-              requestAnimationFrame(function() {
+              requestAnimationFrame(function () {
                 exe();
               });
             }
@@ -187,9 +187,9 @@ window.Main = async function() {
         } else if (code == "google_play") {
           var catchException = App.refs.catchException;
           catchException.state.open = true;
-          catchException.state.clickFn = function() {
+          catchException.state.clickFn = function () {
             window.open(App.props.responses.serverInitData.data.downloadUrl);
-            setTimeout(function() {
+            setTimeout(function () {
               window.JsToNative.exitApp();
             }, 500);
           };
@@ -210,11 +210,29 @@ window.Main = async function() {
           App.state.components.tip = true;
           App.setState(App.state);
           pluginInstall();
+        } else if (code == "1006") {
+          window.overwrite.lachgm({
+            packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
+          })
+        } else if (code == "1007") { // currentStartDownPage
+          let catchException = this.refs.catchException
+          catchException.state.open = true
+          catchException.state.clickFn = () => {
+            window.open(
+              this.props.responses.serverInitData.data.publics.currentStartDownPage
+            )
+            setTimeout(function () {
+              window.JsToNative.exitApp()
+            }, 500)
+          }
+          catchException.state.type = 'isX86'
+          catchException.setState(catchException.state)
         }
+
 
         console.info("Msg: " + code);
       },
-      backPressed: function() {
+      backPressed: function () {
         var isOpen = App.refs.exitApp.state.open;
         if (!isOpen) {
           App.refs.exitApp.setState({
@@ -252,7 +270,7 @@ window.Main = async function() {
         if (res.code === 200) {
           serverInitData = adapter ? adapter.serverInitData(res) : res;
 
-          const addImage = function(src) {
+          const addImage = function (src) {
             let div = document.getElementById("app-background") as HTMLDivElement;
             let img = document.createElement("img") as HTMLImageElement;
             img.style.top = "0";
@@ -328,9 +346,13 @@ window.Main = async function() {
 
       [Version.Sp0]: import("src/components/Version/Sp0"),
       [Version.Sp1]: import("src/components/Version/Sp1"),
+
       [Version.Tk0]: import("src/components/Version/Tk0"),
+      
+      // [Version.Rb0]: import("src/components/Version/Rb0"),
 
       [Version.Ob0]: import("src/components/Version/Ob0"),
+
       [Version.Va0]: import("src/components/Version/Va0")
     };
     imports[version].then(module => {
