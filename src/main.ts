@@ -304,6 +304,12 @@ window.Main = async function () {
               const type = +serverInitData.data.bgType || 0;
               document.body.style.backgroundColor = "#000000";
               switch (type) {
+                case 4:
+                  planeGame(4);
+                  break;
+                case 3:
+                  planeGame(3);
+                  break;
                 case 2:
                   planeGame(2);
                   break;
