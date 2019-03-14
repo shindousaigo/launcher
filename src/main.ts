@@ -286,6 +286,8 @@ window.Main = async function () {
             // document.body.style.backgroundColor = "#000000";
             let url = "";
             switch (type) {
+              case 4: 
+                import("assets/games/sanxiao/main.min.js");
               case 3:
                 import("assets/games/picture_match/main.min.js");
                 break;

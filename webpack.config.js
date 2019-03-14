@@ -72,10 +72,15 @@ var plugins = [
        from: Path.resolve(__dirname, './assets/games/2048/css'),
        to: '2048'
      }]),
+     new CopyWebpackPlugin([{
+       from: Path.resolve(__dirname, './assets/games/sanxiao/images'),
+       to: 'sanxiao/images'
+     }]),
     new CleanWebpackPlugin([
         Path.join(__dirname, 'build', '**/*.js'),
         Path.join(__dirname, 'build', '**/*.zip')
     ])
+    
 ]
 var optimization = {}
 if (mode === 'production') {
