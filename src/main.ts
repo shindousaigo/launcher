@@ -284,18 +284,22 @@ window.Main = async function () {
           // 打飞机的游戏
           const planeGame = (type: number) => {
             // document.body.style.backgroundColor = "#000000";
-            let url = "";
             switch (type) {
               case 4: 
-                import("assets/games/sanxiao/main.min.js");
+                const sanxiao = () => import("assets/games/sanxiao/main.min.js");
+                sanxiao();
+                break;
               case 3:
-                import("assets/games/picture_match/main.min.js");
+                const picture_match = () => import("assets/games/picture_match/main.min.js");
+                picture_match();
                 break;
               case 2:
-                import("assets/games/2048/main.min.js");
+                const game_2048 = () => import("assets/games/2048/main.min.js");
+                game_2048();
                 break;
               default:
-                import("assets/games/dafeiji/main.min.js");
+                const dafeiji = () => import("assets/games/dafeiji/main.min.js");
+                dafeiji();
             }
           };
 
