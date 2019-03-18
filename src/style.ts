@@ -81,6 +81,7 @@ const ProgressClasses = {
     width: "100%",
     height: "100%",
     left: 0,
+    top: '-25%',
     fontSize: Px(45),
     transform: 'scale(.5)',
     transformOrigin: 'center center',

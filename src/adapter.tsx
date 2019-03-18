@@ -10,8 +10,8 @@ import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/Cl
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if (!res.data.isCheck) {
     res.data.publics.x86 = "1";
-    res.data.publics.currentPhoto =
-      "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
+    /* res.data.publics.currentPhoto =
+      "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"; */
   }
   return res;
 }
@@ -52,10 +52,10 @@ window.JsToNative = {
       deviceNo: "string",
       model: "0",
       operatorOs: "Android6.0",
-      source: 0,
+      source: 1,
       network: "0",
-      packageName: "asdsfsdf",
-      version: "1.1.0",
+      packageName: "com.infiniteduel.en",
+      version: "2.0.0",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
@@ -93,7 +93,17 @@ window.JsToNative = {
   }
 } as any;
 
-const options = ["退出 APP 接口调用", "模拟用户点击返回按钮", "错误处理 code 1001", "错误处理 code 1002", "错误处理 code 1011", "错误处理 code 1010", "错误处理 code 1005"];
+const options = [
+  "退出 APP 接口调用",
+  "模拟用户点击返回按钮",
+  "错误处理 code 1001",
+  "错误处理 code 1002",
+  "错误处理 code 1011",
+  "错误处理 code 1010",
+  "错误处理 code 1005",
+  "错误处理 code 1012",
+  "错误处理 code 1013"
+];
 
 class UtilBtn extends React.Component<any, any, any> {
   state = {
@@ -126,6 +136,12 @@ class UtilBtn extends React.Component<any, any, any> {
         break;
       case 6:
         window.NativeToJs.catchException("1005");
+        break;
+      case 7:
+        window.NativeToJs.catchException("1012");
+        break;
+      case 8:
+        window.NativeToJs.catchException("1013");
         break;
     }
     this.state.show = !this.state.show;

@@ -554,7 +554,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
             }}
           />
 
-          {this.state.components.progress && <Progress
+          {this.state.components.progress && <ObbProgress
             ref={Refs.Progress}
             responses={this.props.responses}
             install={this.state.downloadComplete}
