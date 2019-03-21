@@ -245,8 +245,8 @@ window.Main = async function() {
   var nativeInitData: AppLauncher.Init.NativeResponse = window.overwrite.getDeviceMsg();
   var serverInitData: AppLauncher.Init.ServerResponse;
   var promise1: Promise<{
-    nativeInitData;
-    serverInitData;
+    nativeInitData: AppLauncher.Init.NativeResponse;
+    serverInitData: AppLauncher.Init.ServerResponse;
   }> = new Promise((resolve, reject) => {
     var data: AppLauncher.Init.ServerRequest = {
       startId,
