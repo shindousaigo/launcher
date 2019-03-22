@@ -13,7 +13,7 @@
 6. rb0:
 7. va0:
 
-使用的库有：[swiper](http://idangero.us/swiper/get-started/),[material-ui](https://material-ui.com/getting-started/installation/),[typescript](https://www.tslang.cn/docs/handbook/typescript-in-5-minutes.html)
+使用的库有：[swiper](http://idangero.us/swiper/get-started/),[material-ui](https://material-ui.com/getting-started/installation/),[typescript](https://www.tslang.cn/docs/handbook/typescript-in-5-minutes.html),[compare-versions](https://github.com/omichelsen/compare-versions)
 
 构建：
 [Jenkins](http://jenkins.royale.com/) 正式打包流程是：选择prod-build-frontend-launcher > Build with Parameters > 在version中传入方案名：例如ob0，打包完成后，联系运维部署到需要的节点，现在有新加坡节点、德法节点、越南节点。
@@ -68,7 +68,7 @@ Tip中主要是一些提示
 3. 给window上的overwrite上添加方法，使用的装饰器模式，主要是为了调试bug，打印日志信息：
 主要调用JsToNative中的同名的方法来和原生的ios和android交互，添加异常处理函数和插件安装的函数
 4. 拿到设备信息，详情参阅index.d.ts中的 NativeResponse,Promise<{}>是typescript中对Promise的返回值的断言
-5. promise1请求init接口拿到服务端的返回值，详情参阅index.d.ts中的  ServerResponse，promise2根据版本来却行要加载的页面组件，成功返回组件的渲染函数
+5. promise1请求init接口拿到服务端的返回值，详情参阅index.d.ts中的  ServerResponse，在请求完成之后分为提审状态和非提审状态，isCheck===1：提审状态时，是要放置一个小游戏或图片来混淆，当非提审状态，则添加轮播或者在x86或者只有一张图片时只添加背景图。promise2根据版本来却行要加载的页面组件，成功返回组件的渲染函数
 6. 当两个promise有一个未resolve则执行异常处理函数，输出错误信息，当都成功后执行渲染并将句柄留在App上以便后续操作
 7. NativeTojs 中主要是异常处理函数 和处理按下返回按钮后调起popular来提示确认要退出吗？，如果有弹窗则什么都不做的函数。
 8. 异常处理函数
@@ -83,8 +83,6 @@ Tip中主要是一些提示
     - 1004无补丁，直接安装插件包
     - 1005 sp1方案安装插件包
     - 1006 拉起插件包的接口
-    - 1007 重新下载游戏，抱歉！您的设备无法安装此游戏包，请点击重新下载可兼容的游戏包!
+    - 1007 重新下载游戏包，抱歉！您的设备无法安装此游戏包，请点击重新下载可兼容的游戏包!
 
-### 具体方案的组件的流程
-
-**Ob0**
+各个版本的具体的组件参阅Version
