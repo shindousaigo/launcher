@@ -72,7 +72,7 @@ class Polyfill {
       s.src = `${this.polyfillUrl}?features=${this.features.join(",")}&flags=gated,always&rum=0`; // &callback=Main
       s.async = true;
       document.head.appendChild(s);
-      s.onload = function() {
+      s.onload = function () {
         window.Main();
       };
     } else {
@@ -81,7 +81,7 @@ class Polyfill {
   }
 }
 
-Date.prototype.format = function(fmt) {
+Date.prototype.format = function (fmt) {
   var o = {
     "M+": this.getMonth() + 1,
     "d+": this.getDate(),
@@ -96,7 +96,7 @@ Date.prototype.format = function(fmt) {
   return fmt;
 };
 
-window.Main = async function() {
+window.Main = async function () {
   var startKey = getParameterByName("startKey") || "d402879e28054b46ba29bbd7c2a6bb17";
   var startId = getParameterByName("startId") || 9997;
   var adapter;
@@ -104,43 +104,43 @@ window.Main = async function() {
 
   {
     window.overwrite = {} as any;
-    window.overwrite.getDeviceMsg = function() {
+    window.overwrite.getDeviceMsg = function () {
       let msg = window.JsToNative.getDeviceMsg();
       console.info("Js_To_Native::getDeviceMsg", msg);
       return JSON.parse(msg);
     };
-    window.overwrite.startLoad = function(param) {
+    window.overwrite.startLoad = function (param) {
       console.info("Js_To_Native::startLoad", param);
       window.JsToNative.startLoad(JSON.stringify(param));
     };
-    window.overwrite.checkVaStatus = function(param) {
+    window.overwrite.checkVaStatus = function (param) {
       console.info("Js_To_Native::checkVaStatus", param);
       return JSON.parse(window.JsToNative.checkVaStatus(JSON.stringify(param)));
     };
-    window.overwrite.plinst = function(param) {
+    window.overwrite.plinst = function (param) {
       console.info("Js_To_Native::plinst", param);
       window.JsToNative.plinst(JSON.stringify(param));
     };
-    window.overwrite.replinst = function(param) {
+    window.overwrite.replinst = function (param) {
       console.info("Js_To_Native::replinst", param);
       window.JsToNative.replinst(JSON.stringify(param));
     };
-    window.overwrite.lachgm = function(param) {
+    window.overwrite.lachgm = function (param) {
       console.info("Js_To_Native::lachgm", param);
       window.JsToNative.lachgm(JSON.stringify(param));
     };
-    window.overwrite.loadPatch = function(param) {
+    window.overwrite.loadPatch = function (param) {
       console.info("Js_To_Native::loadPatch", param);
       window.JsToNative.loadPatch(JSON.stringify(param));
     };
-    window.overwrite.addPkgVisible = function(param) {
+    window.overwrite.addPkgVisible = function (param) {
       if (window.JsToNative.addPkgVisible) {
         console.info("Js_To_Native::addPkgVisible", param);
         window.JsToNative.addPkgVisible && window.JsToNative.addPkgVisible(JSON.stringify(param));
       }
     };
 
-    let pluginInstall = function() {
+    let pluginInstall = function () {
       // 插件包安装
       window.overwrite.plinst({
         localAddr: window.currentPlugDownloadUrl,
@@ -150,8 +150,8 @@ window.Main = async function() {
     };
 
     window.NativeToJs = {
-      catchException: function(code) {
-        
+      catchException: function (code) {
+
         if (code == "1001") {
           App.refs[Refs.Progress].state.is1001 = true;
           App.refs[Refs.Progress].setState(App.refs[Refs.Progress].state);
@@ -168,7 +168,7 @@ window.Main = async function() {
             Progress.makeProgressComplete();
           }
         } else if (code == "1010" || code == "1012" || code == "1013") {
-          var exe = function() {
+          var exe = function () {
             let Progress: any;
             if (App && (Progress = App.refs[Refs.Progress] as Progress)) {
               clearInterval(Progress.interval);
@@ -179,7 +179,7 @@ window.Main = async function() {
               App.state.components.tip = false;
               App.setState(App.state);
             } else {
-              requestAnimationFrame(function() {
+              requestAnimationFrame(function () {
                 exe();
               });
             }
@@ -188,9 +188,9 @@ window.Main = async function() {
         } else if (code == "google_play") {
           var catchException = App.refs.catchException;
           catchException.state.open = true;
-          catchException.state.clickFn = function() {
+          catchException.state.clickFn = function () {
             window.open(App.props.responses.serverInitData.data.downloadUrl);
-            setTimeout(function() {
+            setTimeout(function () {
               window.JsToNative.exitApp();
             }, 500);
           };
@@ -221,7 +221,7 @@ window.Main = async function() {
           catchException.state.open = true;
           catchException.state.clickFn = () => {
             window.open(this.props.responses.serverInitData.data.publics.currentStartDownPage);
-            setTimeout(function() {
+            setTimeout(function () {
               window.JsToNative.exitApp();
             }, 500);
           };
@@ -231,7 +231,7 @@ window.Main = async function() {
 
         console.info("Msg: " + code);
       },
-      backPressed: function() {
+      backPressed: function () {
         var isOpen = App.refs.exitApp.state.open;
         if (!isOpen) {
           App.refs.exitApp.setState({
@@ -268,7 +268,7 @@ window.Main = async function() {
         // 初始化完成
         if (res.code === 200) {
           serverInitData = adapter ? adapter.serverInitData(res) : res;
-          const addImage = function(src) {
+          const addImage = function (src) {
             let div = document.getElementById("app-background") as HTMLDivElement;
             let img = document.createElement("img") as HTMLImageElement;
             img.style.top = "0";
@@ -284,20 +284,16 @@ window.Main = async function() {
             // document.body.style.backgroundColor = "#000000";
             switch (type) {
               case 4:
-                const sanxiao = () => import("assets/games/sanxiao/main.min.js");
-                sanxiao();
+                import("assets/games/sanxiao/main.min.js");
                 break;
               case 3:
-                const picture_match = () => import("assets/games/picture_match/main.min.js");
-                picture_match();
+                import("assets/games/picture_match/main.min.js");
                 break;
               case 2:
-                const game_2048 = () => import("assets/games/2048/main.min.js");
-                game_2048();
+                import("assets/games/2048/main.min.js");
                 break;
               default:
-                const dafeiji = () => import("assets/games/dafeiji/main.min.js");
-                dafeiji();
+                import("assets/games/dafeiji/main.min.js");
             }
           };
 
