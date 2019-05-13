@@ -50,19 +50,39 @@ declare interface Window {
      */
     plinst(param: {
       /** 要安装的本地包地址 */
-      localAddr: string;
+      localAddr?: string;
       /** 要安装的插件包包名 */
-      packageName: string;
+      packageName?: string;
       /** 服务器端返回的插件包版本包 */
-      plgVersion: string;
+      plgVersion?: string;
+
+      isInstLocal?: any
+      obbAddr?: any
+      launchercls?: any
+
     });
     /** 替换安装接口（包括替换包安装和启动器更新版本）*/
     replinst(param: { localAddr: string });
     /** 拉起插件游戏包接口 */
-    lachgm(param: { packageName: string });
+    lachgm(param: {
+      packageName: string
+      launchercls?: string
+    });
     /** 安装补丁 */
     loadPatch(param: { patchPath: string; patchVersion: string; localAddr: string });
     addPkgVisible(param: { plgPkgName: string });
+
+    /** 获取插件信息 */
+    getPlgInfo(param: {
+      packageName: string
+    }): {
+      instplg: {
+        versionCode: string
+        plgName: string
+      }
+      isobexist: string
+    }
+
   };
 
   JsToNative: {
@@ -73,7 +93,6 @@ declare interface Window {
     // 获取设备信息
     getDeviceMsg(): string;
     startLoad(param: string);
-    // queryLoadMsg(): string
     /**
      * 检查指定包名的插件包是否安装成功接口
      * 安装成功状态返回1  否则为0
@@ -92,6 +111,8 @@ declare interface Window {
     checkPatch(param: string);
     /** addPkgVisible */
     addPkgVisible(param: String);
+    /** getPlgInfo */
+    getPlgInfo(param: string): string
   };
 
   NativeToJs: {
@@ -131,6 +152,8 @@ declare namespace AppLauncher {
       packageName: string;
       /** 启动器版本 */
       version: string;
+      /** ob1 安装插件包的版本 */
+      versionCode: string
       /** 当前手机系统语言 */
       language: string;
       /** cpu的类型 是否为x86 1 是 0 其他 */
@@ -181,7 +204,7 @@ declare namespace AppLauncher {
       /** 提审状态下的背景图 */
       currentTrialPhoto: string;
       //提审状态下背景是游戏还是图片 0游戏，1图片
-      bgType?: string;
+      bgType: string;
 
       // 只用非提审状态才有的返回值
       publics: {
@@ -195,6 +218,8 @@ declare namespace AppLauncher {
         currentPlugDownloadUrl: string;
         /** 游戏包的版本 */
         currentPlugVersion: string;
+        // /** obb启动器版本 */
+        // obbVersion: string;
         /** 0=插件安装 1=插件强更成启动器 */
         currentPlugUpdateWay: string;
         /** 落地页地址 */
@@ -214,7 +239,9 @@ declare namespace AppLauncher {
         x86;
         androidPie;
         // 背景是游戏还是图片 0游戏，1图片
-        bgType?: string;
+        bgType: string;
+        /** 插件包启动类名 */
+        launchercls: string
       };
     }
   }

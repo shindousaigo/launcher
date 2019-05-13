@@ -1,10 +1,11 @@
 
+const urlParamMap = {}
+
 /**
  * GET 参数获取
  * @param name 参数名称
  */
 export const getParameterByName = (function () {
-  let urlParamMap = {}
   let interrogationIndex = location.href.indexOf("?") + 1
   let str = interrogationIndex === 0 ? "" : location.href.slice(interrogationIndex)
   if (str) {
@@ -20,3 +21,7 @@ export const getParameterByName = (function () {
     return urlParamMap.hasOwnProperty(name) ? urlParamMap[name] : null
   }
 })()
+
+export const setUrlParamMap = function (key, val) {
+  urlParamMap[key] = val
+}
