@@ -17,14 +17,14 @@ export default class Tip extends React.Component<TipProps, any, any> {
 
   languagePack = {
     msg_tip_wait: {
-      de: 'Wird geladen',
-      en: 'Wird geladen',
-      fr: 'Wird geladen',
-      id: 'Wird geladen',
-      ko: 'Wird geladen',
-      th: 'Wird geladen',
-      vi: 'Wird geladen',
-      zh: 'Wird geladen',
+      de: 'Laden…',
+      en: 'Loading…',
+      fr: 'Chargement…',
+      id: 'Sedang memuat',
+      ko: '로딩 중 ',
+      th: 'กำลังโหลด',
+      vi: 'Đang tải…',
+      zh: '加載中...',
     },
   }
 
