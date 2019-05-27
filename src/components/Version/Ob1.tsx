@@ -7,15 +7,13 @@ import { S, Px } from "../../style"
 import Button from "src/components/Button"
 import Dialog from "src/bower/material-ui/packages/material-ui/src/Dialog"
 import DialogContent from "src/bower/material-ui/packages/material-ui/src/DialogContent"
-import Sophix from "src/components/Progress/Sp0"
-import ObbProgress from "src/components/Progress/Ob0"
 import "src/style.scss"
 import Tip from "../../TipOb1"
-import { getParameterByName } from "../../Utils";
-import { Version, Refs } from "../../const";
+import { Refs } from "../../const";
 import { Delay } from "src/factory/functions";
 import Index from ".";
-import Progress from 'src/components/Progress/Sp0'
+import SophixProgress from 'src/components/Progress/Sp0'
+import ObbProgress from 'src/components/Progress/Ob0'
 
 type WithRef = { ref?: any }
 
@@ -224,7 +222,8 @@ type AppRefs = {
   exitApp: ExitApp
   catchException: CatchException
   catchExceptionContainer: Element
-  [Refs.Progress]: Sophix & ObbProgress
+  [Refs.SophixProgress]: SophixProgress
+  [Refs.ObbProgress]: ObbProgress
 }
 export class App extends React.Component<AppProps, any, any> implements Index {
   public refs: AppRefs
@@ -233,8 +232,8 @@ export class App extends React.Component<AppProps, any, any> implements Index {
     super(props)
     App.instance = this
     window.NativeToJs.downloadUpdate = (msg) => {
-      var Progress = this.refs[Refs.Progress]
-      if (msg && Progress) {
+      const SophixProgress = this.refs[Refs.SophixProgress]
+      if (msg && SophixProgress) {
         var state = {
           downloaded: Math.floor(msg.soFarBytes / 1024 / 1024) + 'M',
           total: Math.floor(msg.totalBytes / 1024 / 1024) + 'M',
@@ -247,8 +246,12 @@ export class App extends React.Component<AppProps, any, any> implements Index {
             obbAddr: msg.localFilePath,
             launchercls: this.props.responses.serverInitData.data.publics.launchercls
           })
-          this.state.components.tip = true
-          this.setState(this.state)
+          requestAnimationFrame(() => {
+            this.state.components.sophixProgress = false
+            this.state.components.tip = true
+            this.state.components.obbProgress = true
+            this.setState(this.state)
+          })
           state.complete = true
           state.speed = 0
           state.downloaded = 0
@@ -256,7 +259,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
           state.rate = 0
           state.isLoading = true
         }
-        Progress.setState(state)
+        SophixProgress.setState(state)
       }
     }
     this.init()
@@ -264,14 +267,18 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
   state = {
     components: {
-      progress: false,
+      tip: false,
+
+      sophixProgress: false,
+      obbProgress: false,
+
       catchException: {
         container: null
       },
       exitApp: {
         container: null
       },
-      tip: false
+
     },
   }
 
@@ -285,7 +292,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
   downloadPlugPackage() {
     console.log("downloadPlugPackage downloadPlugPackage downloadPlugPackage")
-    this.state.components.progress = true
+    this.state.components.sophixProgress = true
     window.overwrite.startLoad({
       url: this.props.responses.serverInitData.data.publics.currentPlugDownloadUrl
     })
@@ -299,8 +306,10 @@ export class App extends React.Component<AppProps, any, any> implements Index {
         packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
       })
       if (this.pluginInfo.instplg && this.versionCheck(this.pluginInfo.instplg.versionCode, "this.pluginInfo.instplg.versionCode")) {
+        // debugger
         this.lachgm()
       } else {
+        // debugger
         this.obbCheck()
       }
     }
@@ -333,21 +342,9 @@ export class App extends React.Component<AppProps, any, any> implements Index {
           isInstLocal: 1,
           launchercls: this.props.responses.serverInitData.data.publics.launchercls
         })
-
+        this.state.components.sophixProgress = false
         this.state.components.tip = true
-        this.state.components.progress = true
-        // this.setState(this.state)
-        this.didMount = () => {
-          var Progress = this.refs[Refs.Progress]
-          var state = {} as any
-          state.complete = true
-          state.speed = 0
-          state.downloaded = 0
-          state.total = 0
-          state.rate = 0
-          state.isLoading = true
-          Progress.setState(state)
-        }
+        this.state.components.obbProgress = true
       } else {
         this.downloadPlugPackage()
       }
@@ -378,13 +375,21 @@ export class App extends React.Component<AppProps, any, any> implements Index {
             }}
           />
 
-          {this.state.components.progress && <Progress
-            ref={Refs.Progress}
+          {this.state.components.sophixProgress && <SophixProgress
+            ref={Refs.SophixProgress}
             responses={this.props.responses}
             classes={this.props.classes}
             language={this.props.responses.nativeInitData.language}
           />}
 
+
+          {this.state.components.obbProgress && <ObbProgress
+            ref={Refs.ObbProgress}
+            responses={this.props.responses}
+            classes={this.props.classes}
+            language={this.props.responses.nativeInitData.language}
+            speed={7}
+          />}
 
           {!this.props.responses.serverInitData.data.isCheck && (
             <Facebook

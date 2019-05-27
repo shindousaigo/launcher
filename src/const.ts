@@ -14,5 +14,7 @@ export enum Version {
 }
 
 export enum Refs {
-  Progress = 'progress'
+  Progress = 'progress',
+  SophixProgress = 'sophixProgress',
+  ObbProgress = 'obbProgress'
 }

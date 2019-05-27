@@ -48,7 +48,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
 
   render() {
     return <Grid_
-      style={{ height: '13rem' }}
+      style={{ height: '12.8rem' }}
       className={this.props.classes.tip_wrapper + ' tip_shin'}
       container
       alignItems="center"
@@ -56,7 +56,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
       direction="column"
     >
       <Grid
-        style={{ marginTop: '.9rem' }}
+        style={{ marginTop: '.7rem' }}
         className={this.props.classes.tip_wrapper2}
         container
         alignItems="center"
@@ -70,6 +70,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
         </Grid_>
       </Grid>
       <Grid
+        style={{ marginTop: '-.5rem' }}
         className={this.props.classes.tip_txt_wrapper}
         container
         wrap="wrap"
@@ -88,7 +89,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
           })
         })()}
       </Grid>
-      <img style={{ top: '11.1rem' }} className={this.props.classes.tip_ok} src={require('assets/ok.png')} onClick={this.close} />
+      <img style={{ top: '10.8rem' }} className={this.props.classes.tip_ok} src={require('assets/ok.png')} onClick={this.close} />
     </Grid_>
   }
 }

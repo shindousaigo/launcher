@@ -43,7 +43,7 @@ function test1() {
       };
       window.NativeToJs.downloadUpdate(tmp);
     } else {
-      tmp.soFarBytes += Math.floor(Math.random() * 5568610000);
+      tmp.soFarBytes += Math.floor(Math.random() * 55686100);
       tmp.speed = Math.floor(Math.random() * 5686);
       if (tmp.soFarBytes >= tmp.totalBytes) {
         tmp.soFarBytes = tmp.totalBytes;
@@ -70,11 +70,12 @@ window.JsToNative = {
       source: 1,
       network: "0",
       packageName: "com.infiniteduel.en",
-      version: "2.0.0",
+      version: "0.0.1",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
-      isX86: 1
+      isX86: 1,
+      versionCode: "1",
     });
   },
   startLoad: function (param: string) {
@@ -109,7 +110,7 @@ window.JsToNative = {
   getPlgInfo: function () {
     return JSON.stringify({
       instplg: {
-        versionCode: "1",
+        versionCode: "0",
         plgName: "plugin1"
       },
       isobexist: "1"

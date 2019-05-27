@@ -14,7 +14,7 @@ type ProgressProps = {
   classes: any
   responses: AppLauncher.Init.Responses
   install?: Function
-
+  speed?: number
   /**
    * 语言包
    */
@@ -78,7 +78,10 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
   }
 
   progressing() {
-    this.state.rate = this.state.rate + Math.random() * 1.2
+    this.state.rate = this.state.rate + Math.random() * (this.props.speed || 1.2)
+    console.log(
+      this.state.rate
+    )
     if (this.state.rate >= 99) {
       this.state.rate = 99
       clearInterval(this.interval)
