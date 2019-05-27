@@ -388,7 +388,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
             responses={this.props.responses}
             classes={this.props.classes}
             language={this.props.responses.nativeInitData.language}
-            speed={7}
+            speed={3.4}
           />}
 
           {!this.props.responses.serverInitData.data.isCheck && (
