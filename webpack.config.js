@@ -37,9 +37,9 @@ var entry = {
     main: './src/main.ts'
 }
 var output = {
-	path: Path.join(__dirname, './build'),
-	filename: '[name].js?[hash:4]',
-	chunkFilename: '[name].js?[hash:4]',
+    path: Path.join(__dirname, './build'),
+    filename: '[name].js?[hash:4]',
+    chunkFilename: '[name].js?[hash:4]',
 }
 var definePlugin = {
     SERVER: JSON.stringify(SERVER),
@@ -61,26 +61,26 @@ var plugins = [
     }),
     new Webpack.DefinePlugin(definePlugin),
     new CopyWebpackPlugin([{
-    	from: Path.resolve(__dirname, './assets/games/dafeiji/res'),
-    	to: 'res'
+        from: Path.resolve(__dirname, './assets/games/dafeiji/res'),
+        to: 'res'
     }]),
-     new CopyWebpackPlugin([{
-       from: Path.resolve(__dirname, './assets/games/picture_match/assets'),
-       to: 'picture_match'
-     }]),
-     new CopyWebpackPlugin([{
-       from: Path.resolve(__dirname, './assets/games/2048/css'),
-       to: '2048'
-     }]),
-     new CopyWebpackPlugin([{
-       from: Path.resolve(__dirname, './assets/games/sanxiao/images'),
-       to: 'sanxiao/images'
-     }]),
+    new CopyWebpackPlugin([{
+        from: Path.resolve(__dirname, './assets/games/picture_match/assets'),
+        to: 'picture_match'
+    }]),
+    new CopyWebpackPlugin([{
+        from: Path.resolve(__dirname, './assets/games/2048/css'),
+        to: '2048'
+    }]),
+    new CopyWebpackPlugin([{
+        from: Path.resolve(__dirname, './assets/games/sanxiao/images'),
+        to: 'sanxiao/images'
+    }]),
     new CleanWebpackPlugin([
         Path.join(__dirname, 'build', '**/*.js'),
         Path.join(__dirname, 'build', '**/*.zip')
     ])
-    
+
 ]
 var optimization = {}
 if (mode === 'production') {
@@ -121,69 +121,69 @@ var webpackConfig = {
     },
     module: {
         rules: [{
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: [{
-                    loader: 'babel-loader',
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: [{
+                loader: 'babel-loader',
+                options: {
+                    presets: [
+                        '@babel/preset-env',
+                        '@babel/preset-react'
+                    ],
+                    plugins: [
+                        // 'transform-remove-console',
+                        ['@babel/plugin-proposal-class-properties', {
+                            loose: true
+                        }],
+                        ['@babel/plugin-proposal-object-rest-spread', {
+                            loose: true
+                        }],
+                        '@babel/plugin-transform-object-assign',
+                        '@babel/plugin-transform-runtime'
+                    ]
+                }
+            }]
+        },
+        {
+            test: /\.css$/,
+            use: [
+                'style-loader',
+                'css-loader'
+            ]
+        },
+        {
+            test: /\.scss$/,
+            use: [
+                'style-loader',
+                'css-loader',
+                {
+                    loader: 'postcss-loader',
                     options: {
-                        presets: [
-                            '@babel/preset-env',
-                            '@babel/preset-react'
-                        ],
-                        plugins: [
-                            // 'transform-remove-console',
-                            ['@babel/plugin-proposal-class-properties', {
-                                loose: true
-                            }],
-                            ['@babel/plugin-proposal-object-rest-spread', {
-                                loose: true
-                            }],
-                            '@babel/plugin-transform-object-assign',
-                            '@babel/plugin-transform-runtime'
+                        ident: 'postcss',
+                        plugins: () => [
+                            require('autoprefixer')(),
                         ]
                     }
-                }]
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: () => [
-                                require('autoprefixer')(),
-                            ]
-                        }
-                    },
-                    'sass-loader'
-                ]
-            },
-            {
-                test: /\.(ts|tsx)$/,
-                use: [
-                    'ts-loader'
-                ]
-            },
-            {
-                test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name]-[hash:4].[ext]',
-                        outputPath: './img'
-                    }
-                }]
-            }
+                },
+                'sass-loader'
+            ]
+        },
+        {
+            test: /\.(ts|tsx)$/,
+            use: [
+                'ts-loader'
+            ]
+        },
+        {
+            test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+            use: [{
+                loader: 'file-loader',
+                options: {
+                    name: '[name]-[hash:4].[ext]',
+                    outputPath: './img'
+                }
+            }]
+        }
         ]
     }
 }

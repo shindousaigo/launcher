@@ -13,7 +13,7 @@ import LinearProgress from "src/bower/material-ui/packages/material-ui/src/Linea
 type ProgressProps = {
   classes: any
   responses: AppLauncher.Init.Responses
-  install: Function
+  install?: Function
 
   /**
    * 语言包

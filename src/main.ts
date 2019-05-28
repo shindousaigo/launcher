@@ -1,7 +1,6 @@
 import AppInstance from "src/components/Version/index";
 import { getParameterByName } from "./Utils";
 import { Refs, Version } from "./const";
-import Progess from "Src/components/Progress";
 import Progress from "Src/components/Progress";
 
 var App: AppInstance;
@@ -72,7 +71,7 @@ class Polyfill {
       s.src = `${this.polyfillUrl}?features=${this.features.join(",")}&flags=gated,always&rum=0`; // &callback=Main
       s.async = true;
       document.head.appendChild(s);
-      s.onload = function() {
+      s.onload = function () {
         window.Main();
       };
     } else {
@@ -81,7 +80,7 @@ class Polyfill {
   }
 }
 
-Date.prototype.format = function(fmt) {
+Date.prototype.format = function (fmt) {
   var o = {
     "M+": this.getMonth() + 1,
     "d+": this.getDate(),
@@ -96,51 +95,61 @@ Date.prototype.format = function(fmt) {
   return fmt;
 };
 
-window.Main = async function() {
-  var startKey = getParameterByName("startKey") || "d402879e28054b46ba29bbd7c2a6bb17";
-  var startId = getParameterByName("startId") || 9997;
-  var adapter;
+window.Main = async function () {
+
+  let adapter;
   if (!window.JsToNative) adapter = await import("./adapter");
+
+  const startKey = getParameterByName("startKey")
+  const startId = getParameterByName("startId")
+
+  // console.log(startKey, startId)
 
   {
     window.overwrite = {} as any;
-    window.overwrite.getDeviceMsg = function() {
+    window.overwrite.getDeviceMsg = function () {
       let msg = window.JsToNative.getDeviceMsg();
       console.info("Js_To_Native::getDeviceMsg", msg);
       return JSON.parse(msg);
     };
-    window.overwrite.startLoad = function(param) {
+    window.overwrite.startLoad = function (param) {
       console.info("Js_To_Native::startLoad", param);
       window.JsToNative.startLoad(JSON.stringify(param));
     };
-    window.overwrite.checkVaStatus = function(param) {
+    window.overwrite.checkVaStatus = function (param) {
       console.info("Js_To_Native::checkVaStatus", param);
       return JSON.parse(window.JsToNative.checkVaStatus(JSON.stringify(param)));
     };
-    window.overwrite.plinst = function(param) {
+    window.overwrite.plinst = function (param) {
       console.info("Js_To_Native::plinst", param);
       window.JsToNative.plinst(JSON.stringify(param));
     };
-    window.overwrite.replinst = function(param) {
+    window.overwrite.replinst = function (param) {
       console.info("Js_To_Native::replinst", param);
       window.JsToNative.replinst(JSON.stringify(param));
     };
-    window.overwrite.lachgm = function(param) {
+    window.overwrite.lachgm = function (param) {
       console.info("Js_To_Native::lachgm", param);
       window.JsToNative.lachgm(JSON.stringify(param));
     };
-    window.overwrite.loadPatch = function(param) {
+    window.overwrite.loadPatch = function (param) {
       console.info("Js_To_Native::loadPatch", param);
       window.JsToNative.loadPatch(JSON.stringify(param));
     };
-    window.overwrite.addPkgVisible = function(param) {
+    window.overwrite.addPkgVisible = function (param) {
       if (window.JsToNative.addPkgVisible) {
         console.info("Js_To_Native::addPkgVisible", param);
         window.JsToNative.addPkgVisible && window.JsToNative.addPkgVisible(JSON.stringify(param));
       }
     };
+    window.overwrite.getPlgInfo = function (param) {
+      console.info("Js_To_Native::getPlgInfo", param);
+      return JSON.parse(
+        window.JsToNative.getPlgInfo(JSON.stringify(param))
+      );
+    }
 
-    let pluginInstall = function() {
+    const pluginInstall = function () {
       // 插件包安装
       window.overwrite.plinst({
         localAddr: window.currentPlugDownloadUrl,
@@ -150,8 +159,7 @@ window.Main = async function() {
     };
 
     window.NativeToJs = {
-      catchException: function(code) {
-        
+      catchException: function (code) {
         if (code == "1001") {
           App.refs[Refs.Progress].state.is1001 = true;
           App.refs[Refs.Progress].setState(App.refs[Refs.Progress].state);
@@ -160,15 +168,15 @@ window.Main = async function() {
           catchException.state.open = true;
           catchException.state.type = code;
           catchException.setState(catchException.state);
-          App.state.startDownload();
+          (App.state.startDownload || App.downloadPlugPackage).call(App)
         } else if (code == "1011") {
           // 补丁安装成功
-          let Progress = App.refs[Refs.Progress] as Progess;
+          let Progress = App.refs[Refs.Progress] as Progress;
           if (Progress) {
             Progress.makeProgressComplete();
           }
         } else if (code == "1010" || code == "1012" || code == "1013") {
-          var exe = function() {
+          var exe = function () {
             let Progress: any;
             if (App && (Progress = App.refs[Refs.Progress] as Progress)) {
               clearInterval(Progress.interval);
@@ -179,7 +187,7 @@ window.Main = async function() {
               App.state.components.tip = false;
               App.setState(App.state);
             } else {
-              requestAnimationFrame(function() {
+              requestAnimationFrame(function () {
                 exe();
               });
             }
@@ -188,9 +196,9 @@ window.Main = async function() {
         } else if (code == "google_play") {
           var catchException = App.refs.catchException;
           catchException.state.open = true;
-          catchException.state.clickFn = function() {
+          catchException.state.clickFn = function () {
             window.open(App.props.responses.serverInitData.data.downloadUrl);
-            setTimeout(function() {
+            setTimeout(function () {
               window.JsToNative.exitApp();
             }, 500);
           };
@@ -203,7 +211,7 @@ window.Main = async function() {
           pluginInstall();
         } else if (code == "1005") {
           // sp1 安装插件包
-          let Progress = App.refs[Refs.Progress] as Progess;
+          let Progress = App.refs[Refs.Progress] as Progress;
           if (Progress) {
             Progress.state.complete = true;
             Progress.makeProgressComplete();
@@ -216,22 +224,20 @@ window.Main = async function() {
             packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
           });
         } else if (code == "1007") {
-          // currentStartDownPage
           let catchException = this.refs.catchException;
           catchException.state.open = true;
           catchException.state.clickFn = () => {
             window.open(this.props.responses.serverInitData.data.publics.currentStartDownPage);
-            setTimeout(function() {
+            setTimeout(function () {
               window.JsToNative.exitApp();
             }, 500);
           };
           catchException.state.type = "isX86";
           catchException.setState(catchException.state);
         }
-
         console.info("Msg: " + code);
       },
-      backPressed: function() {
+      backPressed: function () {
         var isOpen = App.refs.exitApp.state.open;
         if (!isOpen) {
           App.refs.exitApp.setState({
@@ -265,10 +271,9 @@ window.Main = async function() {
         data
       })
       .then((res: AppLauncher.Init.ServerResponse) => {
-        // 初始化完成
         if (res.code === 200) {
           serverInitData = adapter ? adapter.serverInitData(res) : res;
-          const addImage = function(src) {
+          const addImage = function (src) {
             let div = document.getElementById("app-background") as HTMLDivElement;
             let img = document.createElement("img") as HTMLImageElement;
             img.style.top = "0";
@@ -279,9 +284,7 @@ window.Main = async function() {
             img.src = src;
             div.appendChild(img);
           };
-          // 打飞机的游戏
           const planeGame = (type: number) => {
-            // document.body.style.backgroundColor = "#000000";
             switch (type) {
               case 4:
                 const sanxiao = () => import("assets/games/sanxiao/main.min.js");
@@ -328,13 +331,10 @@ window.Main = async function() {
                 planeGame(+getParameterByName("xyx") || +serverInitData.data.bgType || 0);
               }
             }
-            // addImage(serverInitData.data.currentTrialPhoto);
           } else {
-            // if (version === Version.Sp0) {
             window.overwrite.addPkgVisible({
               plgPkgName: serverInitData.data.publics.plgPkgName
             });
-            // }
             let images = serverInitData.data.publics.currentPhoto.split(",");
             if (nativeInitData.isX86 || images.length === 1) {
               addImage(images[0]);
@@ -363,9 +363,8 @@ window.Main = async function() {
 
       [Version.Tk0]: import("src/components/Version/Tk0"),
 
-      // [Version.Rb0]: import("src/components/Version/Rb0"),
-
       [Version.Ob0]: import("src/components/Version/Ob0"),
+      [Version.Ob1]: import("src/components/Version/Ob1"),
 
       [Version.Va0]: import("src/components/Version/Va0")
     };
