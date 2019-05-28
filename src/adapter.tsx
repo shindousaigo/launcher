@@ -6,15 +6,30 @@ import MenuItem from "src/bower/material-ui/packages/material-ui/src/MenuItem";
 import Menu from "src/bower/material-ui/packages/material-ui/src/Menu";
 import { withStyles } from "src/bower/material-ui/packages/material-ui/src/styles";
 import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/ClickAwayListener";
+import { getParameterByName, setUrlParamMap } from "./Utils";
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if (!res.data.isCheck) {
     res.data.publics.x86 = "1";
-    /* res.data.publics.currentPhoto =
-      "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png"; */
+    // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
+  } else {
+    // res.data.isCheck = 0
+    // res.data.publics = {} as any
   }
   return res;
 }
+
+/**
+ * 设置startKey和startId
+ */
+(function () {
+  if (!getParameterByName("startKey")) {
+    setUrlParamMap("startKey", "6630bba2bcf84a8eb62b602614cbb661")
+  }
+  if (!getParameterByName("startId")) {
+    setUrlParamMap("startId", "9000")
+  }
+})()
 
 var tmp;
 function test1() {
@@ -42,10 +57,10 @@ function test1() {
 }
 
 window.JsToNative = {
-  exitApp: function() {
+  exitApp: function () {
     window.NativeToJs.catchException("窗口关闭被调用");
   },
-  getDeviceMsg: function(): string {
+  getDeviceMsg: function (): string {
     return JSON.stringify({
       gaid: "string",
       device: "string",
@@ -55,41 +70,51 @@ window.JsToNative = {
       source: 1,
       network: "0",
       packageName: "com.infiniteduel.en",
-      version: "2.0.0",
+      version: "0.0.1",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
-      isX86: 1
+      isX86: 1,
+      versionCode: "1",
     });
   },
-  startLoad: function(param: string) {
+  startLoad: function (param: string) {
     tmp = null;
     test1();
   },
-  checkVaStatus: function(): string {
+  checkVaStatus: function (): string {
     return JSON.stringify(1);
   },
-  plinst: function(param: string) {
+  plinst: function (param: string) {
     console.info(param);
     console.log("开始安装插件包");
   },
-  replinst: function(param: string) {
+  replinst: function (param: string) {
     console.info(param);
     console.info("开始安装替换包");
   },
-  lachgm: function(param: string) {
+  lachgm: function (param: string) {
     console.info(param);
     console.info("拉起插件游戏包接口");
   },
-  loadPatch: function(param: string) {
+  loadPatch: function (param: string) {
     console.log("loadPatch", param);
   },
-  checkPatch: function(param: string) {
+  checkPatch: function (param: string) {
     console.log("checkPatch", param);
     window.NativeToJs.catchException("1004");
   },
-  pthInst: function() {
+  pthInst: function () {
     console.log("pthInst");
+  },
+  getPlgInfo: function () {
+    return JSON.stringify({
+      instplg: {
+        versionCode: "0",
+        plgName: "plugin1"
+      },
+      isobexist: "1"
+    })
   }
 } as any;
 
@@ -109,7 +134,6 @@ class UtilBtn extends React.Component<any, any, any> {
   state = {
     show: false
   };
-
   handleClickAway = () => {
     this.state.show = false;
     this.setState(this.state);
@@ -180,7 +204,7 @@ class UtilBtn extends React.Component<any, any, any> {
   }
 }
 
-var UtilBtn_ = withStyles({
+const UtilBtnWithStyles = withStyles({
   lockMenu: {
     position: "fixed",
     left: "4.5rem",
@@ -194,8 +218,8 @@ var UtilBtn_ = withStyles({
   }
 })(UtilBtn);
 
-window.onload = function() {
+window.onload = function () {
   var div = document.createElement("div");
   document.body.appendChild(div);
-  ReactDom.render(<UtilBtn_ />, div);
+  ReactDom.render(<UtilBtnWithStyles />, div);
 };

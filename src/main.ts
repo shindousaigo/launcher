@@ -1,7 +1,6 @@
 import AppInstance from "src/components/Version/index";
 import { getParameterByName } from "./Utils";
 import { Refs, Version } from "./const";
-import Progess from "Src/components/Progress";
 import Progress from "Src/components/Progress";
 
 var App: AppInstance;
@@ -97,10 +96,14 @@ Date.prototype.format = function (fmt) {
 };
 
 window.Main = async function () {
-  var startKey = getParameterByName("startKey") || "d402879e28054b46ba29bbd7c2a6bb17";
-  var startId = getParameterByName("startId") || 9997;
-  var adapter;
+
+  let adapter;
   if (!window.JsToNative) adapter = await import("./adapter");
+
+  const startKey = getParameterByName("startKey")
+  const startId = getParameterByName("startId")
+
+  // console.log(startKey, startId)
 
   {
     window.overwrite = {} as any;
@@ -139,8 +142,14 @@ window.Main = async function () {
         window.JsToNative.addPkgVisible && window.JsToNative.addPkgVisible(JSON.stringify(param));
       }
     };
+    window.overwrite.getPlgInfo = function (param) {
+      console.info("Js_To_Native::getPlgInfo", param);
+      return JSON.parse(
+        window.JsToNative.getPlgInfo(JSON.stringify(param))
+      );
+    }
 
-    let pluginInstall = function () {
+    const pluginInstall = function () {
       // 插件包安装
       window.overwrite.plinst({
         localAddr: window.currentPlugDownloadUrl,
@@ -151,7 +160,6 @@ window.Main = async function () {
 
     window.NativeToJs = {
       catchException: function (code) {
-
         if (code == "1001") {
           App.refs[Refs.Progress].state.is1001 = true;
           App.refs[Refs.Progress].setState(App.refs[Refs.Progress].state);
@@ -160,10 +168,10 @@ window.Main = async function () {
           catchException.state.open = true;
           catchException.state.type = code;
           catchException.setState(catchException.state);
-          App.state.startDownload();
+          (App.state.startDownload || App.downloadPlugPackage).call(App)
         } else if (code == "1011") {
           // 补丁安装成功
-          let Progress = App.refs[Refs.Progress] as Progess;
+          let Progress = App.refs[Refs.Progress] as Progress;
           if (Progress) {
             Progress.makeProgressComplete();
           }
@@ -203,7 +211,7 @@ window.Main = async function () {
           pluginInstall();
         } else if (code == "1005") {
           // sp1 安装插件包
-          let Progress = App.refs[Refs.Progress] as Progess;
+          let Progress = App.refs[Refs.Progress] as Progress;
           if (Progress) {
             Progress.state.complete = true;
             Progress.makeProgressComplete();
@@ -216,7 +224,6 @@ window.Main = async function () {
             packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
           });
         } else if (code == "1007") {
-          // currentStartDownPage
           let catchException = this.refs.catchException;
           catchException.state.open = true;
           catchException.state.clickFn = () => {
@@ -228,7 +235,6 @@ window.Main = async function () {
           catchException.state.type = "isX86";
           catchException.setState(catchException.state);
         }
-
         console.info("Msg: " + code);
       },
       backPressed: function () {
@@ -265,7 +271,6 @@ window.Main = async function () {
         data
       })
       .then((res: AppLauncher.Init.ServerResponse) => {
-        // 初始化完成
         if (res.code === 200) {
           serverInitData = adapter ? adapter.serverInitData(res) : res;
           const addImage = function (src) {
@@ -279,9 +284,7 @@ window.Main = async function () {
             img.src = src;
             div.appendChild(img);
           };
-          // 打飞机的游戏
           const planeGame = (type: number) => {
-            // document.body.style.backgroundColor = "#000000";
             switch (type) {
               case 4:
                 import("assets/games/sanxiao/main.min.js");
@@ -324,13 +327,10 @@ window.Main = async function () {
                 planeGame(+getParameterByName("xyx") || +serverInitData.data.bgType || 0);
               }
             }
-            // addImage(serverInitData.data.currentTrialPhoto);
           } else {
-            // if (version === Version.Sp0) {
             window.overwrite.addPkgVisible({
               plgPkgName: serverInitData.data.publics.plgPkgName
             });
-            // }
             let images = serverInitData.data.publics.currentPhoto.split(",");
             if (nativeInitData.isX86 || images.length === 1) {
               addImage(images[0]);
@@ -359,9 +359,8 @@ window.Main = async function () {
 
       [Version.Tk0]: import("src/components/Version/Tk0"),
 
-      // [Version.Rb0]: import("src/components/Version/Rb0"),
-
       [Version.Ob0]: import("src/components/Version/Ob0"),
+      [Version.Ob1]: import("src/components/Version/Ob1"),
 
       [Version.Va0]: import("src/components/Version/Va0")
     };
