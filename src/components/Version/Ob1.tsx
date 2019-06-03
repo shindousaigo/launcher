@@ -10,7 +10,7 @@ import DialogContent from "src/bower/material-ui/packages/material-ui/src/Dialog
 import "src/style.scss"
 import Tip from "../../TipOb1"
 import { Refs } from "../../const";
-import { Delay } from "src/factory/functions";
+import { Delay, x86 } from "src/factory/functions";
 import Index from ".";
 import SophixProgress from 'src/components/Progress/Sp0'
 import ObbProgress from 'src/components/Progress/Ob0'
@@ -280,6 +280,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
       },
 
     },
+    x86: false
   }
 
   lachgm() {
@@ -301,17 +302,25 @@ export class App extends React.Component<AppProps, any, any> implements Index {
   pluginInfo
 
   init = () => {
-    if (!this.props.responses.serverInitData.data.isCheck) { // 不为提审状态
-      this.pluginInfo = window.overwrite.getPlgInfo({
-        packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
-      })
-      if (this.pluginInfo.instplg && this.versionCheck(this.pluginInfo.instplg.versionCode, "this.pluginInfo.instplg.versionCode")) {
-        // debugger
-        this.lachgm()
-      } else {
-        // debugger
-        this.obbCheck()
+    if (!this.props.responses.serverInitData.data.isCheck) {
+
+      if (x86(this.props.responses.nativeInitData, this.props.responses.serverInitData.data)) {
+        this.state.x86 = true
+      } else { // 不为提审状态
+
+        this.pluginInfo = window.overwrite.getPlgInfo({
+          packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
+        })
+        if (this.pluginInfo.instplg && this.versionCheck(this.pluginInfo.instplg.versionCode, "this.pluginInfo.instplg.versionCode")) {
+          // debugger
+          this.lachgm()
+        } else {
+          // debugger
+          this.obbCheck()
+        }
+
       }
+
     }
   }
 
@@ -324,16 +333,31 @@ export class App extends React.Component<AppProps, any, any> implements Index {
   }
 
   componentDidMount() {
-    this.didMount()
+
+    if (this.state.x86) {
+      let catchException = this.refs.catchException
+      catchException.state.open = true
+      catchException.state.clickFn = () => {
+        window.open(
+          this.props.responses.serverInitData.data.publics.currentStartDownPage
+        )
+        setTimeout(function () {
+          window.JsToNative.exitApp()
+        }, 500)
+      }
+      catchException.state.type = 'isX86'
+      catchException.setState(catchException.state)
+    }
+
+    this.state.components.exitApp.container = this.refs.catchExceptionContainer
+    this.setState(this.state)
+
   }
   componentWillMount() {
     this.state.components.exitApp.container = this.refs.catchExceptionContainer
-    // setTimeout(()=>{
-    //   window.NativeToJs.catchException("1002")
-    // }, 5000)
   }
 
-  didMount = function () { }
+  // didMount = function () { }
 
   obbCheck() {
     if (+this.pluginInfo.isobexist) {
