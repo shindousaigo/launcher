@@ -206,7 +206,7 @@ declare namespace AppLauncher {
       //提审状态下背景是游戏还是图片 0游戏，1图片
       bgType: string;
 
-      // 只用非提审状态才有的返回值
+      // 非提审状态才有的返回值
       publics: {
         /** 补丁版本 */
         patchVersion: string;
@@ -236,7 +236,9 @@ declare namespace AppLauncher {
         currentStartDownloadUrl: string;
         /** 外部可见包名 */
         plgPkgName: string;
+
         x86;
+
         androidPie;
         // 背景是游戏还是图片 0游戏，1图片
         bgType: string;
