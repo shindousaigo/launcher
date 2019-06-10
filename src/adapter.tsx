@@ -10,7 +10,7 @@ import { getParameterByName, setUrlParamMap } from "./Utils";
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if (!res.data.isCheck) {
-    res.data.publics.x86 = "1";
+    res.data.publics.x86 = "0";
     // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
   } else {
     // res.data.isCheck = 0
