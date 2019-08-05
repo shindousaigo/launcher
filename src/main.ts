@@ -3,6 +3,8 @@ import { getParameterByName } from "./Utils";
 import { Refs, Version } from "./const";
 import Progress from "Src/components/Progress";
 
+console.log("IS_CACHE", IS_CACHE)
+
 var App: AppInstance;
 const version = getParameterByName("version") || VERSION;
 
@@ -14,7 +16,8 @@ class Http {
   constructor() {
     Http._ins = this;
   }
-  private serverAddress = location.host === "sdk-de.pocketgamesol.com" ? "http://start-de-sdk.pocketgamesol.com" : SERVER;
+  private serverAddress = location.host === "sdk-de.pocketgamesol.com" ? "http://start-de-sdk.pocketgamesol.com" : SERVER
+
   private request(param: any): Promise<any> {
     var data;
     if (param.data) {
@@ -319,14 +322,14 @@ window.Main = async function () {
                   planeGame(2);
                   break;
                 case 1:
-                  addImage(serverInitData.data.currentTrialPhoto);
+                  addImage(IS_CACHE ? './img/currentTrialPhoto.jpg' : serverInitData.data.currentTrialPhoto);
                   break;
                 default:
                   planeGame(0);
               }
             } else {
               if (+serverInitData.data.bgType === 1) {
-                addImage(serverInitData.data.currentTrialPhoto);
+                addImage(IS_CACHE ? './img/currentTrialPhoto.jpg' : serverInitData.data.currentTrialPhoto);
               } else {
                 planeGame(+getParameterByName("xyx") || +serverInitData.data.bgType || 0);
               }
@@ -337,7 +340,7 @@ window.Main = async function () {
             });
             let images = serverInitData.data.publics.currentPhoto.split(",");
             if (nativeInitData.isX86 || images.length === 1) {
-              addImage(images[0]);
+              addImage(IS_CACHE ? './img/currentPhoto.jpg' : images[0]);
             } else {
               import("src/components/slides/slides").then(module => {
                 const Slides = module.default;
@@ -357,15 +360,11 @@ window.Main = async function () {
   var promise2: Promise<Function> = new Promise(resolve => {
     var imports = {
       [Version.Dev]: import("src/components/Version/Dev"),
-
       [Version.Sp0]: import("src/components/Version/Sp0"),
       [Version.Sp1]: import("src/components/Version/Sp1"),
-
       [Version.Tk0]: import("src/components/Version/Tk0"),
-
       [Version.Ob0]: import("src/components/Version/Ob0"),
       [Version.Ob1]: import("src/components/Version/Ob1"),
-
       [Version.Va0]: import("src/components/Version/Va0")
     };
     imports[version].then(module => {

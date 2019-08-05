@@ -24,10 +24,10 @@ export function serverInitData(res: AppLauncher.Init.ServerResponse) {
  */
 (function () {
   if (!getParameterByName("startKey")) {
-    setUrlParamMap("startKey", "6630bba2bcf84a8eb62b602614cbb661")
+    setUrlParamMap("startKey", "204cf37728cb458a9677c1c8af11b0af") // 6630bba2bcf84a8eb62b602614cbb661
   }
   if (!getParameterByName("startId")) {
-    setUrlParamMap("startId", "9000")
+    setUrlParamMap("startId", "9999") // 9000
   }
 })()
 
