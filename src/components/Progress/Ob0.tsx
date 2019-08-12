@@ -25,7 +25,7 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
 
   public state = {
     rate: 0,
-    is1001: false,
+    error_resource: false,
     complete: this.props.responses.nativeInitData.localAddr ? true : false,
   }
 
@@ -79,9 +79,6 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
 
   progressing() {
     this.state.rate = this.state.rate + Math.random() * (this.props.speed || 1.2)
-    console.log(
-      this.state.rate
-    )
     if (this.state.rate >= 99) {
       this.state.rate = 99
       clearInterval(this.interval)
@@ -118,10 +115,10 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
           className={_05}
         >
           <div className={up + ' ' + yellow}>
-            {this.state.is1001 ? this.languagePack.mg_tip_question2[this.props.language] : this.languagePack.mg_tip_question[this.props.language]}
+            {this.state.error_resource ? this.languagePack.mg_tip_question2[this.props.language] : this.languagePack.mg_tip_question[this.props.language]}
           </div>
           <a
-            className={up + ' ' + bbb + (this.state.is1001 ? " shake active" : " shake")}
+            className={up + ' ' + bbb + (this.state.error_resource ? " shake active" : " shake")}
             href={this.props.responses.serverInitData.data.publics.currentStartDownPage}
             target="_blank"
           >

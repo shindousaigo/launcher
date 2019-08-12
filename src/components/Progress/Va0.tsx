@@ -29,7 +29,7 @@ export default class SophixProgress extends React.Component<ProgressProps, any, 
     total: 0,
     rate: 0,
     complete: this.props.responses.nativeInitData.localAddr ? true : false,
-    is1001: false,
+    error_resource: false,
     isLoading: false
   }
 
@@ -108,10 +108,10 @@ export default class SophixProgress extends React.Component<ProgressProps, any, 
           className={_05}
         >
           <div className={up + ' ' + yellow}>
-            {this.state.is1001 ? this.languagePack.mg_tip_question2[this.props.language] : this.languagePack.mg_tip_question[this.props.language]}
+            {this.state.error_resource ? this.languagePack.mg_tip_question2[this.props.language] : this.languagePack.mg_tip_question[this.props.language]}
           </div>
           <a
-            className={up + ' ' + bbb + (this.state.is1001 ? " shake active" : " shake")}
+            className={up + ' ' + bbb + (this.state.error_resource ? " shake active" : " shake")}
             href={this.props.responses.serverInitData.data.publics.currentStartDownPage}
             target="_blank"
           >
