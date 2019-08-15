@@ -22,10 +22,12 @@ export function serverInitData(res: AppLauncher.Init.ServerResponse) {
 
 (function () {
   if (!getParameterByName("startKey")) {
-    setUrlParamMap("startKey", "6630bba2bcf84a8eb62b602614cbb661") // 204cf37728cb458a9677c1c8af11b0af
+    setUrlParamMap("startKey", "6630bba2bcf84a8eb62b602614cbb661");
+    // setUrlParamMap("startKey", "204cf37728cb458a9677c1c8af11b0af");
   }
   if (!getParameterByName("startId")) {
-    setUrlParamMap("startId", "9000") // 9999
+    setUrlParamMap("startId", "9000")
+    // setUrlParamMap("startId", "9999")
   }
 })()
 
@@ -68,7 +70,8 @@ window.JsToNative = {
       source: 1,
       network: "0",
       packageName: "com.infiniteduel.en",
-      version: "0.0.1",
+      // version: "0.0.1",
+      version: "9.9.9",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
