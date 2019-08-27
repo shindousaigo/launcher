@@ -342,45 +342,19 @@ window.Main = async function () {
                 planeGame(5);
                 break;
               case 4:
-                import("assets/games/sanxiao/main.min.js");
+                planeGame(4);
                 break;
               case 3:
-                import("assets/games/picture_match/main.min.js");
+                planeGame(3);
                 break;
               case 2:
-                import("assets/games/2048/main.min.js");
+                planeGame(2);
+                break;
+              case 1:
+                addImage(IS_CACHE ? './img/currentTrialPhoto.jpg' : serverInitData.data.currentTrialPhoto);
                 break;
               default:
-                import("assets/games/dafeiji/main.min.js");
-            }
-          };
-
-          if (serverInitData.data.isCheck) {
-            if (version !== Version.Dev) {
-              const type = +serverInitData.data.bgType || 0;
-              document.body.style.backgroundColor = "#000000";
-              switch (type) {
-                case 4:
-                  planeGame(4);
-                  break;
-                case 3:
-                  planeGame(3);
-                  break;
-                case 2:
-                  planeGame(2);
-                  break;
-                case 1:
-                  addImage(serverInitData.data.currentTrialPhoto);
-                  break;
-                default:
-                  planeGame(0);
-              }
-            } else {
-              if (+serverInitData.data.bgType === 1) {
-                addImage(serverInitData.data.currentTrialPhoto);
-              } else {
-                planeGame(+getParameterByName("xyx") || +serverInitData.data.bgType || 0);
-              }
+                planeGame(0);
             }
           } else {
             if (+serverInitData.data.bgType === 1) {
