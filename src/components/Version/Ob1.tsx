@@ -10,10 +10,11 @@ import DialogContent from "src/bower/material-ui/packages/material-ui/src/Dialog
 import "src/style.scss"
 import Tip from "../../TipOb1"
 import { Refs } from "../../const";
-import { Delay } from "src/factory/functions";
+import { Delay, x86 } from "src/factory/functions";
 import Index from ".";
 import SophixProgress from 'src/components/Progress/Sp0'
 import ObbProgress from 'src/components/Progress/Ob0'
+import { LanguagePack, serverExceptionCheck, exceptionCodeMap } from "./common";
 
 type WithRef = { ref?: any }
 
@@ -111,39 +112,17 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
   state = {
     open: false,
     type: null,
-    clickFn: null
+    clickFn: null,
+    languagePack: LanguagePack,
+    codeMap: exceptionCodeMap,
   }
 
-  languagePack = {
-    mg_net_wrong: {
-      de: 'Netzwerkverbindungs Fehler',
-      en: 'Network connection error',
-      fr: 'Erreur de connexion',
-      id: 'Kesalahan koneksi jaringan',
-      ko: '인터넷 연결 오류',
-      th: 'ข้อผิดพลาดในการเชื่อมต่ออินเทอร์เน็ต',
-      vi: 'Lỗi kết nối mạng',
-      zh: '网络连接异常',
-    },
-    msg_tip_googleplay: {
-      de: 'Bitte neeste Version aktualisieren',
-      en: 'Please update latest version',
-      fr: 'Mettez à jour la dernière version',
-      id: 'Silahkan update versi terbaru',
-      ko: '최신 버전으로 업데이트하세요',
-      th: 'โปรดอัพเดทแพทช์ใหม่',
-      vi: 'Cập nhật phiên bản mới nhất',
-      zh: '请更新到最新版本',
-    },
-    msg_tip_isX86: {
-      de: 'Oops! In deinem Gerät kann dieses Paket nicht installiert werden. Bitte lade das passendes Paket herunter! ',
-      en: "Oops! Your device can't install this pack, please click to re-download the compatible pack!",
-      fr: 'Nous sommes désolés! Votre appareil ne peut pas installer ce pack, veuillez re-télécharger le pack compatible!',
-      id: 'Maaf! Perangkat kamu tidak dapat menginstal paket ini, silahkan muat ulang paket yang kompatibel! ',
-      ko: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      th: 'ขอโทษ! เครื่องของท่านติดตั้งแพคเกจนี้ไม่ได้ โปรดเลือกดาวน์โหลดแพคที่เหมาะสม! ',
-      vi: 'Rất tiếc! Thiết bị của bạn không thể cài đặt pack này, vui lòng nhấp tải lại pack tương thích! ',
-      zh: '抱歉！您的设备无法安装此游戏包，请点击重新下载可兼容的游戏包!',
+  btnClick = async () => {
+    await Delay()
+    if (this.state.open) {
+      this.state.open = false
+      this.state.clickFn && this.state.clickFn()
+      this.setState(this.state)
     }
   }
 
@@ -157,15 +136,8 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
         open={this.state.open}
         container={this.props.container}
       >
-        <DialogContent className={this.props.classes.exit_app_dialog_content + ' DialogContent'}>
-          {
-            (this.state.type == '1002' && this.languagePack.mg_net_wrong[this.props.language])
-            ||
-            (this.state.type === 'google_play' && this.languagePack.msg_tip_googleplay[this.props.language])
-            ||
-            (this.state.type === 'isX86' && this.languagePack.msg_tip_isX86[this.props.language])
-          }
-
+        <DialogContent className={`${this.props.classes.exit_app_dialog_content} DialogContent`}>
+          {this.state.type && this.state.languagePack[this.state.codeMap[this.state.type]][this.props.language]}
           <Grid
             container
             justify="center"
@@ -174,22 +146,16 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
             <Button
               language={this.props.language}
               className={this.props.classes.exit_app_button}
-              click={async () => {
-                await Delay()
-                this.state.open = false
-                if (this.state.clickFn) this.state.clickFn()
-                this.setState(this.state)
-              }}
+              click={this.btnClick}
               mode="confirm"
             />
           </Grid>
-
         </DialogContent>
-
       </Dialog>
     )
   }
 }
+
 
 type FacebookProps = {
   link: string
@@ -214,10 +180,13 @@ class Facebook extends React.Component<FacebookProps, any, any> {
   }
 }
 
+
+
 type AppProps = {
   responses: AppLauncher.Init.Responses
   classes: any
 }
+
 type AppRefs = {
   exitApp: ExitApp
   catchException: CatchException
@@ -226,8 +195,9 @@ type AppRefs = {
   [Refs.ObbProgress]: ObbProgress
 }
 export class App extends React.Component<AppProps, any, any> implements Index {
-  public refs: AppRefs
+
   static instance: App
+  public refs: AppRefs
   constructor(props) {
     super(props)
     App.instance = this
@@ -260,6 +230,10 @@ export class App extends React.Component<AppProps, any, any> implements Index {
           state.isLoading = true
         }
         SophixProgress.setState(state)
+        if (this.refs.catchException.state.open) {
+          this.refs.catchException.state.open = false
+          this.refs.catchException.setState(this.refs.catchException.state)
+        }
       }
     }
     this.init()
@@ -268,22 +242,21 @@ export class App extends React.Component<AppProps, any, any> implements Index {
   state = {
     components: {
       tip: false,
-
       sophixProgress: false,
       obbProgress: false,
-
       catchException: {
         container: null
       },
       exitApp: {
         container: null
       },
-
     },
+    x86: false
   }
 
+
+
   lachgm() {
-    console.log("lachgm lachgm lachgm lachgm")
     window.overwrite.lachgm({
       packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName,
       launchercls: this.props.responses.serverInitData.data.publics.launchercls
@@ -291,7 +264,6 @@ export class App extends React.Component<AppProps, any, any> implements Index {
   }
 
   downloadPlugPackage() {
-    console.log("downloadPlugPackage downloadPlugPackage downloadPlugPackage")
     this.state.components.sophixProgress = true
     window.overwrite.startLoad({
       url: this.props.responses.serverInitData.data.publics.currentPlugDownloadUrl
@@ -300,40 +272,61 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
   pluginInfo
 
+
   init = () => {
-    if (!this.props.responses.serverInitData.data.isCheck) { // 不为提审状态
-      this.pluginInfo = window.overwrite.getPlgInfo({
-        packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
-      })
-      if (this.pluginInfo.instplg && this.versionCheck(this.pluginInfo.instplg.versionCode, "this.pluginInfo.instplg.versionCode")) {
-        // debugger
-        this.lachgm()
-      } else {
-        // debugger
-        this.obbCheck()
+    if (serverExceptionCheck(this)) return
+    if (!this.props.responses.serverInitData.data.isCheck) {
+      if (x86(this.props.responses.nativeInitData, this.props.responses.serverInitData.data)) {
+        this.state.x86 = true
+      } else { // 不为提审状态
+        this.pluginInfo = window.overwrite.getPlgInfo({
+          packageName: this.props.responses.serverInitData.data.publics.currentPlugPackageName
+        })
+        if (this.pluginInfo.instplg && this.versionCheck(this.pluginInfo.instplg.versionCode, "this.pluginInfo.instplg.versionCode")) {
+          this.lachgm()
+        } else {
+          this.obbCheck()
+        }
+
       }
+
     }
   }
 
   versionCheck(version, log?) {
     const checkRes = version >= this.props.responses.serverInitData.data.publics.patchVersion
-    console.log(
-      "versionCheck", log, checkRes
-    )
     return checkRes
   }
 
+  componentDidMountList = []
   componentDidMount() {
-    this.didMount()
+    if (this.state.x86) {
+      let catchException = this.refs.catchException
+      catchException.state.open = true
+      catchException.state.clickFn = () => {
+        catchException.state.clickFn = null
+        window.open(
+          this.props.responses.serverInitData.data.publics.currentStartDownPage
+        )
+        Delay().then(function () {
+          window.JsToNative.exitApp()
+        })
+      }
+      catchException.state.type = 'isX86'
+      catchException.setState(catchException.state)
+    }
+
+    this.state.components.exitApp.container = this.refs.catchExceptionContainer
+    this.setState(this.state)
+    if (this.componentDidMountList.length) {
+      this.componentDidMountList.forEach(fn => {
+        fn()
+      })
+    }
   }
   componentWillMount() {
     this.state.components.exitApp.container = this.refs.catchExceptionContainer
-    // setTimeout(()=>{
-    //   window.NativeToJs.catchException("1002")
-    // }, 5000)
   }
-
-  didMount = function () { }
 
   obbCheck() {
     if (+this.pluginInfo.isobexist) {
@@ -404,14 +397,15 @@ export class App extends React.Component<AppProps, any, any> implements Index {
             App={this}
           />}
           <ExitApp
-            language={this.props.responses.nativeInitData.language}
             ref="exitApp"
+            language={this.props.responses.nativeInitData.language}
+
             container={this.state.components.exitApp.container}
             classes={this.props.classes}
           />
           <CatchException
-            language={this.props.responses.nativeInitData.language}
             ref="catchException"
+            language={this.props.responses.nativeInitData.language}
             container={this.state.components.exitApp.container}
             classes={this.props.classes}
           />

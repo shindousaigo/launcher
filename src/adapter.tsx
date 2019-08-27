@@ -7,10 +7,11 @@ import Menu from "src/bower/material-ui/packages/material-ui/src/Menu";
 import { withStyles } from "src/bower/material-ui/packages/material-ui/src/styles";
 import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/ClickAwayListener";
 import { getParameterByName, setUrlParamMap } from "./Utils";
+import { Delay } from "./factory/functions";
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if (!res.data.isCheck) {
-    res.data.publics.x86 = "1";
+    res.data.publics.x86 = "0";
     // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
   } else {
     // res.data.isCheck = 0
@@ -19,20 +20,19 @@ export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   return res;
 }
 
-/**
- * 设置startKey和startId
- */
 (function () {
   if (!getParameterByName("startKey")) {
-    setUrlParamMap("startKey", "6630bba2bcf84a8eb62b602614cbb661")
+    setUrlParamMap("startKey", "6630bba2bcf84a8eb62b602614cbb661");
+    // setUrlParamMap("startKey", "204cf37728cb458a9677c1c8af11b0af");
   }
   if (!getParameterByName("startId")) {
     setUrlParamMap("startId", "9000")
+    // setUrlParamMap("startId", "9999")
   }
 })()
 
 var tmp;
-function test1() {
+function startProgress() {
   var interval_ = setInterval(() => {
     if (!tmp) {
       tmp = {
@@ -70,7 +70,8 @@ window.JsToNative = {
       source: 1,
       network: "0",
       packageName: "com.infiniteduel.en",
-      version: "0.0.1",
+      // version: "0.0.1",
+      version: "9.9.9",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
@@ -79,8 +80,10 @@ window.JsToNative = {
     });
   },
   startLoad: function (param: string) {
+    // Delay(40).then(() => {
     tmp = null;
-    test1();
+    startProgress();
+    // })
   },
   checkVaStatus: function (): string {
     return JSON.stringify(1);
@@ -113,7 +116,7 @@ window.JsToNative = {
         versionCode: "0",
         plgName: "plugin1"
       },
-      isobexist: "1"
+      isobexist: "0"
     })
   }
 } as any;
@@ -127,7 +130,8 @@ const options = [
   "错误处理 code 1010",
   "错误处理 code 1005",
   "错误处理 code 1012",
-  "错误处理 code 1013"
+  "错误处理 code 1013",
+  "错误处理 code 1014"
 ];
 
 class UtilBtn extends React.Component<any, any, any> {
@@ -166,6 +170,9 @@ class UtilBtn extends React.Component<any, any, any> {
         break;
       case 8:
         window.NativeToJs.catchException("1013");
+        break;
+      case 9:
+        window.NativeToJs.catchException("1014");
         break;
     }
     this.state.show = !this.state.show;
