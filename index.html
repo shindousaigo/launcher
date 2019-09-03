@@ -16,12 +16,16 @@
       left: 0;
       top: 0;
     }
-  </style>
 
+    #hidden {
+      position: fixed;
+      z-index: -1;
+      visibility: hidden;
+    }
+  </style>
 </head>
 
 <body>
-
   <div class="swiper-container">
     <div class="swiper-wrapper"></div>
     <div class="swiper-pagination"></div>
@@ -29,6 +33,7 @@
   <div id="app-background"></div>
   <div id="small-game"></div>
   <div id="app-launcher"></div>
+  <div id="hidden"></div>
 </body>
 
 </html>

@@ -72,7 +72,7 @@ window.JsToNative = {
       language: "zh",
       currentCPU: 0,
       localAddr: "",
-      isX86: 1,
+      isX86: 0,
       versionCode: "1",
     });
   },

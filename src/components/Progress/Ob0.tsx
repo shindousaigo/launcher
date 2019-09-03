@@ -32,14 +32,14 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
   public interval
   public languagePack = {
     mg_txt_status_tip: {
-      de: 'Sollte wifi zum Herunterladen verbinden',
-      en: 'Download with Wifi network is recommended',
-      fr: 'Il faut se connecter à un réseau WiFi pour télécharger',
+      de: 'Einstellungen wird entpackt ( Bitte achten ob Speicherplatz ausreichend ist)',
+      en: 'Unpacking the installing (Please note that your mobile has enough memory)',
+      fr: "En cours d'extraction de l'installation (Veuillez noter la disponibilité de la mémoire) ...",
       id: 'Silahkan sambungkan wifi untuk mengunduh',
-      ko: '다운로드하려면',
-      th: 'แนะนำใช้ไวไฟในการดาวน์โหลด',
-      vi: 'Nên kết nối wifi để tải',
-      zh: '推荐在wifi网络加载',
+      ko: '압축을 풀고 설치하는 중 (메모리가 충분한지 주의하세요)',
+      th: 'กำลังดำเนินการติดตั้ง (โปรดให้เหลือพื้นที่ว่างเพียงพอ)...',
+      vi: 'Đang giải nén cài đặt (Xin chừa đủ bộ nhớ)',
+      zh: 'Unpacking the installing (Please note that your mobile has enough memory)',
     },
     mg_tip_question: {
       de: 'Wenn Sie Probleme beim Herunterladen von Spielen haben,',
