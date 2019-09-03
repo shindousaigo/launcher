@@ -98,6 +98,10 @@ var plugins = [
 		from: Path.resolve(__dirname, './assets/games/sanxiao/images'),
 		to: 'sanxiao/images'
 	}]),
+	new CopyWebpackPlugin([{
+		from: Path.resolve(__dirname, './assets/games/linkMonsters/res'),
+		to: 'linkMonsters/res'
+	}]),
 	new CleanWebpackPlugin([
 		Path.join(__dirname, 'build', '**/*.js'),
 		Path.join(__dirname, 'build', '**/*.zip')

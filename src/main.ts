@@ -303,6 +303,10 @@ window.Main = async function (adapter = null) {
         }
         const planeGame = (type: number) => {
           switch (type) {
+            case 5:
+              const linkMonsters = () => import("assets/games/linkMonsters/main.min.js");
+              linkMonsters();
+              break;
             case 4:
               const sanxiao = () => import("assets/games/sanxiao/main.min.js")
               sanxiao()
@@ -326,6 +330,9 @@ window.Main = async function (adapter = null) {
             const type = +serverInitData.data.bgType || 0
             document.body.style.backgroundColor = "#000000"
             switch (type) {
+              case 5:
+                planeGame(5);
+                break;
               case 4:
                 planeGame(4)
                 break
