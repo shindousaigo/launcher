@@ -367,7 +367,6 @@ export class App extends React.Component<AppProps, any, any> implements Index {
               height: "100%"
             }}
           />
-
           {this.state.components.progress && <Progress
             ref={Refs.Progress}
             responses={this.props.responses}
@@ -376,8 +375,6 @@ export class App extends React.Component<AppProps, any, any> implements Index {
             classes={this.props.classes}
             language={this.props.responses.nativeInitData.language}
           />}
-
-
           {!this.props.responses.serverInitData.data.isCheck && (
             <Facebook
               language={this.props.responses.nativeInitData.language}

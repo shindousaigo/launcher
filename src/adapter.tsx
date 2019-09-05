@@ -71,7 +71,7 @@ window.JsToNative = {
       network: "0",
       packageName: "com.infiniteduel.en",
       // version: "0.0.1",
-      version: "9.9.9",
+      version: getParameterByName("ver") || "9.9.9",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
