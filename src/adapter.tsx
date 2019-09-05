@@ -11,7 +11,7 @@ import { Delay } from "./factory/functions";
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if (!res.data.isCheck) {
-    res.data.publics.x86 = "0";
+    res.data.publics.x86 = "1";
     // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
   } else {
     // res.data.isCheck = 0
@@ -70,12 +70,11 @@ window.JsToNative = {
       source: 1,
       network: "0",
       packageName: "com.infiniteduel.en",
-      // version: "0.0.1",
       version: getParameterByName("ver") || "9.9.9",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
-      isX86: 0,
+      isX86: 1,
       versionCode: "1",
     });
   },

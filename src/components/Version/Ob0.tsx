@@ -13,7 +13,7 @@ import "src/style.scss"
 import Tip from "../../Tip"
 import { getParameterByName } from "../../Utils";
 import { Version, Refs } from "../../const";
-import { Delay } from "src/factory/functions";
+import { Delay, x86 } from "src/factory/functions";
 import Index from ".";
 import Progress from 'src/components/Progress/Ob0'
 import { LanguagePack } from "./common";
@@ -215,6 +215,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
   state = {
     components: {
+      tip: false,
       progress: false,
       catchException: {
         container: null
@@ -222,19 +223,36 @@ export class App extends React.Component<AppProps, any, any> implements Index {
       exitApp: {
         container: null
       },
-      tip: false
     },
     downloadComplete: null,
-    startDownload: null
+    startDownload: null,
   }
 
   init = () => {
     // 判断是否为提审状态
     if (!this.props.responses.serverInitData.data.isCheck) { // 不为提审状态
-      console.info("不为提审状态")
-      // window.Version = getParameterByName('version') || VERSION
-      window.JsToNative.pthInst()
-      this.state.components.progress = true
+      if (x86(this.props.responses.nativeInitData, this.props.responses.serverInitData.data)) {
+        this.componentDidMountList.push(
+          () => {
+            const catchException = this.refs.catchException
+            catchException.state.open = true
+            catchException.state.clickFn = () => {
+              catchException.state.clickFn = null
+              window.open(
+                this.props.responses.serverInitData.data.publics.currentStartDownPage
+              )
+              Delay().then(function () {
+                window.JsToNative.exitApp()
+              })
+            }
+            catchException.state.type = "isX86"
+            catchException.setState(catchException.state)
+          }
+        )
+      } else {
+        window.JsToNative.pthInst()
+        this.state.components.progress = true
+      }
     }
   }
 
@@ -404,8 +422,15 @@ export class App extends React.Component<AppProps, any, any> implements Index {
     )
   }
 
+  componentDidMountList = [
+    () => {
+      this.state.components.exitApp.container = this.refs.catchExceptionContainer
+    },
+  ]
   componentDidMount() {
-    this.state.components.exitApp.container = this.refs.catchExceptionContainer
+    this.componentDidMountList.forEach(fn => {
+      fn()
+    })
     this.setState(this.state)
   }
 }
