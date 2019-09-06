@@ -388,7 +388,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
           {this.state.components.progress && <Progress
             ref={Refs.Progress}
             responses={this.props.responses}
-            speed={1}
+            speed={0.666}
             install={this.state.downloadComplete}
             classes={this.props.classes}
             language={this.props.responses.nativeInitData.language}
