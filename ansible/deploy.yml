@@ -35,6 +35,14 @@
       args:
           chdir: "{{ backup_root_path }}"
     
+    - name: update program
+      unarchive: src={{ dest_file }} dest={{ program_path }} copy=no
+    
     - name: rm update file
       file: path={{ dest_file }} state=absent
+
+    - name: nginx reload
+      shell: /usr/local/nginx/sbin/nginx -s reload
+      become: yes
+      become_user: root
 
