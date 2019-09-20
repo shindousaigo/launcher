@@ -44,7 +44,7 @@ pipeline {
                         '''
                     } catch(err) {
                         echo 'deploy error'
-                        sh '/bin/sh ansible/notify.sh "deploy error" "${JOB_NAME}" "${BUILD_NUMBER}"'
+                        sh '/bin/sh ansible/notify.sh "${Platform} deploy error" "${JOB_NAME}" "${BUILD_NUMBER}"'
                         throw err
                     }
                 }
@@ -53,7 +53,7 @@ pipeline {
     }
     post {
         success {
-            sh '/bin/sh ansible/notify.sh "deploy success" "${JOB_NAME}" "${BUILD_NUMBER}"'
+            sh '/bin/sh ansible/notify.sh "${Platform} deploy success" "${JOB_NAME}" "${BUILD_NUMBER}"'
         }
     }
 }
