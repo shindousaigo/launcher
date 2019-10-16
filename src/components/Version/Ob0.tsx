@@ -215,7 +215,7 @@ export class App extends React.Component<AppProps, any, any> implements Index {
 
   state = {
     components: {
-      tip: false,
+      tip: true,
       progress: false,
       catchException: {
         container: null

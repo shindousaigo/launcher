@@ -11,11 +11,11 @@ import { Delay } from "./factory/functions";
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if (!res.data.isCheck) {
-    res.data.publics.x86 = "1";
+    // res.data.publics.x86 = "1";
     // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
   } else {
-    // res.data.isCheck = 0
-    // res.data.publics = {} as any
+    res.data.isCheck = 0
+    res.data.publics = {} as any
   }
   return res;
 }
@@ -43,7 +43,7 @@ function startProgress() {
       };
       window.NativeToJs.downloadUpdate(tmp);
     } else {
-      tmp.soFarBytes += Math.floor(Math.random() * 55686100);
+      tmp.soFarBytes += Math.floor(Math.random() * 556861000);
       tmp.speed = Math.floor(Math.random() * 5686);
       if (tmp.soFarBytes >= tmp.totalBytes) {
         tmp.soFarBytes = tmp.totalBytes;

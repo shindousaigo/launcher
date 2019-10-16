@@ -181,8 +181,6 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
             {this.languagePack.mg_txt_status_tip[this.props.language]}
           </div>
         </Grid>
-
-
       </Grid>
     );
   }

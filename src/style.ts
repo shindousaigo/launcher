@@ -39,7 +39,6 @@ const Default = {
   button_img: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
     top: 0,
     left: 0
   },
@@ -105,11 +104,11 @@ const TipClasses = {
   tip_wrapper: {
     color: '#fff',
     position: 'fixed',
-    width: Px(450),
+    width: Px(550),
     height: Px(450),
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -50%)',
+    transform: 'translate(-50%, -50%) scale(.77)',
     background: 'rgba(0, 0, 0, .7)',
     borderRadius: '.7rem',
   },
@@ -117,7 +116,7 @@ const TipClasses = {
     position: 'relative',
     width: Px(216),
     height: Px(216),
-    marginTop: Px(32),
+    marginTop: Px(18),
   },
   tip_line_wrapper: {
     width: '100%',
@@ -129,14 +128,15 @@ const TipClasses = {
     height: '100%',
   },
   tip_txt_wrapper: {
-    width: Px((450 - 20) * 1.25),
+    width: Px((550 - 20) * 1.25),
     fontSize: Px(29),
     transform: 'scale(.8)',
     position: 'absolute',
-    top: Px(222),
+    top: Px(212),
     bottom: Px(34),
     left: '50%',
-    marginLeft: '-' + Px((450 - 20) * 1.25 / 2),
+    lineHeight: Px(44),
+    marginLeft: '-' + Px((550 - 20) * 1.25 / 2),
   },
   tip_ok: {
     width: Px(84),
