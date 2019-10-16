@@ -1,18 +1,17 @@
+import "src/style.scss"
 import { GridProps } from "src/bower/material-ui/packages/material-ui/src/Grid/Grid"
 import * as React from "react"
 import * as ReactDom from "react-dom"
 import CssBaseline from "src/bower/material-ui/packages/material-ui/src/CssBaseline"
 import Grid from "src/bower/material-ui/packages/material-ui/src/Grid"
-import { S, Px } from "../../style"
+import { S } from "src/style"
 import Button from "src/components/Button"
 import Dialog from "src/bower/material-ui/packages/material-ui/src/Dialog"
 import DialogContent from "src/bower/material-ui/packages/material-ui/src/DialogContent"
 import Sophix from "src/components/Progress/Sp0"
 import ObbProgress from "src/components/Progress/Ob0"
-import "src/style.scss"
-import Tip from "../../Tip"
-import { getParameterByName } from "../../Utils";
-import { Version, Refs } from "../../const";
+import Tip from "src/components/tips/ob0"
+import { Refs } from "src/const";
 import { Delay, x86 } from "src/factory/functions";
 import Index from ".";
 import Progress from 'src/components/Progress/Ob0'

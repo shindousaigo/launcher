@@ -16,16 +16,16 @@ export default class Tip extends React.Component<TipProps, any, any> {
   rotation = 0
 
   languagePack = {
-    msg_tip_wait: {
-      de: 'Das Spiel wird automatisch neu starten\nWenn das Spiel zu lange neu startet, bitte schloss es und startet neu',
-      en: 'Automatically restarting…\nIf the game does not automatically restart for a long time, please quit the game and reopen it',
-      fr: 'Lancement automatique en cours…\nSi le jeu ne se lance pas automatiquement, quittez le jeu et rouvrez-le!',
-      id: 'Sedang memuat permainan secara otomatis\nJika tidak memuat permainan secara otomatis, silahkan keluar permainan dan buka kembali',
-      ko: '게임 다시 자동 시작 중\n게임을 다시 자동시작하지 않은 경우 게임을 종료 한 후 다시 접속하십시오',
-      th: 'กำลังเปิดเกมโดยอัตโนมัติ\nหากรอนานแล้วแต่ยังไม่เปิดเกม กรุณาออกเกมเข้าใหม่',
-      vi: 'Đang tự động khởi động game.\nNếu quá lâu vẫn chưa tự động khởi động game, vui lòng thoát game sau đó mở lại',
-      zh: '游戏正在自动重启\n如果长时间未自动重启游戏，请退出游戏，再重新打开',
-    }
+    msg_tip_ob0: {
+      de: 'Beim Verlassen während der Installation führt zu einem Fehler bei der Installation des Spiels so bitte behalte diese Oberfläche und warte ein paar Minuten.',
+      en: 'Closing while the game is loading may result in installation errors. Please keep this interface and wait for a while.',
+      fr: 'La déconnexion pendant l\'installation entraînera une erreur d\'installation du jeu. Veuillez ne pas quitter cette interface et patientez quelques minutes!',
+      id: 'Closing while the game is loading may result in installation errors. Please keep this interface and wait for a while.',
+      ko: '게임을 설치하는동안 로그아웃하면 오류가발생합니다. 이 인터페이스를 유지하고 몇분 기다려주세요.',
+      th: 'การออกจากเกมอาจจะทำใ\nห้เกิดข้อผิดพาดในการติดตั้งตัวเกมได้\nกรุณาอยู่ในหน้านี้และรอสักครู่',
+      vi: 'Thoát ra khi đang cài\nđặt sẽ dẫn đến lỗi cài đặt game\nVui lòng giữ giao diện này và chờ trong ít phút',
+      zh: '中途退出可能导致游戏\n安装错误。请您保持此界面，耐心等待几分钟。',
+    },
   }
 
   componentDidMount() {
@@ -76,7 +76,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
         justify="center"
       >
         {(() => {
-          return this.languagePack.msg_tip_wait[this.props.language].split('\n').map(function (item, index) {
+          return this.languagePack.msg_tip_ob0[this.props.language].split('\n').map(function (item, index) {
             return <div key={index} style={{
               textAlign: "center",
               width: '100%',
