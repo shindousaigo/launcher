@@ -6,18 +6,33 @@ import MenuItem from "src/bower/material-ui/packages/material-ui/src/MenuItem";
 import Menu from "src/bower/material-ui/packages/material-ui/src/Menu";
 import { withStyles } from "src/bower/material-ui/packages/material-ui/src/styles";
 import ClickAwayListener from "src/bower/material-ui/packages/material-ui/src/ClickAwayListener";
+import { getParameterByName, setUrlParamMap } from "./Utils";
+import { Delay } from "./factory/functions";
 
 export function serverInitData(res: AppLauncher.Init.ServerResponse) {
   if (!res.data.isCheck) {
-    res.data.publics.x86 = "1";
-    res.data.publics.currentPhoto =
-      "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
+    // res.data.publics.x86 = "1";
+    // res.data.publics.currentPhoto = "http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png,http://res-pkg-cdn.pocketgamesol.com/pmfr/tt.png";
+  } else {
+    res.data.isCheck = 0
+    res.data.publics = {} as any
   }
   return res;
 }
 
+(function () {
+  if (!getParameterByName("startKey")) {
+    setUrlParamMap("startKey", "6630bba2bcf84a8eb62b602614cbb661");
+    // setUrlParamMap("startKey", "204cf37728cb458a9677c1c8af11b0af");
+  }
+  if (!getParameterByName("startId")) {
+    setUrlParamMap("startId", "9000")
+    // setUrlParamMap("startId", "9999")
+  }
+})()
+
 var tmp;
-function test1() {
+function startProgress() {
   var interval_ = setInterval(() => {
     if (!tmp) {
       tmp = {
@@ -28,7 +43,7 @@ function test1() {
       };
       window.NativeToJs.downloadUpdate(tmp);
     } else {
-      tmp.soFarBytes += Math.floor(Math.random() * 55686100);
+      tmp.soFarBytes += Math.floor(Math.random() * 556861000);
       tmp.speed = Math.floor(Math.random() * 5686);
       if (tmp.soFarBytes >= tmp.totalBytes) {
         tmp.soFarBytes = tmp.totalBytes;
@@ -42,64 +57,86 @@ function test1() {
 }
 
 window.JsToNative = {
-  exitApp: function() {
+  exitApp: function () {
     window.NativeToJs.catchException("窗口关闭被调用");
   },
-  getDeviceMsg: function(): string {
+  getDeviceMsg: function (): string {
     return JSON.stringify({
       gaid: "string",
       device: "string",
       deviceNo: "string",
       model: "0",
       operatorOs: "Android6.0",
-      source: 0,
+      source: 1,
       network: "0",
-      packageName: "asdsfsdf",
-      version: "1.1.0",
+      packageName: "com.infiniteduel.en",
+      version: getParameterByName("ver") || "9.9.9",
       language: "zh",
       currentCPU: 0,
       localAddr: "",
-      isX86: 1
+      isX86: 1,
+      versionCode: "1",
     });
   },
-  startLoad: function(param: string) {
+  startLoad: function (param: string) {
+    // Delay(40).then(() => {
     tmp = null;
-    test1();
+    startProgress();
+    // })
   },
-  checkVaStatus: function(): string {
+  checkVaStatus: function (): string {
     return JSON.stringify(1);
   },
-  plinst: function(param: string) {
+  plinst: function (param: string) {
     console.info(param);
     console.log("开始安装插件包");
   },
-  replinst: function(param: string) {
+  replinst: function (param: string) {
     console.info(param);
     console.info("开始安装替换包");
   },
-  lachgm: function(param: string) {
+  lachgm: function (param: string) {
     console.info(param);
     console.info("拉起插件游戏包接口");
   },
-  loadPatch: function(param: string) {
+  loadPatch: function (param: string) {
     console.log("loadPatch", param);
   },
-  checkPatch: function(param: string) {
+  checkPatch: function (param: string) {
     console.log("checkPatch", param);
     window.NativeToJs.catchException("1004");
   },
-  pthInst: function() {
+  pthInst: function () {
     console.log("pthInst");
+  },
+  getPlgInfo: function () {
+    return JSON.stringify({
+      instplg: {
+        versionCode: "0",
+        plgName: "plugin1"
+      },
+      isobexist: "0"
+    })
   }
 } as any;
 
-const options = ["退出 APP 接口调用", "模拟用户点击返回按钮", "错误处理 code 1001", "错误处理 code 1002", "错误处理 code 1011", "错误处理 code 1010", "错误处理 code 1005"];
+const options = [
+  "退出 APP 接口调用",
+  "模拟用户点击返回按钮",
+  "错误处理 code 1001",
+  "错误处理 code 1002",
+  "错误处理 code 1011",
+  "错误处理 code 1010",
+  "错误处理 code 1005",
+  "错误处理 code 1012",
+  "错误处理 code 1013",
+  "错误处理 code 1014"
+];
 
 class UtilBtn extends React.Component<any, any, any> {
   state = {
     show: false
   };
-
   handleClickAway = () => {
     this.state.show = false;
     this.setState(this.state);
@@ -126,6 +163,15 @@ class UtilBtn extends React.Component<any, any, any> {
         break;
       case 6:
         window.NativeToJs.catchException("1005");
+        break;
+      case 7:
+        window.NativeToJs.catchException("1012");
+        break;
+      case 8:
+        window.NativeToJs.catchException("1013");
+        break;
+      case 9:
+        window.NativeToJs.catchException("1014");
         break;
     }
     this.state.show = !this.state.show;
@@ -164,7 +210,7 @@ class UtilBtn extends React.Component<any, any, any> {
   }
 }
 
-var UtilBtn_ = withStyles({
+const UtilBtnWithStyles = withStyles({
   lockMenu: {
     position: "fixed",
     left: "4.5rem",
@@ -178,8 +224,8 @@ var UtilBtn_ = withStyles({
   }
 })(UtilBtn);
 
-window.onload = function() {
+window.onload = function () {
   var div = document.createElement("div");
   document.body.appendChild(div);
-  ReactDom.render(<UtilBtn_ />, div);
+  ReactDom.render(<UtilBtnWithStyles />, div);
 };

@@ -26,6 +26,16 @@ export default class Tip extends React.Component<TipProps, any, any> {
       vi: 'Đang tự động khởi động game.\nNếu quá lâu vẫn chưa tự động khởi động game, vui lòng thoát game sau đó mở lại',
       zh: '游戏正在自动重启\n如果长时间未自动重启游戏，请退出游戏，再重新打开',
     },
+    msg_tip_ob0: {
+      de: 'Beim Verlassen während der Installation führt zu einem Fehler bei der Installation des Spiels so bitte behalte diese Oberfläche und warte ein paar Minuten.',
+      en: 'Closing while the game is loading may result in installation errors. Please keep this interface and wait for a while.',
+      fr: 'La déconnexion pendant l\'installation entraînera une erreur d\'installation du jeu. Veuillez ne pas quitter cette interface et patientez quelques minutes!',
+      id: 'Closing while the game is loading may result in installation errors. Please keep this interface and wait for a while.',
+      ko: '게임을 설치하는동안 로그아웃하면 오류가발생합니다. 이 인터페이스를 유지하고 몇분 기다려주세요.',
+      th: 'การออกจากเกมอาจจะทำใ\nห้เกิดข้อผิดพาดในการติดตั้งตัวเกมได้\nกรุณาอยู่ในหน้านี้และรอสักครู่',
+      vi: 'Thoát ra khi đang cài\nđặt sẽ dẫn đến lỗi cài đặt game\nVui lòng giữ giao diện này và chờ trong ít phút',
+      zh: '中途退出可能导致游戏\n安装错误。请您保持此界面，耐心等待几分钟。',
+    },
   }
 
   componentDidMount() {
@@ -76,7 +86,7 @@ export default class Tip extends React.Component<TipProps, any, any> {
         justify="center"
       >
         {(() => {
-          return this.languagePack.msg_tip_wait[this.props.language].split('\n').map(function (item, index) {
+          return this.languagePack.msg_tip_ob0[this.props.language].split('\n').map(function (item, index) {
             return <div key={index} style={{
               textAlign: "center",
               width: '100%',

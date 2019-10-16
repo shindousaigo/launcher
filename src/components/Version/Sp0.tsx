@@ -16,6 +16,7 @@ import { Version, Refs } from "../../const";
 import { Delay, x86 } from "src/factory/functions";
 import Index from ".";
 import Progress from 'src/components/Progress/Sp0'
+import { LanguagePack } from "./common";
 
 type WithRef = { ref?: any }
 
@@ -119,36 +120,14 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
     clickFn: null
   }
 
-  languagePack = {
-    mg_net_wrong: {
-      de: 'Netzwerkverbindungs Fehler',
-      en: 'Network connection error',
-      fr: 'Erreur de connexion',
-      id: 'Kesalahan koneksi jaringan',
-      ko: '인터넷 연결 오류',
-      th: 'ข้อผิดพลาดในการเชื่อมต่ออินเทอร์เน็ต',
-      vi: 'Lỗi kết nối mạng',
-      zh: '网络连接异常',
-    },
-    msg_tip_googleplay: {
-      de: 'Bitte neeste Version aktualisieren',
-      en: 'Please update latest version',
-      fr: 'Mettez à jour la dernière version',
-      id: 'Silahkan update versi terbaru',
-      ko: '최신 버전으로 업데이트하세요',
-      th: 'โปรดอัพเดทแพทช์ใหม่',
-      vi: 'Cập nhật phiên bản mới nhất',
-      zh: '请更新到最新版本',
-    },
-    msg_tip_isX86: {
-      de: 'Oops! In deinem Gerät kann dieses Paket nicht installiert werden. Bitte lade das passendes Paket herunter! ',
-      en: "Oops! Your device can't install this pack, please click to re-download the compatible pack!",
-      fr: 'Nous sommes désolés! Votre appareil ne peut pas installer ce pack, veuillez re-télécharger le pack compatible!',
-      id: 'Maaf! Perangkat kamu tidak dapat menginstal paket ini, silahkan muat ulang paket yang kompatibel! ',
-      ko: '죄송합니다. 당신의 기기가 이 팩을 설치할 수 없습니다. 해당 팩을 다시 다운로드하세요.',
-      th: 'ขอโทษ! เครื่องของท่านติดตั้งแพคเกจนี้ไม่ได้ โปรดเลือกดาวน์โหลดแพคที่เหมาะสม! ',
-      vi: 'Rất tiếc! Thiết bị của bạn không thể cài đặt pack này, vui lòng nhấp tải lại pack tương thích! ',
-      zh: '抱歉！您的设备无法安装此游戏包，请点击重新下载可兼容的游戏包!',
+  languagePack = LanguagePack
+
+  btnClick = async () => {
+    await Delay()
+    if (this.state.open) {
+      this.state.open = false
+      this.state.clickFn && this.state.clickFn()
+      this.setState(this.state)
     }
   }
 
@@ -179,12 +158,7 @@ class CatchException extends React.Component<CatchExceptionProps, any, any> {
             <Button
               language={this.props.language}
               className={this.props.classes.exit_app_button}
-              click={async () => {
-                await Delay()
-                this.state.open = false
-                if (this.state.clickFn) this.state.clickFn()
-                this.setState(this.state)
-              }}
+              click={this.btnClick}
               mode="confirm"
             />
           </Grid>
@@ -528,12 +502,13 @@ export class App extends React.Component<AppProps, any, any> implements Index {
       let catchException = this.refs.catchException
       catchException.state.open = true
       catchException.state.clickFn = () => {
+        catchException.state.clickFn = null
         window.open(
           this.props.responses.serverInitData.data.publics.currentStartDownPage
         )
-        setTimeout(function () {
-          window.JsToNative.exitApp()
-        }, 500)
+        Delay().then(function () {
+          window.JsToNative.exitApp();
+        })
       }
       catchException.state.type = 'isX86'
       catchException.setState(catchException.state)

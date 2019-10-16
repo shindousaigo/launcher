@@ -13,8 +13,8 @@ import LinearProgress from "src/bower/material-ui/packages/material-ui/src/Linea
 type ProgressProps = {
   classes: any
   responses: AppLauncher.Init.Responses
-  install: Function
-
+  install?: Function
+  speed?: number
   /**
    * 语言包
    */
@@ -25,21 +25,21 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
 
   public state = {
     rate: 0,
-    is1001: false,
+    error_resource: false,
     complete: this.props.responses.nativeInitData.localAddr ? true : false,
   }
 
   public interval
   public languagePack = {
     mg_txt_status_tip: {
-      de: 'Sollte wifi zum Herunterladen verbinden',
-      en: 'Download with Wifi network is recommended',
-      fr: 'Il faut se connecter à un réseau WiFi pour télécharger',
+      de: 'Einstellungen wird entpackt ( Bitte achten ob Speicherplatz ausreichend ist)',
+      en: 'Unpacking the installing (Please note that your mobile has enough memory)',
+      fr: "En cours d'extraction de l'installation (Veuillez noter la disponibilité de la mémoire) ...",
       id: 'Silahkan sambungkan wifi untuk mengunduh',
-      ko: '다운로드하려면',
-      th: 'แนะนำใช้ไวไฟในการดาวน์โหลด',
-      vi: 'Nên kết nối wifi để tải',
-      zh: '推荐在wifi网络加载',
+      ko: '압축을 풀고 설치하는 중 (메모리가 충분한지 주의하세요)',
+      th: 'กำลังดำเนินการติดตั้ง (โปรดให้เหลือพื้นที่ว่างเพียงพอ)...',
+      vi: 'Đang giải nén cài đặt (Xin chừa đủ bộ nhớ)',
+      zh: 'Unpacking the installing (Please note that your mobile has enough memory)',
     },
     mg_tip_question: {
       de: 'Wenn Sie Probleme beim Herunterladen von Spielen haben,',
@@ -73,13 +73,12 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
     },
   }
 
-
   componentDidMount() {
     this.progressing()
   }
 
   progressing() {
-    this.state.rate = this.state.rate + Math.random() * 1.2
+    this.state.rate = this.state.rate + Math.random() * (this.props.speed || 1.2)
     if (this.state.rate >= 99) {
       this.state.rate = 99
       clearInterval(this.interval)
@@ -116,10 +115,10 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
           className={_05}
         >
           <div className={up + ' ' + yellow}>
-            {this.state.is1001 ? this.languagePack.mg_tip_question2[this.props.language] : this.languagePack.mg_tip_question[this.props.language]}
+            {this.state.error_resource ? this.languagePack.mg_tip_question2[this.props.language] : this.languagePack.mg_tip_question[this.props.language]}
           </div>
           <a
-            className={up + ' ' + bbb + (this.state.is1001 ? " shake active" : " shake")}
+            className={up + ' ' + bbb + (this.state.error_resource ? " shake active" : " shake")}
             href={this.props.responses.serverInitData.data.publics.currentStartDownPage}
             target="_blank"
           >
@@ -182,8 +181,6 @@ export default class ObbProgress extends React.Component<ProgressProps, any, any
             {this.languagePack.mg_txt_status_tip[this.props.language]}
           </div>
         </Grid>
-
-
       </Grid>
     );
   }
